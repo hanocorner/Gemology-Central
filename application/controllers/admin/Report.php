@@ -75,7 +75,7 @@ class Report extends CI_Controller
   }
 
   /*****/
-  public function gem()
+  public function gem() 
   {
     $data['id'] = $id;
     $data['customer'] = $this->Report_model->get_customer_name($id);
