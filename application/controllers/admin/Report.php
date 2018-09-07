@@ -174,11 +174,51 @@ class Report extends CI_Controller
 
   }
 
-  /*****/
-  public function xml_parser_customers()
+  /**
+   * HTML xmlHTTPRequest to parse csutomer data to admin
+   *
+   * @param none
+   * @return none
+   */
+  public function xmlHttpReq_customer()
   {
-    // code...
+    $data - $_POST;
+
+
   }
+
+  /**
+   * CI HTML Table library
+   *
+   * @param $data | array
+   * @return html table | string
+   */
+  public function html_table($data = array(), $template)
+  {
+    $this->table->set_heading('Name', 'Color', 'Size');
+    $this->table->set_template($template);
+    $this->table->add_row($data);
+
+    return $this->table->generate();
+  }
+
+  /**
+   * CI HTML Pagination library
+   *
+   * @param $start
+   * @param $length
+   */
+  public function html_pagination($start, $length, $rows_per_page, $total_rows)
+  {
+    $config['base_url'] = base_url().'';
+    $config['total_rows'] = $total_rows;
+    $config['per_page'] = $rows_per_page;
+
+    $this->pagination->initialize($config);
+
+    return $this->pagination->create_links();
+  }
+
   /**
    * Public view for admin to add new report
    *
