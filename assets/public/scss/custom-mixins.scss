@@ -1,0 +1,19 @@
+@mixin transition($property) {
+  -webkit-transition: $property;
+  -moz-transition: $property;
+  -ms-transition: $property;
+  -o-transition: $property;
+  transition: $property;
+}
+
+@mixin border-radius($property) {
+  -webkit-border-radius:$property;
+  -moz-border-radius: $property;
+  border-radius: $property;
+}
+
+@mixin box-sizing($property) {
+  -webkit-box-sizing: $property;
+  -moz-box-sizing: $property;
+  box-sizing:$property;
+}
