@@ -174,6 +174,11 @@ class Report extends CI_Controller
 
   }
 
+  /*****/
+  public function xml_parser_customers()
+  {
+    // code...
+  }
   /**
    * Public view for admin to add new report
    *
