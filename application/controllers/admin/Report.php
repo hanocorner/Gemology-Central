@@ -173,7 +173,29 @@ class Report extends CI_Controller
     }
 
   }
-
+  
+   /**
+   * xmlHTTPRequest to parse all Customer data to view  
+   *
+   * @param none
+   * @return void
+   */
+  public function xmlHttpReq_customer()
+  {
+    $data = $_POST;
+  }
+  
+  /**
+   * CI HTML table library  
+   *
+   * @param none
+   * @return void
+   */
+  public function html_table($data)
+  {
+    
+  }
+  
   /**
    * Public view for admin to add new report
    *
