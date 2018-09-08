@@ -12,7 +12,7 @@ class Report extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->library(array('session'));
+    $this->load->library(array('session', 'pagination', 'table'));
 
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
