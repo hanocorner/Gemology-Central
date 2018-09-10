@@ -40,7 +40,7 @@ class Report_model extends CI_Model
    * insert/update/delete/select
    *
    * @param none
-   * @return value 
+   * @return value
    */
   public function get_affected_rows()
   {
@@ -48,46 +48,22 @@ class Report_model extends CI_Model
   }
 
   /****/
-  public function get_customer_data($params)
+  public function get_customer_data($limit, $start)
   {
-    $sql = '';
-    $start = $params['start'];
-    $length = $params['length'];
-    $search = $params['search']['value'];
+    $this->db->select("*");
+    $this->db->from('tbl_customer');
+    $this->db->order_by("custid", "DESC");
+    $this->db->limit($limit, $start);
 
-    $sql .= 'SELECT custid, cus_firstname, cus_lastname, cus_email FROM tbl_customer';
-
-    if ($search != '')
-    {
-      $sql .= " WHERE cus_firstname LIKE '%$search%' OR cus_lastname  LIKE '%$search%' OR cus_email LIKE '%$search%' ";
-    }
-    else
-    {
-      $sql .= " ORDER BY custid DESC LIMIT $start, $length";
-    }
-    $query = $this->db->query($sql);
+    $query = $this->db->get();
     return $query->result();
   }
 
   /****/
-  public function get_certificate_data($params)
+  public function get_certificate_data($customer_id)
   {
-    $sql = '';
-    $id = $params['id'];
-    $start = $params['start'];
-    $length = $params['length'];
-    $search = $params['search']['value'];
+    $sql = "SELECT cerno, cer_type, cer_object, cer_identification, cer_paymentStatus, cer_weight, cer_color, customerID FROM tbl_certificate WHERE customerID = $customer_id";
 
-    $sql .= "SELECT cerno, cer_type, cer_object, cer_identification, cer_paymentStatus, cer_weight, customerID FROM tbl_certificate ";
-
-    if ($search != '')
-    {
-      $sql .= " WHERE customerID = $id HAVING cerno LIKE '%$search%' OR cer_object LIKE '%$search%' OR cer_weight LIKE '%$search%' ";
-    }
-    else
-    {
-      $sql .= " WHERE customerID = $id ORDER BY cerno DESC LIMIT $start, $length";
-    }
     $query = $this->db->query($sql);
     return $query->result();
   }
@@ -188,31 +164,19 @@ class Report_model extends CI_Model
     return false;
   }
 
-  public function search_data($data)
+  public function search_data($keywords)
   {
-    /*if (!is_array($data)) { return false; }
-    $cus = $data['customer'];
-    $shp = $data['shape'];
-    $wet = $data['weight'];
-    $col = $data['color'];*/
+    if(is_array($keywords)) return false;
 
-    $sql = "SELECT t1.custid, t1.cus_firstname, t1.cus_lastname, t1.cus_email, t2.cer_color, t2.customerID, t2.cer_shape, t2.cer_weight, t2.cerno, t2.cer_paymentStatus
-            FROM tbl_customer AS t1 INNER JOIN tbl_certificate AS t2 ON t1.custid = t2.customerID
-            WHERE t1.cus_firstname LIKE '%$data%' ";
+    if(sizeof($keywords) < 3)
+    {
+      
+    }
+    $sql = "SELECT * FROM tbl_customer WHERE cus_firstname LIKE '%$string%' OR cus_lastname LIKE '%$string%' OR custid LIKE '%$string%' ";
 
     $query = $this->db->query($sql);
 
     return $query->result();
-  }
-
-  /****/
-  public function get_total()
-  {
-    $sql = "SELECT COUNT(*) AS total FROM tbl_customer ";
-
-    $query = $this->db->query($sql);
-    $result = $query->result();
-    foreach ($result as $key) return $key->total;
   }
 
 }

@@ -34,10 +34,7 @@ input[type="search"]::-webkit-search-cancel-button {
         <a href="#">Dashboard</a>
       </li>
       <li class="breadcrumb-item active">
-        All Reports
-      </li>
-      <li class="breadcrumb-item active">
-        Gemstone Data
+        All Customers
       </li>
     </ol>
     <!-- /. of Breadcrumbs-->
@@ -45,35 +42,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 
     <div class="padding-1"></div>
-    <!-- Example DataTables Card-->
-    <div class="card mb-3">
-      <div class="card-header">
-        <i class="fa fa-table"></i> All Reports
-        <a href="javascript:void(0)" class="float-right" onclick="window.close();">Close</a>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped table-bordered" id="gemTable" width="100%" >
-            <input type="hidden" id="cust-id" value="<?php echo $id; ?>">
-            <p class="float-left"><strong>Customer:</strong>&nbsp;<?php echo $customer; ?></p>
-            <a href="<?php echo base_url(); ?>admin/report/add-gemstone" class="btn btn-primary float-right mb-3"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; New Report</a>
-            <thead>
-              <tr>
-                <th>#cert No.</th>
-                <th>Certificate Type</th>
-                <th>Object</th>
-                <th>Identification</th>
-                <th>Weight (ct)</th>
-                <th>Payment Status</th>
-                <th>Action</th>
-                <th>Print</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-
-      </div>
-    </div>
+    
 
   </div>
 </div>
@@ -118,8 +87,7 @@ input[type="search"]::-webkit-search-cancel-button {
 <!-- Js -->
 <script type="text/javascript">
   $(document).ready(function() {
-    var id = $('#cust-id').val();
-    gemTable('<?php echo base_url(); ?>', id);
+
 
     // Preview Modal
     $(document).on('click', '#preID', function() {

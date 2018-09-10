@@ -17,8 +17,7 @@ class Report extends CI_Controller
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
 
-    $this->load->helper(array('html', 'url', 'form'));
-
+    $this->load->helper(array('url', 'form'));
     $this->load->model('Report_model');
 
     if (!$this->session->has_userdata('logged_in'))
@@ -35,15 +34,15 @@ class Report extends CI_Controller
    */
   public function index()
   {
-    $this->layout->set_title('All Reports');
+    $this->layout->set_title('My Customer List');
 
-    $this->layout->add_include('assets/admin/css/jquery.dataTables.min.css');
-
-    $this->layout->add_include('assets/admin/js/jquery.dataTables.min.js');
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/loglevel.min.js');
+    $this->layout->add_include('assets/admin/js/customer.js');
 
-    $this->layout->view('admin/report/index', '', 'admin/layouts/admin');
+    $data['form'] = array('class'=>'form-inline');
+
+    $this->layout->view('admin/report/index', $data, 'admin/layouts/admin');
   }
 
   /**
@@ -75,7 +74,7 @@ class Report extends CI_Controller
   }
 
   /*****/
-  public function gem() 
+  public function gem()
   {
     $data['id'] = $id;
     $data['customer'] = $this->Report_model->get_customer_name($id);
@@ -92,27 +91,13 @@ class Report extends CI_Controller
   }
 
   /****/
-  public function gem_all()
+  public function get_data_bundle()
   {
-    $params = $_POST;
+    $customer_id = $_GET['id'];
 
-    $results = $this->Report_model->get_certificate_data($params);
-
-    $html = array();
-    foreach ($results as $data)
-    {
-      $html[] = $data;
-    }
-
-    $totalRecords = $this->Report_model->get_total('tbl_certificate');
-
-    $json_data = array(
-      "draw"            => $params['draw'],
-      "recordsTotal"    => $totalRecords,
-      "recordsFiltered" => $totalRecords,
-      "data"            => $html
-    );
-    echo json_encode($json_data);
+    $data['results'] = $this->Report_model->get_certificate_data($customer_id);
+    //var_dump($this->Report_model->get_certificate_data($customer_id));
+    $this->load->view('admin/report/specific_data', $data);
   }
 
   /**
@@ -173,29 +158,118 @@ class Report extends CI_Controller
     }
 
   }
-  
-   /**
-   * xmlHTTPRequest to parse all Customer data to view  
+
+  /**
+   * HTML xmlHTTPRequest to parse csutomer data to admin
    *
    * @param none
-   * @return void
+   * @return none
    */
   public function xmlHttpReq_customer()
   {
-    $data = $_POST;
+    $page = $this->uri->segment(4);
+    $rows_per_page = 3;
+
+    $total_rows = $this->Report_model->count_all('tbl_customer');
+    $data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
+
+    if ($page == 0) $page = 1;
+    $start = ($page - 1) * $rows_per_page;
+
+    $data['results'] = $this->Report_model->get_customer_data($rows_per_page, $start);
+    $this->load->view('admin/report/customer_list', $data);
   }
-  
+
   /**
-   * CI HTML table library  
    *
-   * @param none
-   * @return void
    */
-  public function html_table($data)
+  public function search()
   {
-    
+    $string = $this->input->get('q');
+    $string = urlencode($string);
+    $keywords = explode('+', $string);
+
+    return false;
+    $data['results'] = $this->Report_model->search_data($keywords);
+    $data['links'] = null;
+    return $this->load->view('admin/report/customer_list',$data);
   }
-  
+
+  /**
+   * CI HTML Table library
+   *
+   * @param $data | array
+   * @return html table | string
+   */
+  public function html_table($data = array())
+  {
+    $template = array(
+      'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
+      'thead_open'            => '<thead>',
+      'thead_close'           => '</thead>',
+
+      'heading_row_start'     => '<tr>',
+      'heading_row_end'       => '</tr>',
+      'heading_cell_start'    => '<th>',
+      'heading_cell_end'      => '</th>',
+
+      'tbody_open'            => '<tbody>',
+      'tbody_close'           => '</tbody>',
+
+      'row_start'             => '<tr>',
+      'row_end'               => '</tr>',
+      'cell_start'            => '<td>',
+      'cell_end'              => '</td>',
+
+      'row_alt_start'         => '<tr>',
+      'row_alt_end'           => '</tr>',
+      'cell_alt_start'        => '<td>',
+      'cell_alt_end'          => '</td>',
+
+      'table_close'           => '</table>'
+    );
+
+    $this->table->set_heading('Name', 'Color', 'Size');
+    $this->table->set_template($template);
+    $this->table->add_row($data);
+
+    return $this->table->generate();
+  }
+
+  /**
+   * CI HTML Pagination library
+   *
+   * @param $start
+   * @param $length
+   */
+  public function html_pagination($page, $rows_per_page, $total_rows)
+  {
+    $config['base_url'] = '#';
+    $config["total_rows"] = $total_rows;
+    $config["per_page"] = $rows_per_page;
+    $config["uri_segment"] = 4;
+    $config["use_page_numbers"] = TRUE;
+    $config["full_tag_open"] = '<ul class="pagination">';
+    $config["full_tag_close"] = '</ul>';
+    $config["first_tag_open"] = '<li class="page-item">';
+    $config["first_tag_close"] = '</li>';
+    $config['next_link'] = 'Next';
+    $config["next_tag_open"] = '<li class="page-item">';
+    $config["next_tag_close"] = '</li>';
+    $config["prev_link"] = "Previous";
+    $config["prev_tag_open"] = "<li class='page-item'>";
+    $config["prev_tag_close"] = "</li>";
+    $config["cur_tag_open"] = "<li class='page-item active'><a href='#' class='page-link'>";
+    $config["cur_tag_close"] = "</a></li>";
+    $config["num_tag_open"] = "<li class='page-item'>";
+    $config["num_tag_close"] = "</li>";
+    $config["num_links"] = 2;
+    $config['attributes'] = array('class' => 'page-link', 'data-action'=>'pagination');
+    $this->pagination->initialize($config);
+
+    return $this->pagination->create_links();
+  }
+
   /**
    * Public view for admin to add new report
    *
@@ -366,16 +440,7 @@ class Report extends CI_Controller
 
   }
 
-  /**
-   *
-   */
-  public function search()
-  {
-    $data=$this->input->get('data');
 
-    $result = $this->Report_model->search_data($data);
-    echo $this->html_table($result);
-  }
 
   /****/
   public function payment()
@@ -394,10 +459,6 @@ class Report extends CI_Controller
       $this->set_message("Problem when changing payment status", "error");
     }
   }
-
-
-
-
 
   /**
    * Function to delete gemstone record

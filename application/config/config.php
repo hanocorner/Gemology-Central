@@ -461,7 +461,7 @@ $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/report/all', 'admin/comment/all', 'admin/report/gem-all', 'admin/report/preview-modal',
+$config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/report/all', 'admin/comment/all', 'admin/report/xmlHttpReq-customer', 'admin/report/preview-modal',
                               'admin/report/payment', 'admin/report/delete', 'report-verification');
 
 /*
