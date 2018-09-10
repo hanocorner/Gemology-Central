@@ -13,6 +13,7 @@ $(function(){
     }
    });
 
+
   var btnActions = {
     cstgemData:function (e) {
       e.preventDefault();
@@ -37,7 +38,7 @@ $(function(){
 
 });
 
-// Search Customer Data 
+// Search Customer Data
 function search(query) {
   $.ajax({
     url: baseurl+'admin/report/search',

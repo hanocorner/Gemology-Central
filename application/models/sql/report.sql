@@ -5,21 +5,6 @@
 -- --------------------------------------------------------
 
 --
--- Table structure for `Customer`
---
-
-CREATE TABLE `tbl_customer` (
-  `custid` int(6) ZEROFILL NOT NULL AUTO_INCREMENT,
-  `cus_firstname` varchar(30) NOT NULL,
-  `cus_lastname` varchar(30) NOT NULL,
-  `cus_email` varchar(50) NOT NULL,
-  `cus_number` varchar(30) NOT NULL,
-  `cus_address` varchar(50) NOT NULL,
-  `cus_NIC` varchar(10) NOT NULL,
-  PRIMARY KEY (`custid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
 -- Table structure for `Lab Report`
 --
 CREATE TABLE `tbl_labReport` (
@@ -55,7 +40,7 @@ CREATE TABLE `tbl_gem` (
 -- Table structure for `Memo Card`
 --
 CREATE TABLE `tbl_gemMemoCard` (
-  `memoid` int(11) NOT NULL AUTO_INCREMENT,
+  `memoid` varchar(11) ZEROFILL NOT NULL,
   `reportid` int(11) DEFAULT NULL,
   `mem_date` date NOT NULL,
   `mem_paymentStatus` tinyint(1) NOT NULL DEFAULT 0,
@@ -67,10 +52,10 @@ CREATE TABLE `tbl_gemMemoCard` (
 -- Table structure for `Gemstone Report`
 --
 CREATE TABLE `tbl_gemstoneReport` (
-  `gsrid` int(11) NOT NULL AUTO_INCREMENT,
+  `gsrid` varchar(11) NOT NULL,
   `reportid` int(11) DEFAULT NULL,
   `gsr_date` date NOT NULL,
   `gsr_paymentStatus` tinyint(1) NOT NULL DEFAULT 0,
   `gsr_amount` decimal(4,2) NOT NULL,
-  PRIMARY KEY (`memoid`)
+  PRIMARY KEY (`gsrid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

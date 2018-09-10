@@ -5,9 +5,8 @@
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_articles`
+-- Table structure for Blog Post
 --
-
 CREATE TABLE IF NOT EXISTS `tbl_posts` (
   `postid` int(11) NOT NULL AUTO_INCREMENT,
   `post_title` varchar(150) NOT NULL,
@@ -25,9 +24,8 @@ CREATE TABLE IF NOT EXISTS `tbl_posts` (
 ) Engine InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `tbl_post_meta`
+-- Table structure for blog post metadata | SEO
 --
-
 CREATE TABLE IF NOT EXISTS `tbl_postMetaData` (
   `metid` int(11) NOT NULL AUTO_INCREMENT,
   `meta_keywords` varchar(1000) NOT NULL,
@@ -41,9 +39,8 @@ CREATE TABLE IF NOT EXISTS `tbl_postMetaData` (
 ) Engine InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `tbl_post_meta`
+-- Table structure for Blog Post comments from enduser
 --
-
 CREATE TABLE IF NOT EXISTS `tbl_postComments` (
   `commentid` int(11) NOT NULL AUTO_INCREMENT,
   `cmnt_author` varchar(50) NOT NULL,

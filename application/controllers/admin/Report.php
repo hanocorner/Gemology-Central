@@ -18,7 +18,7 @@ class Report extends CI_Controller
     $this->load->library('layout', $config);
 
     $this->load->helper(array('url', 'form'));
-    $this->load->model('Report_model');
+    $this->load->model('Customer_model');
 
     if (!$this->session->has_userdata('logged_in'))
     {
@@ -54,7 +54,7 @@ class Report extends CI_Controller
   {
     $params = $_POST;
 
-    $results = $this->Report_model->get_customer_data($params);
+    $results = $this->Customer_model->get_customer_data($params);
 
     $html = array();
     foreach ($results as $data)
@@ -62,7 +62,7 @@ class Report extends CI_Controller
       $html[] = $data;
     }
 
-    $totalRecords = $this->Report_model->get_total('tbl_customer');
+    $totalRecords = $this->Customer_model->get_total('tbl_customer');
 
     $json_data = array(
       "draw"            => $params['draw'],
@@ -77,7 +77,7 @@ class Report extends CI_Controller
   public function gem()
   {
     $data['id'] = $id;
-    $data['customer'] = $this->Report_model->get_customer_name($id);
+    $data['customer'] = $this->Customer_model->get_customer_name($id);
 
     $this->layout->set_title('Report');
 
@@ -95,8 +95,8 @@ class Report extends CI_Controller
   {
     $customer_id = $_GET['id'];
 
-    $data['results'] = $this->Report_model->get_certificate_data($customer_id);
-    //var_dump($this->Report_model->get_certificate_data($customer_id));
+    $data['results'] = $this->Customer_model->get_certificate_data($customer_id);
+    //var_dump($this->Customer_model->get_certificate_data($customer_id));
     $this->load->view('admin/report/specific_data', $data);
   }
 
@@ -143,9 +143,9 @@ class Report extends CI_Controller
     }
     else
     {
-      $customer_id = $this->Report_model->insert_customer($data);
+      $customer_id = $this->Customer_model->insert_customer($data);
 
-      if($this->Report_model->get_affected_rows() > 0)
+      if($this->Customer_model->get_affected_rows() > 0)
       {
         $this->session->set_userdata('customer_id', $customer_id, 300);
         redirect('admin/report/add-gemstone');
@@ -170,13 +170,13 @@ class Report extends CI_Controller
     $page = $this->uri->segment(4);
     $rows_per_page = 3;
 
-    $total_rows = $this->Report_model->count_all('tbl_customer');
+    $total_rows = $this->Customer_model->count_all('tbl_customer');
     $data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
 
     if ($page == 0) $page = 1;
     $start = ($page - 1) * $rows_per_page;
 
-    $data['results'] = $this->Report_model->get_customer_data($rows_per_page, $start);
+    $data['results'] = $this->Customer_model->get_customer_data($rows_per_page, $start);
     $this->load->view('admin/report/customer_list', $data);
   }
 
@@ -189,8 +189,7 @@ class Report extends CI_Controller
     $string = urlencode($string);
     $keywords = explode('+', $string);
 
-    return false;
-    $data['results'] = $this->Report_model->search_data($keywords);
+    $data['results'] = $this->Customer_model->search_data($keywords);
     $data['links'] = null;
     return $this->load->view('admin/report/customer_list',$data);
   }
@@ -353,7 +352,7 @@ class Report extends CI_Controller
     }
     else
     {
-      if($this->Report_model->add_gemstone($data)<>0)
+      if($this->Customer_model->add_gemstone($data)<>0)
       {
         $this->set_message("Gemstone added successfully", "success");
         $this->session->unset_userdata('customer_id');
@@ -377,7 +376,7 @@ class Report extends CI_Controller
   {
     $id = $this->uri->segment(4);
     $this->layout->set_title('Edit Report');
-    $data['data'] = $this->Report_model->get_specific_data($id, 'tbl_certificate', 'cerno');
+    $data['data'] = $this->Customer_model->get_specific_data($id, 'tbl_certificate', 'cerno');
     $data['name'] = $this->security->get_csrf_token_name();
     $data['hash'] = $this->security->get_csrf_hash();
 
@@ -394,7 +393,7 @@ class Report extends CI_Controller
   {
     $id = $this->uri->segment(4);
     $this->layout->set_title('Edit Customer');
-    $data['data'] = $this->Report_model->get_specific_data($id, 'tbl_customer', 'custid');
+    $data['data'] = $this->Customer_model->get_specific_data($id, 'tbl_customer', 'custid');
     $data['name'] = $this->security->get_csrf_token_name();
     $data['hash'] = $this->security->get_csrf_hash();
 
@@ -410,7 +409,7 @@ class Report extends CI_Controller
   public function preview_modal()
   {
     $id = $_POST['id'];
-    $data['data'] = $this->Report_model->get_report_data($id);
+    $data['data'] = $this->Customer_model->get_report_data($id);
     $this->load->view('admin/report/preview_modal',$data);
   }
 
@@ -427,14 +426,14 @@ class Report extends CI_Controller
 
     if ($type == 'cert-report')
     {
-      $data['data'] = $this->Report_model->get_gem_data($gemid, 'cerno');
+      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
       $data['img_url'] = $this->qr_generator($gemid);
       $this->load->view('admin/report/certificate', $data);
     }
 
     if ($type == 'memo-card')
     {
-      $data['data'] = $this->Report_model->get_gem_data($gemid, 'cerno');
+      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
       $this->load->view('admin/report/memo_card', $data);
     }
 
@@ -450,7 +449,7 @@ class Report extends CI_Controller
 
     $data = array('cer_paymentStatus'=>$status);
 
-    if($this->Report_model->update('tbl_certificate','cerno', $cerno, $data))
+    if($this->Customer_model->update('tbl_certificate','cerno', $cerno, $data))
     {
       $this->set_message("Payment status changed", "success");
     }
@@ -470,7 +469,7 @@ class Report extends CI_Controller
   public function delete()
   {
     $id = $this->input->post('id');
-    if($this->Report_model->delete_data('tbl_certificate','cerno',$id))
+    if($this->Customer_model->delete_data('tbl_certificate','cerno',$id))
     {
       $this->set_message("Gemstone report deleted successfully", "success");
     } else
@@ -495,7 +494,7 @@ class Report extends CI_Controller
       'cus_number'=>$this->input->post('number')
     );
 
-    if($this->Report_model->update('tbl_customer','custid', $data['custid'], $data))
+    if($this->Customer_model->update('tbl_customer','custid', $data['custid'], $data))
     {
       $this->set_message('Customer updated successfully','success');
       redirect('admin/report');
@@ -546,7 +545,7 @@ class Report extends CI_Controller
     $this->upload->do_upload('image');
     $data['cer_imagename']=$newname;
 
-    if($this->Report_model->update('tbl_certificate','cerno', $data['cerno'], $data))
+    if($this->Customer_model->update('tbl_certificate','cerno', $data['cerno'], $data))
     {
       $this->set_message('Report updated successfully','success');
       redirect('admin/report');
@@ -563,7 +562,7 @@ class Report extends CI_Controller
    * @param null
    * @return id string
    */
-  private function set_gem_id()
+  private function set_certificate_id()
   {
     $prefix = "GCL";
     $current_year = date("Y");
@@ -571,7 +570,7 @@ class Report extends CI_Controller
 
     $number = 1000;
 
-    $dbnumber = $this->Report_model->get_gem_no();
+    $dbnumber = $this->Lab_model->get_certificate_id();
 
     if(is_null($dbnumber))
     {
@@ -585,6 +584,62 @@ class Report extends CI_Controller
       $dbnumber = substr($dbnumber, 6, 4);
       $dbnumber += 1;
       return $prefix.$current_year."-".$current_month.$dbnumber;
+    }
+  }
+
+  /**
+   * Creating Customer ID for unique identification
+   *
+   * @param null
+   * @return id string
+   */
+  private function set_customer_id()
+  {
+    $prefix = "GCLC";
+    $number = 1000;
+
+    $customerid = $this->Customer_model->get_customer_id();
+
+    if(is_null($customerid))
+    {
+      $number += 1;
+      $number = str_pad($number, 4, '0', STR_PAD_LEFT);
+      return $prefix."-".$number;
+    }
+    else
+    {
+      $customerid = preg_replace('/[^0-9]/', '', $customerid);
+      $customerid = substr($customerid, 6, 4);
+      $customerid += 1;
+      return $prefix."-".$customerid;
+    }
+  }
+
+  /**
+   * Creating Memo Card ID for unique identification
+   *
+   * @param null
+   * @return id string
+   */
+  private function set_memo_id()
+  {
+    //$prefix = "MC";
+    $number = 00000;
+
+    $memoid = $this->Customer_model->get_memo_id();
+
+    if(is_null($memoid))
+    {
+      $number += 1;
+      $number = str_pad($number, 4, '0', STR_PAD_LEFT);
+      return $number;
+    }
+    else
+    {
+      $memoid = preg_replace('/[^0-9]/', '', $memoid);
+      $memoid = substr($memoid, 6, 4);
+      $memoid += 1;
+      return $memoid;
     }
   }
 
