@@ -23,7 +23,7 @@ class System_model extends CI_Model
   {
     $sql = '';
 
-    $sql = "SELECT COUNT(*) AS total FROM tbl_postComments, tbl_certificate";
+    $sql = "SELECT COUNT(*) AS total FROM tbl_postComments, tbl_lab_report";
     $query = $this->db->query($sql);
     $row = $query->row();
 
@@ -31,7 +31,7 @@ class System_model extends CI_Model
     {
       $sql = "SELECT
               (SELECT COUNT(*) FROM tbl_postComments WHERE cmnt_status = 1) AS totalComments,
-              (SELECT COUNT(*) FROM tbl_certificate WHERE cer_paymentStatus = 0) AS totalCertificates";
+              (SELECT COUNT(*) FROM tbl_lab_report WHERE cer_paymentStatus = 0) AS totalCertificates";
 
       $query = $this->db->query($sql);
       $row = $query->row();

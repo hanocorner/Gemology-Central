@@ -54,7 +54,7 @@ class Lab_model extends CI_Model
    * Fetcing existing memo card id to generate a new id
    *
    * @param none
-   * @return id | string 
+   * @return id | string
    */
   public function get_memo_id()
   {
@@ -64,6 +64,16 @@ class Lab_model extends CI_Model
     $this->db->limit(1);
 
     return $this->db->get()->row()->memoid;
+  }
+
+  /****/
+  public function sorted_data($id)
+  {
+    $sql = "SELECT * FROM `tbl_customer` as t1 LEFT JOIN `tbl_lab_report` as t2 ON t1.custid = t2.rep_customerID LEFT JOIN `tbl_gem_memocard` as t3
+            ON t2.reportid = t3.reportid LEFT JOIN `tbl_gemstone_report` as t4 ON t2.reportid = t4.reportid WHERE t1.custid = '$id' ";
+
+    $query = $this->db->query($sql);
+    return $query->result();
   }
 }
 ?>

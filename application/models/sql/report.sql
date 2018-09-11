@@ -7,12 +7,13 @@
 --
 -- Table structure for `Lab Report`
 --
-CREATE TABLE `tbl_labReport` (
+CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
   `reportid` int(11) NOT NULL AUTO_INCREMENT,
   `rep_customerID` int(11) DEFAULT NULL,
   `rep_date` date NOT NULL,
   `rep_gemID` int(11) DEFAULT NULL,
   `rep_object` varchar(100) NOT NULL,
+  `rep_identification` varchar(100) NOT NULL,
   `rep_type` varchar(20) NOT NULL,
   `rep_imagename` text NOT NULL,
   `rep_weight` decimal(4,2) NOT NULL,
@@ -29,7 +30,7 @@ CREATE TABLE `tbl_labReport` (
 --
 -- Table structure for `Gem Details`
 --
-CREATE TABLE `tbl_gem` (
+CREATE TABLE IF NOT EXISTS `tbl_gem` (
   `gemid` int(11) NOT NULL AUTO_INCREMENT,
   `gem_name` varchar(30) NOT NULL,
   `gem_description` varchar(30) NOT NULL,
@@ -39,8 +40,8 @@ CREATE TABLE `tbl_gem` (
 --
 -- Table structure for `Memo Card`
 --
-CREATE TABLE `tbl_gemMemoCard` (
-  `memoid` varchar(11) ZEROFILL NOT NULL,
+CREATE TABLE IF NOT EXISTS `tbl_gem_memocard` (
+  `memoid` int(6) ZEROFILL NOT NULL,
   `reportid` int(11) DEFAULT NULL,
   `mem_date` date NOT NULL,
   `mem_paymentStatus` tinyint(1) NOT NULL DEFAULT 0,
@@ -51,7 +52,7 @@ CREATE TABLE `tbl_gemMemoCard` (
 --
 -- Table structure for `Gemstone Report`
 --
-CREATE TABLE `tbl_gemstoneReport` (
+CREATE TABLE IF NOT EXISTS `tbl_gemstone_report` (
   `gsrid` varchar(11) NOT NULL,
   `reportid` int(11) DEFAULT NULL,
   `gsr_date` date NOT NULL,

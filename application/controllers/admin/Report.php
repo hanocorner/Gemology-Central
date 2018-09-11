@@ -18,7 +18,7 @@ class Report extends CI_Controller
     $this->load->library('layout', $config);
 
     $this->load->helper(array('url', 'form'));
-    $this->load->model('Customer_model');
+    $this->load->model(array('Customer_model', 'Lab_model'));
 
     if (!$this->session->has_userdata('logged_in'))
     {
@@ -45,33 +45,6 @@ class Report extends CI_Controller
     $this->layout->view('admin/report/index', $data, 'admin/layouts/admin');
   }
 
-  /**
-  * Creating AJAX view for table grid
-  *
-  * @return void
-  */
-  public function all()
-  {
-    $params = $_POST;
-
-    $results = $this->Customer_model->get_customer_data($params);
-
-    $html = array();
-    foreach ($results as $data)
-    {
-      $html[] = $data;
-    }
-
-    $totalRecords = $this->Customer_model->get_total('tbl_customer');
-
-    $json_data = array(
-      "draw"            => $params['draw'],
-      "recordsTotal"    => $totalRecords,
-      "recordsFiltered" => $totalRecords,
-      "data"            => $html
-    );
-    echo json_encode($json_data);
-  }
 
   /*****/
   public function gem()
@@ -90,15 +63,7 @@ class Report extends CI_Controller
     $this->layout->view('admin/report/gem', $data, 'admin/layouts/admin');
   }
 
-  /****/
-  public function get_data_bundle()
-  {
-    $customer_id = $_GET['id'];
 
-    $data['results'] = $this->Customer_model->get_certificate_data($customer_id);
-    //var_dump($this->Customer_model->get_certificate_data($customer_id));
-    $this->load->view('admin/report/specific_data', $data);
-  }
 
   /**
    * Public view for admin to add new report
@@ -125,6 +90,7 @@ class Report extends CI_Controller
   public function insert_customer_data()
   {
     $data = array(
+      'custid'=>$this->set_customer_id(),
       'cus_firstname'=>$this->input->post('fname'),
       'cus_lastname'=>$this->input->post('lname'),
       'cus_number'=>$this->input->post('number'),
@@ -176,7 +142,7 @@ class Report extends CI_Controller
     if ($page == 0) $page = 1;
     $start = ($page - 1) * $rows_per_page;
 
-    $data['results'] = $this->Customer_model->get_customer_data($rows_per_page, $start);
+    $data['results'] = $this->Customer_model->get_alldata($rows_per_page, $start);
     $this->load->view('admin/report/customer_list', $data);
   }
 
@@ -189,9 +155,20 @@ class Report extends CI_Controller
     $string = urlencode($string);
     $keywords = explode('+', $string);
 
-    $data['results'] = $this->Customer_model->search_data($keywords);
+    $data['results'] = $this->Customer_model->search_query($keywords);
     $data['links'] = null;
     return $this->load->view('admin/report/customer_list',$data);
+  }
+
+  /**
+   *
+   */
+  public function get_data_bundle()
+  {
+    $customer_id = $_GET['id'];
+
+    $data['results'] = $this->Lab_model->sorted_data($customer_id);
+    $this->load->view('admin/report/specific_data', $data);
   }
 
   /**
@@ -439,26 +416,6 @@ class Report extends CI_Controller
 
   }
 
-
-
-  /****/
-  public function payment()
-  {
-    $status=$this->input->post('status');
-    $cerno=$this->input->post('id');
-
-    $data = array('cer_paymentStatus'=>$status);
-
-    if($this->Customer_model->update('tbl_certificate','cerno', $cerno, $data))
-    {
-      $this->set_message("Payment status changed", "success");
-    }
-    else
-    {
-      $this->set_message("Problem when changing payment status", "error");
-    }
-  }
-
   /**
    * Function to delete gemstone record
    *
@@ -609,7 +566,6 @@ class Report extends CI_Controller
     else
     {
       $customerid = preg_replace('/[^0-9]/', '', $customerid);
-      $customerid = substr($customerid, 6, 4);
       $customerid += 1;
       return $prefix."-".$customerid;
     }

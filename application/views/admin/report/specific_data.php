@@ -1,26 +1,32 @@
 <div class="cg-data">
+  <?php foreach ($results as $data):?>
   <div class="cs-data mx-auto my-3">
-    <div class="d-flex justify-content-between">
-      <h3><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Mr.Mudir</h3>
-      <h5><i class="fa fa-phone" aria-hidden="true"></i>&nbsp; 0771234567</h5>
+    <div class="float-right cs-id">
+       <h4>#<?php echo $data->custid; ?></h4>
     </div>
-    <?php  ?>
-    <div class="d-flex justify-content-between">
-
-      <p>#0001</p>
-      <div class="buttons">
-        <a href="#" class="btn btn-primary">Add</a>&nbsp;
-        <a href="#" class="btn btn-warning">Edit</a>&nbsp;
-        <a href="#" class="btn btn-danger">Delete</a>
+    <div class="d-flex align-items-center ">
+      <div class="d-block mr-2">
+        <img src="<?php echo base_url(); ?>assets/admin/images/user.png" alt="Customer">
+      </div>
+      <div class="d-block mx-4">
+        <h4><?php echo ucwords($data->cus_firstname)." ".$data->cus_lastname; ?></h4>
+        <h5><?php echo $data->cus_number; ?></h5>
+        <p><?php echo $data->cus_email; ?></p>
+        <div class="buttons">
+          <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-primary">Add</a>&nbsp;
+          <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-warning">Edit</a>&nbsp;
+          <a href="Javascript void(0);" class="btn btn-sm btn-danger">Delete</a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="gm-data mt-4 mx-auto">
+
+  <?php endforeach; ?>
+  <div class="gm-data mt-5 mx-auto">
     <?php if(empty($results)): ?>
       <h5>No matching records for Memo Card</h5>
     <?php else: ?>
       <h5>Relavant Memo Card Details</h5>
-    <?php foreach ($results as $data):?>
 
     <table class="table table-bordered">
     <thead>
@@ -36,12 +42,13 @@
     </thead>
 
     <tbody>
+      <?php foreach ($results as $data):?>
       <tr>
-        <th scope="row"><?php echo $data->cerno; ?></th>
-        <td><?php echo $data->cer_object; ?></td>
-        <td><?php echo $data->cer_weight; ?></td>
-        <td><?php echo $data->cer_color; ?></td>
-        <td><?php echo $data->cer_identification; ?></td>
+        <td><?php echo $data->memoid; ?></td>
+        <td><?php echo $data->rep_object; ?></td>
+        <td><?php echo $data->rep_weight; ?></td>
+        <td><?php echo $data->rep_color; ?></td>
+        <td><?php //echo $data->rep_identification; ?></td>
         <td>Paid</td>
 
         <td>
@@ -60,16 +67,17 @@
             &nbsp;<a href="#" class="btn btn-dark btn-sm">Print</a>
           </div>
         </td>
-      </tr>
+      </tr
+    <?php endforeach; ?>>
 
     </tbody>
   </table>
-<?php endforeach; ?>
+
 <?php endif; ?>
   </div>
 
   <div class="gm-data mt-4 mx-auto">
-    <h4>Relavant Certificate Report Details</h4>
+    <h5>Relavant Certificate Report Details</h5>
     <table class="table table-bordered">
     <thead>
       <tr>
@@ -84,12 +92,11 @@
     </thead>
     <tbody>
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>Otto</td>
-        <td>Otto</td>
-        <td>Otto</td>
+        <th scope="row"><?php echo $data->gsrid; ?></th>
+        <td><?php echo $data->rep_object; ?></td>
+        <td><?php echo $data->rep_weight; ?></td>
+        <td><?php echo $data->rep_color; ?></td>
+        <td><?php //echo $data->rep_identification; ?></td>
 
         <td>
           <div class="d-flex">

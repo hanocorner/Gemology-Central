@@ -28,22 +28,17 @@
             <div class="form-group">
               <label for="first-name">First Name:<sup><strong>*</strong></sup> </label>
                 <div class="form-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button"  name="fname" data-validation="required" autocomplete="off" value="<?php echo set_value('fname'); ?>">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button"  name="fname" data-validation="required" autocomplete="off" value="<?php echo set_value('fname'); ?>" required>
                   <span style="color:red;"><?php echo form_error('fname'); ?></span>
                 </div>
             </div>
             <div class="form-group">
-              <label for="last-name">Last Name: </label>
-              <input type="text" class="form-control" name="lname" value="<?php echo set_value('lname'); ?>">
+              <label for="last-name">Last Name:<sup><strong>*</strong></sup></label>
+              <input type="text" class="form-control" name="lname" data-validation="required" autocomplete="off" value="<?php echo set_value('lname'); ?>" required>
             </div>
-            <!-- <div class="form-group">
-              <label for="last-name">NIC No.<sup><strong>*</strong></sup></label>
-              <input type="text" class="form-control" name="nic-no" data-validation="length" data-validation-length="10-10" data-validation-error-msg="Please provide a valid NIC number" required autocomplete="off">
-              <span><?php //echo form_error(''); ?></span>
-            </div> -->
             <div class="form-group">
               <label for="Number">Number:<sup><strong>*</strong></sup> </label>
-              <input type="tel" class="form-control" name="number" data-validation="length" data-validation-length="7-10" data-validation-error-msg="Phone number has to contain Min 7 and Max 10" autocomplete="off" value="<?php echo set_value('number'); ?>">
+              <input type="tel" class="form-control" name="number" data-validation="length" data-validation-length="7-10" data-validation-error-msg="Phone number has to contain Min 7 and Max 10" autocomplete="off" value="<?php echo set_value('number'); ?>" required>
               <span style="color:red;"><?php echo form_error('number'); ?></span>
             </div>
           <div class="form-group">
@@ -58,16 +53,6 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(document).ready(function() {
-
-    // JS Form Validator
-    $.validate();
-
-    $(document).on('click','#private',function(event){
-      event.preventDefault();
-      $('#pstatus').addClass('badge-danger').text('Later').removeClass('badge-success');
-      $('.publish_date').show();
-      $('#published').val(0);
-    });
-  });
+// JS Form Validator
+$.validate();
 </script>

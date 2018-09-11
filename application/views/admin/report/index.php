@@ -35,6 +35,13 @@ input[type="search"]::-webkit-search-cancel-button {
   border: 1px solid #707070;
   border-radius: 5px;
   padding: 15px;
+  position: relative;
+}
+.cs-id {
+  position: absolute;
+  right: 20px;
+  top: 66px;
+  color: #b5b5b5;
 }
 </style>
 

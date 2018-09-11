@@ -6,35 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>Adminstrator</title>
-  <!-- Bootstrap core CSS-->
-  <link href="<?php echo base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link href="<?php echo base_url();?>assets/css/sb-admin.min.css" rel="stylesheet">
+  <!-- Custom css with bootstrap and template css -->
+  <link href="<?php echo base_url();?>assets/admin/css/main.css" rel="stylesheet">
 
+  <!-- Custom Css for admin page -->
   <style media="screen">
-  .card-login {
-    max-width: 25rem;
-  }
-  .card-header {
-    font-size: 18px;
-    font-weight: 500;
-  }
-  .ml-auto, .mx-auto {
-    margin-left: auto!important;
-  }
-  .mr-auto, .mx-auto {
-    margin-right: auto!important;
-  }
-  .mt-5, .my-5 {
-    margin-top: 3rem!important;
-  }
-  .alert{
-    margin: 10px 0;
-  }
-  .btn {
-    width: 100%;
-  }
+  .card-login{max-width:25rem}.card-header{font-size:18px;font-weight:500}.ml-auto,.mx-auto{margin-left:auto!important}.mr-auto,.mx-auto{margin-right:auto!important}.mt-5,.my-5{margin-top:3rem!important}.alert{margin:10px 0}.btn{width:100%}
   </style>
 </head>
 
@@ -59,12 +37,12 @@
           <form action="<?php echo base_url();?>admin/home/login" method="post">
           <div class="form-group">
             <label for="username">Username</label>
-            <input class="form-control" id="username" type="text" placeholder="Enter username" name="username">
+            <input class="form-control" id="username" type="text" name="username" autocomplete="off">
 
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-control" id="password" type="password" placeholder="Password" name="password">
+            <input class="form-control" id="password" type="password"  name="password" autocomplete="off">
           </div>
           <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $hash; ?>" />
 
