@@ -9,7 +9,7 @@
 --
 CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
   `reportid` int(11) NOT NULL AUTO_INCREMENT,
-  `rep_customerID` int(11) DEFAULT NULL,
+  `rep_customerID` varchar(11) DEFAULT NULL,
   `rep_date` date NOT NULL,
   `rep_gemID` int(11) DEFAULT NULL,
   `rep_object` varchar(100) NOT NULL,

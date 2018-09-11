@@ -114,7 +114,7 @@ class Report extends CI_Controller
       if($this->Customer_model->get_affected_rows() > 0)
       {
         $this->session->set_userdata('customer_id', $customer_id, 300);
-        redirect('admin/report/add-gemstone');
+        redirect('admin/report/add-customer');
       }
       else
       {
@@ -166,9 +166,20 @@ class Report extends CI_Controller
   public function get_data_bundle()
   {
     $customer_id = $_GET['id'];
+    $labreportid = $this->Lab_model->get_labreport_id($customer_id);
 
-    $data['results'] = $this->Lab_model->sorted_data($customer_id);
-    $this->load->view('admin/report/specific_data', $data);
+    if ($labreportid == null)
+    {
+      $data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
+      return $this->load->view('admin/report/specific_data', $data);
+    }
+
+    $data['customers'] = $this->Customer_model->get_customer_by_id($customer_id);
+
+    $data['mdata'] = $this->Lab_model->memo_data($customer_id, $labreportid);
+
+    $data['cdata'] = $this->Lab_model->certificate_data($customer_id, $labreportid);
+    return $this->load->view('admin/report/specific_data', $data);
   }
 
   /**

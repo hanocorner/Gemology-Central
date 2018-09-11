@@ -43,7 +43,7 @@ class Customer_model extends CI_Model
    */
   public function get_alldata($limit, $start)
   {
-    $this->db->select("*");
+    $this->db->select("custid, cus_firstname, cus_lastname");
     $this->db->from('tbl_customer');
     $this->db->order_by("custid", "DESC");
     $this->db->limit($limit, $start);
@@ -105,6 +105,22 @@ class Customer_model extends CI_Model
     $this->db->limit(1);
 
     return $this->db->get()->row()->custid;
+  }
+
+  /**
+   * Fetcing a specific customer by id
+   *
+   * @param none
+   * @return id | string
+   */
+  public function get_customer_by_id($customerid)
+  {
+    $this->db->select("*");
+    $this->db->from('tbl_customer');
+    $this->db->where("custid", $customerid);
+
+    $query = $this->db->get();
+    return $query->result();
   }
 
 }

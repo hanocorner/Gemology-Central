@@ -16,7 +16,7 @@
         <h5><?php echo ucwords($data->cus_firstname)." ".$data->cus_lastname; ?></h5>
         <a href="#" id="cstgemAll" data-id="<?php echo $data->custid; ?>" data-action="cstgemData"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
     </div>
-    <p>No.of Pending Certificates &nbsp;<span class="badge badge-primary badge-pill">14</span></p>
+    
   </li>
 </ul>
 <?php endforeach; ?>

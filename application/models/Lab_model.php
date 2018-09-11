@@ -66,14 +66,45 @@ class Lab_model extends CI_Model
     return $this->db->get()->row()->memoid;
   }
 
-  /****/
-  public function sorted_data($id)
+  /**
+   * Fetcing existing lab report id
+   *
+   * @param $customerid | string
+   * @return id | string
+   */
+  public function get_labreport_id($customerid)
   {
-    $sql = "SELECT * FROM `tbl_customer` as t1 LEFT JOIN `tbl_lab_report` as t2 ON t1.custid = t2.rep_customerID LEFT JOIN `tbl_gem_memocard` as t3
-            ON t2.reportid = t3.reportid LEFT JOIN `tbl_gemstone_report` as t4 ON t2.reportid = t4.reportid WHERE t1.custid = '$id' ";
+    $this->db->select("reportid");
+    $this->db->from('tbl_lab_report');
+    $this->db->where('rep_customerID', $customerid);
+
+    $query = $this->db->get();
+    $row = $query->row();
+
+    if(isset($row->reportid)) return $row->reportid;
+
+    return null;
+  }
+
+  /****/
+  public function memo_data($cid, $rid)
+  {
+    $sql = "SELECT * FROM `tbl_lab_report` AS t1 INNER JOIN `tbl_gem_memocard` as t2 ON t1.reportid = t2.reportid WHERE t1.rep_customerID = '$cid' AND t1.rep_type = 'memo'";
+    $query = $this->db->query($sql);
 
     $query = $this->db->query($sql);
     return $query->result();
   }
+
+  /****/
+  public function certificate_data($cid, $rid)
+  {
+    $sql = "SELECT * FROM `tbl_lab_report` AS t1 INNER JOIN `tbl_gemstone_report` as t2 ON t1.reportid = t2.reportid WHERE t1.rep_customerID = '$cid' AND t1.rep_type = 'repo'";
+    $query = $this->db->query($sql);
+
+    $query = $this->db->query($sql);
+    return $query->result();
+  }
+
 }
 ?>
