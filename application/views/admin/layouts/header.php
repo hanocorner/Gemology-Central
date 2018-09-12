@@ -32,7 +32,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gemstone">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsegemstone" data-parent="#exampleAccordion">
-              <i class="fa fa-heart" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;
               <span class="nav-link-text">Gemstone</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsegemstone">

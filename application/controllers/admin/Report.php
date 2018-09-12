@@ -27,139 +27,24 @@ class Report extends CI_Controller
 
   }
 
-  /**
-   * Default view for the user
-   *
-   * @return void
-   */
-  public function index()
+  /****/
+  public function default_add()
   {
+    $this->layout->set_title('Report');
+    $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
 
+    $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
+    $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
+
+    return $this->layout->view('admin/lab/report/default_add', '', 'admin/layouts/admin');
   }
-
 
   /*****/
-  public function gem()
+  public function gem_list()
   {
-    $data['id'] = $id;
-    $data['customer'] = $this->Customer_model->get_customer_name($id);
-
-    $this->layout->set_title('Report');
-
-    $this->layout->add_include('assets/admin/css/jquery.dataTables.min.css');
-
-    $this->layout->add_include('assets/admin/js/jquery.dataTables.min.js');
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/report.js');
-
-    $this->layout->view('admin/report/gem', $data, 'admin/layouts/admin');
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /**
-   * CI HTML Table library
-   *
-   * @param $data | array
-   * @return html table | string
-   */
-  public function html_table($data = array())
-  {
-    $template = array(
-      'table_open'            => '<table border="0" cellpadding="4" cellspacing="0">',
-      'thead_open'            => '<thead>',
-      'thead_close'           => '</thead>',
-
-      'heading_row_start'     => '<tr>',
-      'heading_row_end'       => '</tr>',
-      'heading_cell_start'    => '<th>',
-      'heading_cell_end'      => '</th>',
-
-      'tbody_open'            => '<tbody>',
-      'tbody_close'           => '</tbody>',
-
-      'row_start'             => '<tr>',
-      'row_end'               => '</tr>',
-      'cell_start'            => '<td>',
-      'cell_end'              => '</td>',
-
-      'row_alt_start'         => '<tr>',
-      'row_alt_end'           => '</tr>',
-      'cell_alt_start'        => '<td>',
-      'cell_alt_end'          => '</td>',
-
-      'table_close'           => '</table>'
-    );
-
-    $this->table->set_heading('Name', 'Color', 'Size');
-    $this->table->set_template($template);
-    $this->table->add_row($data);
-
-    return $this->table->generate();
-  }
-
-  /**
-   * CI HTML Pagination library
-   *
-   * @param $start
-   * @param $length
-   */
-  public function html_pagination($page, $rows_per_page, $total_rows)
-  {
-    $config['base_url'] = '#';
-    $config["total_rows"] = $total_rows;
-    $config["per_page"] = $rows_per_page;
-    $config["uri_segment"] = 4;
-    $config["use_page_numbers"] = TRUE;
-    $config["full_tag_open"] = '<ul class="pagination">';
-    $config["full_tag_close"] = '</ul>';
-    $config["first_tag_open"] = '<li class="page-item">';
-    $config["first_tag_close"] = '</li>';
-    $config['next_link'] = 'Next';
-    $config["next_tag_open"] = '<li class="page-item">';
-    $config["next_tag_close"] = '</li>';
-    $config["prev_link"] = "Previous";
-    $config["prev_tag_open"] = "<li class='page-item'>";
-    $config["prev_tag_close"] = "</li>";
-    $config["cur_tag_open"] = "<li class='page-item active'><a href='#' class='page-link'>";
-    $config["cur_tag_close"] = "</a></li>";
-    $config["num_tag_open"] = "<li class='page-item'>";
-    $config["num_tag_close"] = "</li>";
-    $config["num_links"] = 2;
-    $config['attributes'] = array('class' => 'page-link', 'data-action'=>'pagination');
-    $this->pagination->initialize($config);
-
-    return $this->pagination->create_links();
-  }
-
-  /**
-   * Public view for admin to add new report
-   *
-   * @param none
-   * @return void
-   */
-  public function add_gemstone()
-  {
-    $this->layout->set_title('Add new Report');
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/report.js');
-    $this->layout->add_include('assets/admin/js/file-upload.js');
-
-    $gem_id = $this->set_gem_id();
-    $data['hidden'] = array('gemid'=>$gem_id, 'cstid' =>$this->session->customer_id);
-    $data['gemid'] = $gem_id;
-
-    $this->layout->view('admin/report/add_gemstone', $data, 'admin/layouts/admin');
+    $data = $this->Lab_model->get_gem_list();
+    echo json_encode($data);
   }
 
   /**
@@ -266,57 +151,19 @@ class Report extends CI_Controller
    */
   public function preview_modal()
   {
-    $id = $_POST['id'];
-    $data['data'] = $this->Customer_model->get_report_data($id);
-    $this->load->view('admin/report/preview_modal',$data);
-  }
-
-  /**
-   * public view for the admin to print the Gemstone report
-   *
-   * @param none
-   * @return void
-   */
-  public function print_preview()
-  {
-    $gemid = $this->uri->segment(5);
-    $type = $this->uri->segment(4);
-
-    if ($type == 'cert-report')
-    {
-      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
-      $data['img_url'] = $this->qr_generator($gemid);
-      $this->load->view('admin/report/certificate', $data);
-    }
-
-    if ($type == 'memo-card')
-    {
-      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
-      $this->load->view('admin/report/memo_card', $data);
-    }
-
+    // code
   }
 
   /**
    * Function to delete gemstone record
    *
    * @param $id String
-   *
    * @return void
    */
   public function delete()
   {
-    $id = $this->input->post('id');
-    if($this->Customer_model->delete_data('tbl_certificate','cerno',$id))
-    {
-      $this->set_message("Gemstone report deleted successfully", "success");
-    } else
-    {
-      $this->set_message("problem when deleting this report", "danger");
-    }
+    // code
   }
-
-
 
   /**
    * Function to update gemstone record
@@ -375,7 +222,7 @@ class Report extends CI_Controller
    * @param null
    * @return id string
    */
-  private function set_certificate_id()
+  public function set_certificate_id()
   {
     $prefix = "GCL";
     $current_year = date("Y");
@@ -400,33 +247,29 @@ class Report extends CI_Controller
     }
   }
 
-  
-
   /**
    * Creating Memo Card ID for unique identification
    *
    * @param null
    * @return id string
    */
-  private function set_memo_id()
+  public function set_memo_id()
   {
-    //$prefix = "MC";
-    $number = 00000;
+    $number = 000001;
 
-    $memoid = $this->Customer_model->get_memo_id();
+    $memoid = $this->Lab_model->get_memo_id();
 
     if(is_null($memoid))
     {
       $number += 1;
-      $number = str_pad($number, 4, '0', STR_PAD_LEFT);
+      $number = str_pad($number, 6, '0', STR_PAD_LEFT);
       return $number;
     }
     else
     {
       $memoid = preg_replace('/[^0-9]/', '', $memoid);
-      $memoid = substr($memoid, 6, 4);
       $memoid += 1;
-      return $memoid;
+      return str_pad($memoid, 6, '0', STR_PAD_LEFT);
     }
   }
 

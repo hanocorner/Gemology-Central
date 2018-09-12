@@ -148,24 +148,6 @@ function preview(url, crno, result) {
   });
 }
 
-// Payment Status
-function payment(url, crno, status) {
-  $.ajax({
-    url: url + 'admin/report/payment',
-    type: 'POST',
-    dataType: 'html',
-    data: {
-      'id': crno,
-      'status': status
-    },
-    success: function() {
-      window.top.location = window.top.location;
-    },
-    fail: function() {
-      console.log("error");
-    }
-  });
-}
 
 // Delete Report
 function deleteReport(url, crno) {
@@ -178,6 +160,38 @@ function deleteReport(url, crno) {
     },
     success: function() {
       window.top.location = window.top.location;
+    },
+    fail: function() {
+      console.log("error");
+    }
+  });
+}
+
+function ajax(reportType) {
+  $.ajax({
+    url: baseurl+'admin/report/'+reportType,
+    type: 'GET',
+    dataType: 'html',
+    success: function(data) {
+      $('#id').val(data);
+    },
+    fail: function() {
+      console.log("error");
+    }
+  });
+}
+
+function gemstone() {
+  $.ajax({
+    url: baseurl+'admin/report/gem-list',
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      $.each(data, function(key, value) {
+        var toAppend = "";
+        toAppend += '<option value="'+value.gemid+'">'+value.gem_name+'</option>';
+        gemtype.append(toAppend);
+      });
     },
     fail: function() {
       console.log("error");

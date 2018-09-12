@@ -26,9 +26,41 @@ class Print extends CI_Controller
     }
   }
 
-  public function index()
+  /**
+   * public view for the admin to print the Gemstone report
+   *
+   * @param none
+   * @return void
+   */
+  public function memocard()
   {
-    // code...
+    $gemid = $this->uri->segment(5);
+    $type = $this->uri->segment(4);
+
+    if ($type == 'cert-report')
+    {
+      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
+      $data['img_url'] = $this->qr_generator($gemid);
+      $this->load->view('admin/report/certificate', $data);
+    }
+
+    if ($type == 'memo-card')
+    {
+      $data['data'] = $this->Customer_model->get_gem_data($gemid, 'cerno');
+      $this->load->view('admin/report/memo_card', $data);
+    }
+
+  }
+
+  /**
+   * public view for the admin to print the Gemstone report
+   *
+   * @param none
+   * @return void
+   */
+  public function certificate()
+  {
+
   }
 }
 ?>

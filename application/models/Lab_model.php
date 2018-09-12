@@ -43,7 +43,7 @@ class Lab_model extends CI_Model
   public function get_certificate_id()
   {
     $this->db->select("gsrid");
-    $this->db->from('tbl_gemstoneReport');
+    $this->db->from('tbl_gemstone_report');
     $this->db->order_by("gsrid", "DESC");
     $this->db->limit(1);
 
@@ -59,11 +59,14 @@ class Lab_model extends CI_Model
   public function get_memo_id()
   {
     $this->db->select("memoid");
-    $this->db->from('tbl_gemMemoCard');
+    $this->db->from('tbl_gem_memocard');
     $this->db->order_by("memoid", "DESC");
     $this->db->limit(1);
 
-    return $this->db->get()->row()->memoid;
+    $query = $this->db->get();
+    $row = $query->row();
+
+    return $row->memoid;
   }
 
   /**
@@ -103,6 +106,15 @@ class Lab_model extends CI_Model
     $query = $this->db->query($sql);
 
     $query = $this->db->query($sql);
+    return $query->result();
+  }
+
+  public function get_gem_list()
+  {
+    $this->db->select("gemid, gem_name");
+    $this->db->from('tbl_gem');
+
+    $query = $this->db->get();
     return $query->result();
   }
 
