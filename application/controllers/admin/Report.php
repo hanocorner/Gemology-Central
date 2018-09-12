@@ -27,7 +27,9 @@ class Report extends CI_Controller
 
   }
 
-  /****/
+  /**
+   *
+   */
   public function default_add()
   {
     $this->layout->set_title('Report');
