@@ -42,7 +42,7 @@
           <div class="card-body">
             <h5 class="card-title">Comments from the Blog</h5>
             <p class="card-text">You have some new comments&nbsp;&nbsp;
-              <span class="badge badge-danger"><?php echo $noOfComments; ?></span>
+              <span class="badge badge-danger"><?php //echo $noOfComments; ?></span>
             </p><br/>
             <a href="<?php echo base_url(); ?>admin/comment" class="btn btn-primary">Go to comments</a>
           </div>
@@ -53,7 +53,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Pending Certificates</h5>
-            <p class="card-text">No.of unpaid certificates&nbsp;&nbsp; <span class="badge badge-danger"><?php echo $total_unpaid_certificates; ?></span> </p><br/>
+            <p class="card-text">No.of unpaid certificates&nbsp;&nbsp; <span class="badge badge-danger"><?php //echo $total_unpaid_certificates; ?></span> </p><br/>
             <a href="<?php echo base_url(); ?>admin/report" class="btn btn-dark">Verify it Now</a>
           </div>
         </div>

@@ -1,3 +1,4 @@
+<!-- Admin Headere -->
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -14,17 +15,32 @@
             </a>
           </li>
 
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Report">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsereport" data-parent="#exampleAccordion">
-              <i class="fa fa-certificate" aria-hidden="true"></i>&nbsp;&nbsp;
-              <span class="nav-link-text">Gemstone</span>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Customer">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsecustomer" data-parent="#exampleAccordion">
+              <i class="fa fa-address-book" aria-hidden="true"></i>&nbsp;&nbsp;
+              <span class="nav-link-text">Customer</span>
             </a>
-            <ul class="sidenav-second-level collapse" id="collapsereport">
+            <ul class="sidenav-second-level collapse" id="collapsecustomer">
               <li>
-                <a href="<?php echo base_url();?>admin/report">All</a>
+                <a href="<?php echo base_url();?>admin/customer">All Customers</a>
               </li>
               <li>
-                <a href="<?php echo base_url();?>admin/report/add-customer">Add Customer</a>
+                <a href="<?php echo base_url();?>admin/customer/add">Add Customer</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gemstone">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsegemstone" data-parent="#exampleAccordion">
+              <i class="fa fa-heart" aria-hidden="true"></i>&nbsp;&nbsp;
+              <span class="nav-link-text">Gemstone</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapsegemstone">
+              <li>
+                <a href="<?php echo base_url();?>admin/gemstone">All Gemstones</a>
+              </li>
+              <li>
+                <a href="<?php echo base_url();?>admin/gemstone/add">Add Gemstone</a>
               </li>
             </ul>
           </li>
@@ -62,9 +78,9 @@
             </ul>
           </li>
 
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="frontend">
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Frontend">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsefrontend" data-parent="#exampleAccordion">
-              <i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp;&nbsp;
               <span class="nav-link-text">Front end</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsefrontend">

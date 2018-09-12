@@ -34,15 +34,7 @@ class Report extends CI_Controller
    */
   public function index()
   {
-    $this->layout->set_title('My Customer List');
 
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/loglevel.min.js');
-    $this->layout->add_include('assets/admin/js/customer.js');
-
-    $data['form'] = array('class'=>'form-inline');
-
-    $this->layout->view('admin/report/index', $data, 'admin/layouts/admin');
   }
 
 
@@ -65,122 +57,15 @@ class Report extends CI_Controller
 
 
 
-  /**
-   * Public view for admin to add new report
-   *
-   * @param none
-   * @return Customer View Object
-   */
-  public function add_customer()
-  {
-    $this->layout->set_title('Add new Customer');
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/report.js');
-    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
 
-    return $this->layout->view('admin/report/add_customer', '', 'admin/layouts/admin');
-  }
 
-  /**
-   * Function to insert new customer to DB
-   *
-   * @param none
-   * @return void
-   */
-  public function insert_customer_data()
-  {
-    $data = array(
-      'custid'=>$this->set_customer_id(),
-      'cus_firstname'=>$this->input->post('fname'),
-      'cus_lastname'=>$this->input->post('lname'),
-      'cus_number'=>$this->input->post('number'),
-      'cus_email'=>$this->input->post('email')
-    );
 
-    $this->form_validation->set_rules('fname','FirstName','trim|required|alpha');
-    $this->form_validation->set_rules('lname','LastName','trim|alpha');
-    $this->form_validation->set_rules('number','Number','required|regex_match[/^[0-9]{10}$/]');
-    $this->form_validation->set_rules('email','Email','trim|valid_email');
 
-    if($this->form_validation->run()==FALSE)
-    {
-      $this->add_customer();
-      return false;
-    }
-    else
-    {
-      $customer_id = $this->Customer_model->insert_customer($data);
 
-      if($this->Customer_model->get_affected_rows() > 0)
-      {
-        $this->session->set_userdata('customer_id', $customer_id, 300);
-        redirect('admin/report/add-customer');
-      }
-      else
-      {
-        $this->set_message("Problem When adding this customer", "danger");
-        redirect('admin/report/add-customer');
-      }
-    }
 
-  }
 
-  /**
-   * HTML xmlHTTPRequest to parse csutomer data to admin
-   *
-   * @param none
-   * @return none
-   */
-  public function xmlHttpReq_customer()
-  {
-    $page = $this->uri->segment(4);
-    $rows_per_page = 3;
 
-    $total_rows = $this->Customer_model->count_all('tbl_customer');
-    $data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
 
-    if ($page == 0) $page = 1;
-    $start = ($page - 1) * $rows_per_page;
-
-    $data['results'] = $this->Customer_model->get_alldata($rows_per_page, $start);
-    $this->load->view('admin/report/customer_list', $data);
-  }
-
-  /**
-   *
-   */
-  public function search()
-  {
-    $string = $this->input->get('q');
-    $string = urlencode($string);
-    $keywords = explode('+', $string);
-
-    $data['results'] = $this->Customer_model->search_query($keywords);
-    $data['links'] = null;
-    return $this->load->view('admin/report/customer_list',$data);
-  }
-
-  /**
-   *
-   */
-  public function get_data_bundle()
-  {
-    $customer_id = $_GET['id'];
-    $labreportid = $this->Lab_model->get_labreport_id($customer_id);
-
-    if ($labreportid == null)
-    {
-      $data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
-      return $this->load->view('admin/report/specific_data', $data);
-    }
-
-    $data['customers'] = $this->Customer_model->get_customer_by_id($customer_id);
-
-    $data['mdata'] = $this->Lab_model->memo_data($customer_id, $labreportid);
-
-    $data['cdata'] = $this->Lab_model->certificate_data($customer_id, $labreportid);
-    return $this->load->view('admin/report/specific_data', $data);
-  }
 
   /**
    * CI HTML Table library
@@ -371,22 +256,7 @@ class Report extends CI_Controller
     $this->layout->view('admin/report/update_gemstone', $data, 'admin/layouts/admin');
   }
 
-  /**
-   * Public view for admin to edit existing customer
-   *
-   * @param none
-   * @return void
-   */
-  public function edit_customer()
-  {
-    $id = $this->uri->segment(4);
-    $this->layout->set_title('Edit Customer');
-    $data['data'] = $this->Customer_model->get_specific_data($id, 'tbl_customer', 'custid');
-    $data['name'] = $this->security->get_csrf_token_name();
-    $data['hash'] = $this->security->get_csrf_hash();
 
-    $this->layout->view('admin/report/update_customer', $data, 'admin/layouts/admin');
-  }
 
   /**
    * Public view for admin to preview existing report data
@@ -446,32 +316,7 @@ class Report extends CI_Controller
     }
   }
 
-  /**
-   * Function to update customer record
-   *
-   * @param none
-   * @return void
-   */
-  public function update_customer_data()
-  {
-    $data = array(
-      'custid'=>$this->input->post('custid'),
-      'cus_firstname'=>$this->input->post('fname'),
-      'cus_lastname'=>$this->input->post('lname'),
-      'cus_email'=>$this->input->post('email'),
-      'cus_number'=>$this->input->post('number')
-    );
 
-    if($this->Customer_model->update('tbl_customer','custid', $data['custid'], $data))
-    {
-      $this->set_message('Customer updated successfully','success');
-      redirect('admin/report');
-    }else
-    {
-      $this->set_message('customer update failed','danger');
-      redirect('admin/report/edit-gemstone');
-    }
-  }
 
   /**
    * Function to update gemstone record
@@ -555,32 +400,7 @@ class Report extends CI_Controller
     }
   }
 
-  /**
-   * Creating Customer ID for unique identification
-   *
-   * @param null
-   * @return id string
-   */
-  private function set_customer_id()
-  {
-    $prefix = "GCLC";
-    $number = 1000;
-
-    $customerid = $this->Customer_model->get_customer_id();
-
-    if(is_null($customerid))
-    {
-      $number += 1;
-      $number = str_pad($number, 4, '0', STR_PAD_LEFT);
-      return $prefix."-".$number;
-    }
-    else
-    {
-      $customerid = preg_replace('/[^0-9]/', '', $customerid);
-      $customerid += 1;
-      return $prefix."-".$customerid;
-    }
-  }
+  
 
   /**
    * Creating Memo Card ID for unique identification

@@ -87,7 +87,7 @@ class Lab_model extends CI_Model
   }
 
   /****/
-  public function memo_data($cid, $rid)
+  public function memo_data($cid)
   {
     $sql = "SELECT * FROM `tbl_lab_report` AS t1 INNER JOIN `tbl_gem_memocard` as t2 ON t1.reportid = t2.reportid WHERE t1.rep_customerID = '$cid' AND t1.rep_type = 'memo'";
     $query = $this->db->query($sql);
@@ -97,7 +97,7 @@ class Lab_model extends CI_Model
   }
 
   /****/
-  public function certificate_data($cid, $rid)
+  public function certificate_data($cid)
   {
     $sql = "SELECT * FROM `tbl_lab_report` AS t1 INNER JOIN `tbl_gemstone_report` as t2 ON t1.reportid = t2.reportid WHERE t1.rep_customerID = '$cid' AND t1.rep_type = 'repo'";
     $query = $this->db->query($sql);

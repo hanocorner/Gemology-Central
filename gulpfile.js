@@ -9,17 +9,17 @@ var runSequence = require('run-sequence');
 
 
 gulp.task('sass', function () {
-  return gulp.src('assets/public/scss/style.scss')
+  return gulp.src('assets/admin/scss/style.scss')
     .pipe(sourcemaps.init())
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(concat('main.css'))
     .pipe(sourcemaps.write())
     .pipe(cssnano())
-    .pipe(gulp.dest('assets/public/css'));
+    .pipe(gulp.dest('assets/admin/css'));
 });
 
 gulp.task('watch', function () {
-  gulp.watch('assets/public/scss/**/*.scss', ['sass']);
+  gulp.watch('assets/admin/scss/**/*.scss', ['sass']);
 });
 
 gulp.task('default', function (callback) {

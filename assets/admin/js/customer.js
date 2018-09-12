@@ -38,10 +38,10 @@ $(function(){
 
 });
 
-// Search Customer Data
+// Search Customer by full name
 function search(query) {
   $.ajax({
-    url: baseurl+'admin/report/search',
+    url: baseurl+'admin/customer/search',
     type: 'GET',
     dataType: 'html',
     data: {
@@ -56,10 +56,10 @@ function search(query) {
   });
 }
 
-// customer Data
+// Generating the customer list
 function getCustomerAll(page) {
   $.ajax({
-    url: baseurl+'admin/report/xmlHttpReq-customer/'+page,
+    url: baseurl+'admin/customer/customer-list/'+page,
     type: 'GET',
     dataType: 'html',
     success: function(data) {
@@ -71,10 +71,10 @@ function getCustomerAll(page) {
   });
 }
 
-// Specific data
+// Customer relvant report
 function dataBundle(cstid) {
   $.ajax({
-    url: baseurl+'admin/report/get-data-bundle',
+    url: baseurl+'admin/customer/customer-report',
     type: 'GET',
     dataType: 'html',
     data: {
