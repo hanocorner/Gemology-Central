@@ -24,7 +24,7 @@
         <h2>New Customer</h2>
         <p>Important fields are mentioned in <strong style="color:red;font-size: 18px;">*</strong></p>
         <div class="padding-1"></div>
-        <?php echo form_open('admin/report/insert-customer-data'); ?>
+        <?php echo form_open('admin/customer/insert-customer'); ?>
             <div class="form-group">
               <label for="first-name">First Name:<sup><strong>*</strong></sup> </label>
                 <div class="form-group">

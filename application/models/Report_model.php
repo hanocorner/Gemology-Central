@@ -47,6 +47,18 @@ class Report_model extends CI_Model
   }
 
   /**
+   * Inserting Lab Report Basic data
+   *
+   * @param $data Post values | array
+   * @return Last insert id
+   */
+  public function insert_certificate($data)
+  {
+    $this->db->insert('tbl_gemstone_report', $data);
+    return $this->db->insert_id();
+  }
+
+  /**
    * This will return no.of affected rows after
    * insert/update/delete/select
    *

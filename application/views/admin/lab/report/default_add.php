@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <?php echo form_open_multipart('admin/report/insert-default-data'); ?>
+    <?php echo form_open_multipart('admin/report'); ?>
     <div class="form-row">
       <div class="form-group col-md-2">
         <label for="">Report Type <sup><strong>*</strong></sup></label>
@@ -37,7 +37,7 @@
       </div>
       <div class="form-group col-md-2">
         <label for="id">Next #ID</label>
-        <input type="text" class="form-control form-control-sm" id="id" name="rmid" value="" readonly>
+        <input type="text" class="form-control form-control-sm" id="id" value="" readonly>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">LKR</div>
           </div>
-          <input type="text" class="form-control" name="amount" value="<?php echo set_value('amount'); ?>" required autocomplete="off">
+          <input type="text" class="form-control" name="amount" value="<?php echo set_value('amount'); ?>" required>
         </div>
       </div>
   </div>
@@ -84,7 +84,7 @@
       <label>Upload Image <sup><strong>*</strong></sup> &nbsp;&nbsp;<a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-sm btn-danger" title="Clear Image"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Remove</a></label>
       <label class="custom-file-container__custom-file" >
         <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-        <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*" required>
+        <input type="file" class="custom-file-container__custom-file__custom-file-input" accept="*" required>
         <span class="custom-file-container__custom-file__custom-file-control"></span>
       </label>
 

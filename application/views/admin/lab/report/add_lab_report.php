@@ -29,7 +29,7 @@
           <div class="col-md-6">
               <div class="form-group">
                 <label for="gem-no">Gem No: </label>
-                <input type="text" class="form-control" value="<?php echo $gemid; ?>" disabled>
+                <input type="text" class="form-control" value="<?php //echo $gemid; ?>" disabled>
               </div>
               <div class="form-group">
                 <label for="certificate-type"></label>
@@ -175,12 +175,5 @@ if (isset($_SESSION['message']))
 ?>
 
 <script type="text/javascript">
-$.uploadPreview({
-  input_field: "#image-upload",   // Default: .image-upload
-  preview_box: "#image-preview",  // Default: .image-preview
-  label_field: "#image-label",    // Default: .image-label
-  label_default: "Choose File",   // Default: Choose File
-  label_selected: "Change File",  // Default: Change File
-  no_label: false                 // Default: false
-});
+
 </script>

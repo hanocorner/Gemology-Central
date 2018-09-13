@@ -2,7 +2,7 @@
 <div class="cg-data">
   <?php if(isset($empty)): ?>
     <div class="d-flex align-items-center">
-      <p style="margin-bottom:0;"><?php echo $empty; ?></p>&nbsp;&nbsp; <a href="<?php echo base_url(); ?>admin/report/default-add" class="btn btn-sm btn-primary">Add</a>
+      <p style="margin-bottom:0;"><?php echo $empty; ?></p>&nbsp;&nbsp; <a href="<?php echo base_url(); ?>admin/report/add" class="btn btn-sm btn-primary">Add</a>
       <?php return false; ?>
     </div>
   <?php endif; ?>

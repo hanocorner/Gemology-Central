@@ -18,7 +18,7 @@ class Report extends CI_Controller
     $this->load->library('layout', $config);
 
     $this->load->helper(array('url', 'form'));
-    $this->load->model(array('Customer_model', 'Lab_model'));
+    $this->load->model(array('Customer_model', 'Lab_model', 'Report_model'));
 
     if (!$this->session->has_userdata('logged_in'))
     {
@@ -55,9 +55,7 @@ class Report extends CI_Controller
     $repo_type = $this->input->post('repo-type');
     $rep_mem_id = $this->input->post('rmid');
 
-    $this->form_validation->set_rules('','Object','required');
-    $this->form_validation->set_rules('identification','Identification','required');
-    $this->form_validation->set_rules('amount','Amount','required');
+    $this->form_validation->set_rules('amount','Amount','required|decimal');
 
     if(empty($_FILES['imagegem']['name']))
     {
@@ -86,18 +84,19 @@ class Report extends CI_Controller
           'gem_name'=>$gem_name,
           'gem_description'=>$gem_des
         );
-        $gem_id = $this->Report_model->insert_gem();
+        //$gem_id = $this->Report_model->insert_gem($gemdata);
       }
 
       $customer_id = $this->session->customerid;
       $labdata = array(
         'rep_customerID'=>$customer_id,
         'rep_gemID'=>$gem_id,
-        'rep_imagename'=>$imgnewname
+        'rep_imagename'=>$imgnewname,
+        'rep_type'=>$repo_type
       );
       $labrepo_id = $this->Report_model->insert_lab_report($labdata);
 
-      if ($this->Report_model->get_affected_rows() > 0)
+      if (!is_null($labrepo_id))
       {
         $date = date('Y-m-d');
 
@@ -111,12 +110,12 @@ class Report extends CI_Controller
             'mem_amount'=>$this->input->post('amount')
           );
 
-          $img_name = $this->input->post('rmid');
           $this->upload_image($imgnewname);
-          if ($this->Report_model->insert_memocard($memo_data) <> 0)
-          {
-            redirect('admin/report/add-lab-report');
-          }
+
+          $mid = $this->Report_model->insert_memocard($memo_data);
+
+          if (!is_null($mid)) redirect('admin/report/add-lab-report');
+
         }
         elseif ($repo_type == 'repo')
         {
@@ -125,21 +124,25 @@ class Report extends CI_Controller
             'reportid'=>$labrepo_id,
             'gsr_date'=>$date,
             'gsr_paymentStatus'=>$this->input->post('pstatus'),
-            'mem_amount'=>$this->input->post('amount')
+            'gsr_amount'=>$this->input->post('amount')
           );
-
-          $img_name = $this->input->post('rmid');
-          $this->upload_image($imgnewname);
-
-          if ($this->Report_model->insert_certificate($repo_data) <> 0)
+          
+          $gsr_id = $this->Report_model->insert_certificate($repo_data);
+          if (!is_null($gsr_id))
           {
+            $this->upload_image($imgnewname);
             redirect('admin/report/add-lab-report');
           }
         }
       }
       redirect('admin/report/add');
     }
+  }
 
+  /****/
+  public function add_lab_report()
+  {
+    echo "success";
   }
 
   /****/
@@ -154,6 +157,7 @@ class Report extends CI_Controller
   /*****/
   public function upload_image($image)
   {
+    //echo $image;
     $config['file_name'] = $image;
     $config['upload_path'] ='./assets/admin/images/gem/';
     $config['allowed_types'] ='gif|jpg|png|jpeg';
@@ -162,7 +166,10 @@ class Report extends CI_Controller
     $config['max_height'] ='1024';
 
     $this->load->library('upload', $config);
-    $this->upload->do_upload('image');
+
+    if (!$this->upload->do_upload('imagegem')) {
+      echo $this->upload->display_errors();
+    }
   }
   /**
    * Function to insert new gemstone record
@@ -360,7 +367,7 @@ class Report extends CI_Controller
       $dbnumber = preg_replace('/[^0-9]/', '', $dbnumber);
       $dbnumber = substr($dbnumber, 6, 4);
       $dbnumber += 1;
-      return $prefix.$current_year."-".$current_month.$dbnumber;
+      echo $prefix.$current_year."-".$current_month.$dbnumber;
     }
   }
 
@@ -386,7 +393,7 @@ class Report extends CI_Controller
     {
       $memoid = preg_replace('/[^0-9]/', '', $memoid);
       $memoid += 1;
-      return str_pad($memoid, 6, '0', STR_PAD_LEFT);
+      echo str_pad($memoid, 6, '0', STR_PAD_LEFT);
     }
   }
 
