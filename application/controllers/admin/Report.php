@@ -30,7 +30,7 @@ class Report extends CI_Controller
   /**
    *
    */
-  public function default_add()
+  public function add()
   {
     $this->layout->set_title('Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
@@ -39,7 +39,7 @@ class Report extends CI_Controller
     $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    return $this->layout->view('admin/lab/report/default_add', '', 'admin/layouts/admin');
+    return $this->layout->view('admin/lab/report/add', '', 'admin/layouts/admin');
   }
 
   /*****/
@@ -49,6 +49,121 @@ class Report extends CI_Controller
     echo json_encode($data);
   }
 
+  /****/
+  public function insert_default_data()
+  {
+    $repo_type = $this->input->post('repo-type');
+    $rep_mem_id = $this->input->post('rmid');
+
+    $this->form_validation->set_rules('','Object','required');
+    $this->form_validation->set_rules('identification','Identification','required');
+    $this->form_validation->set_rules('amount','Amount','required');
+
+    if(empty($_FILES['imagegem']['name']))
+    {
+      $this->form_validation->set_rules('imagegem','Document','required');
+    }
+    else {
+      $image = $_FILES['imagegem']['name'];
+      $imgnewname = $this->set_image_name($image, $rep_mem_id);
+    }
+
+    if ($this->form_validation->run() == FALSE)
+    {
+      $this->add();
+      return false;
+    }
+    else
+    {
+      $gem_name = $this->input->post('gem-name');
+      $gem_des = $this->input->post('gem-des');
+
+      $gem_id = $this->input->post('gem-type');
+
+      if (isset($gem_name) && isset($gem_des))
+      {
+        $gemdata = array(
+          'gem_name'=>$gem_name,
+          'gem_description'=>$gem_des
+        );
+        $gem_id = $this->Report_model->insert_gem();
+      }
+
+      $customer_id = $this->session->customerid;
+      $labdata = array(
+        'rep_customerID'=>$customer_id,
+        'rep_gemID'=>$gem_id,
+        'rep_imagename'=>$imgnewname
+      );
+      $labrepo_id = $this->Report_model->insert_lab_report($labdata);
+
+      if ($this->Report_model->get_affected_rows() > 0)
+      {
+        $date = date('Y-m-d');
+
+        if($repo_type == 'memo')
+        {
+          $memo_data = array(
+            'memoid'=>$rep_mem_id,
+            'reportid'=>$labrepo_id,
+            'mem_date'=>$date,
+            'mem_paymentStatus'=>$this->input->post('pstatus'),
+            'mem_amount'=>$this->input->post('amount')
+          );
+
+          $img_name = $this->input->post('rmid');
+          $this->upload_image($imgnewname);
+          if ($this->Report_model->insert_memocard($memo_data) <> 0)
+          {
+            redirect('admin/report/add-lab-report');
+          }
+        }
+        elseif ($repo_type == 'repo')
+        {
+          $repo_data = array(
+            'gsrid'=>$rep_mem_id,
+            'reportid'=>$labrepo_id,
+            'gsr_date'=>$date,
+            'gsr_paymentStatus'=>$this->input->post('pstatus'),
+            'mem_amount'=>$this->input->post('amount')
+          );
+
+          $img_name = $this->input->post('rmid');
+          $this->upload_image($imgnewname);
+
+          if ($this->Report_model->insert_certificate($repo_data) <> 0)
+          {
+            redirect('admin/report/add-lab-report');
+          }
+        }
+      }
+      redirect('admin/report/add');
+    }
+
+  }
+
+  /****/
+  public function set_image_name($image, $img_name)
+  {
+    if(empty($image)) return false;
+    $ext = pathinfo($image, PATHINFO_EXTENSION);
+    $newname = "gcl"."-".$img_name.".".$ext;
+    return $newname;
+  }
+
+  /*****/
+  public function upload_image($image)
+  {
+    $config['file_name'] = $image;
+    $config['upload_path'] ='./assets/admin/images/gem/';
+    $config['allowed_types'] ='gif|jpg|png|jpeg';
+    $config['max_size'] ='200000';
+    $config['max_width'] ='1024';
+    $config['max_height'] ='1024';
+
+    $this->load->library('upload', $config);
+    $this->upload->do_upload('image');
+  }
   /**
    * Function to insert new gemstone record
    *

@@ -9,19 +9,7 @@ class Lab_model extends CI_Model
   {
     parent::__construct();
   }
-
-  /**
-   * Inserting a new Lab Report
-   *
-   * @param $data Post values | array
-   * @return Last insert id
-   */
-  public function add_gemstone($data)
-  {
-    $this->db->insert('tbl_certificate', $data);
-    return $this->db->insert_id();
-  }
-
+  
   /**
    * This will return no.of affected rows after
    * insert/update/delete/select

@@ -1,186 +1,135 @@
 <style media="screen">
-  #image-preview {
-    width: 220px;
-    height: 150px;
+  sup {
+    color: red;
+    font-size: 18px;
+  }
+  .help-block {
+    color: red;
   }
 </style>
 <div class="content-wrapper">
   <div class="container-fluid">
+
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="#">Dashboard</a>
       </li>
       <li class="breadcrumb-item">Report</li>
-      <li class="breadcrumb-item active">Gemstone</li>
+      <li class="breadcrumb-item active">Add</li>
     </ol>
-      <?php
-        echo form_open_multipart('admin/report/insert-gemstone-data', '', $hidden);
-      ?>
-          <div class="padding-1"></div>
-          <div class="row">
-            <div class="col-md-6">
-              <h2>Gem Details</h2>
-            </div>
 
-          </div>
-          <div class="padding-1"></div>
-          <div class="row">
-          <!-- First Column  -->
-          <div class="col-md-6">
-              <div class="form-group">
-                <label for="gem-no">Gem No: </label>
-                <input type="text" class="form-control" value="<?php echo $gemid; ?>" disabled>
-              </div>
-              <div class="form-group">
-                <label for="certificate-type"></label>
-                <select class="custom-select" name="cert-type">
-                  <option value="verbal" selected>Verbal</option>
-                  <option value="memo-card">Memo Card</option>
-                  <option value="cert-report">Certificate Report</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="object">Object: </label>
-                <input type="text" class="form-control" name="object" placeholder="Ex: One faceted">
-              </div>
-            <div class="form-group">
-              <label for="identification">Identification: </label>
-              <input type="text" class="form-control" name="identification" placeholder="Ex: Diffusion Treated..">
-            </div>
-            <div class="form-group">
-              <label for="gem-img">Gem Image*</label>
-              <div id="image-preview" style="background-image: url(<?php echo base_url().'assets/admin/images/no-image.png';?>);">
-                <label for="image-upload" id="image-label">Choose File</label>
-                <input type="file" name="image" id="image-upload"/>
-                <span style="color: #000000"></span>
-              </div>
-            </div>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <h2>New Report</h2>
+        <p>Important fields are mentioned in <strong style="color:red;font-size: 18px;">*</strong></p>
+      </div>
+    </div>
 
-          </div>
-
-          <!-- Second Column  -->
-          <div class="col-md-6">
-            <div style="display:flex;">
-              <div class="col-sm-9" style="padding-left:0;">
-                <div class="form-group">
-                  <label for="Weight">Weight: </label>
-                  <input type="text" class="form-control" name="weight">
-                </div>
-              </div>
-              <div class="col-sm-3" style="padding-right:0;">
-                <div class="form-group">
-                  <label for="dimensions">Unit: </label>
-                  <input type="text" class="form-control" value="ct" disabled>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;">
-              <div class="col-sm-3" style="padding-left:0;">
-                <div class="form-group">
-                  <label for="dimensions">Width: </label>
-                  <input type="text" class="form-control" name="gemWidth">
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dimensions">Height: </label>
-                  <input type="text" class="form-control" name="gemHeight">
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dimensions">Length: </label>
-                  <input type="text" class="form-control" name="gemLength" >
-                </div>
-              </div>
-              <div class="col-sm-3" style="padding-right:0;">
-                <div class="form-group">
-                  <label for="dimensions">Unit: </label>
-                  <input type="text" class="form-control" value="mm" disabled>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="cut">Cut: </label>
-              <input type="text" class="form-control" name="gemcut" placeholder="modification">
-            </div>
-            <div class="form-group">
-              <label for="shape">shape: </label>
-              <input type="text" class="form-control" name="shape" placeholder="Ex: Oval">
-            </div>
-          <div class="form-group">
-            <label for="color">Color: </label>
-            <input type="text" class="form-control" name="color" placeholder="Ex: blue">
-            <span><?php echo form_error(''); ?></span>
-          </div>
-
-          <div class="form-group">
-            <label for="comment">Comment: </label>
-            <textarea name="comment"  class="form-control"  rows="8" cols="100"></textarea>
-            <span><?php echo form_error(''); ?></span>
-          </div>
-
-          </div>
-          <div class="col-md-6">
-            <div class="padding-1"></div>
-            <input type="submit" class="btn btn-primary" value="Submit Report">
-            <div class="padding-1"></div>
-          </div>
-
-       </div>
-
-       </div>
-      <?php echo form_close(); ?>
+    <?php echo form_open_multipart('admin/report'); ?>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="">Report Type <sup><strong>*</strong></sup></label>
+        <select class="form-control form-control-sm" id="repType" name="repo-type">
+          <option selected>Choose...</option>
+          <option value="memo">Memo Card</option>
+          <option value="repo">Certificate</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="id">Next #ID</label>
+        <input type="text" class="form-control form-control-sm" id="id" name="rmid" value="" readonly>
+    </div>
   </div>
-</div>
 
-<?php
-if (isset($_SESSION['message']))
-{
-  if (isset($_SESSION['cerno']))
-  {
-?>
-<!--  preview modal-->
-  <div class="modal fade" id="success" role="dialog">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h4>Print Memo Card</h4>
-              </div>
-              <div class="modal-body">
-                <div class="alert alert-<?php echo $_SESSION['status']; ?>">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <?php echo $_SESSION['message']; ?>
-                </div>
-                <br>
-                Press <strong>Print</strong> button to print or <strong>Close</strong> button to ignore
-              </div>
-              <div class="modal-footer">
-                <a href="<?php echo base_url(); ?>admin/report/print-preview/memo-card/<?php echo $_SESSION['cerno']; ?>" class="btn btn-sm btn-primary">&nbsp;Print&nbsp;</a>
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" aria-label="Close">Close</button>
-              </div>
+  <div class="form-row align-items-center">
+    <div class="form-group col-md-2">
+      <label for="paymentstatus">Payment Status <sup><strong>*</strong></sup></label>
+      <select class="form-control form-control-sm" name="pstatus">
+        <option value="1">Paid</option>
+        <option value="0">Unpaid</option>
+      </select>
+    </div>
+    <div class="col-auto">
+        <label class="" for="inlineFormInputGroup">Amount <sup><strong>*</strong></sup></label>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">LKR</div>
           </div>
+          <input type="text" class="form-control" name="amount" value="<?php echo set_value('amount'); ?>" required>
+        </div>
       </div>
   </div>
 
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#success').modal('show');
-    });
-  </script>
-<?php
-  }
-}
-?>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="gemtype">Gem Type <sup><strong>*</strong></sup></label>
+      <select class="form-control form-control-sm" id="newGem" name="gem-type">
+        <option selected>Choose...</option>
+        <option>New Gem</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2" id="gemName" style='display:none;'>
+      <label for="gemname">Gem Name</label>
+      <input type="text" class="form-control form-control-sm" name="gem-name" >
+  </div>
+  <div class="form-group col-md-2" id="gemDes" style='display:none;'>
+    <label for="gemname">Gem Decsription</label>
+    <input type="text" class="form-control form-control-sm" name="gem-des">
+</div>
+</div>
+
+<div class="row no-gutters mt-3">
+  <div class="col-md-3">
+    <div class="custom-file-container" data-upload-id="myUploader">
+      <label>Upload Image <sup><strong>*</strong></sup> &nbsp;&nbsp;<a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-sm btn-danger" title="Clear Image"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Remove</a></label>
+      <label class="custom-file-container__custom-file" >
+        <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+        <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*" required>
+        <span class="custom-file-container__custom-file__custom-file-control"></span>
+      </label>
+
+      <div class="custom-file-container__image-preview"></div>
+    </div>
+  </div>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">Submit</button>
+<?php echo form_close(); ?>
+
+  </div>
+</div>
 
 <script type="text/javascript">
-$.uploadPreview({
-  input_field: "#image-upload",   // Default: .image-upload
-  preview_box: "#image-preview",  // Default: .image-preview
-  label_field: "#image-label",    // Default: .image-label
-  label_default: "Choose File",   // Default: Choose File
-  label_selected: "Change File",  // Default: Change File
-  no_label: false                 // Default: false
-});
+
+  var myUpload = new FileUploadWithPreview('myUploader');
+
+  var baseurl = '<?php echo base_url(); ?>';
+  var gemtype = $('#newGem');
+  var reptype = $('#repType');
+
+  // JS Form Validator
+  $.validate();
+
+  $(document).ready(function() {
+    gemstone();
+
+    gemtype.change(function () {
+      var display = this.selectedIndex == 1 ? "inline" : "none";
+      $('#gemName').css('display', display);
+      $('#gemDes').css('display', display);
+    });
+
+    reptype.change(function () {
+      if (this.selectedIndex == 0) {
+        $('#id').val('');
+      }
+      if (this.selectedIndex == 1) {
+        ajax('set-memo-id');
+      }
+      if (this.selectedIndex == 2) {
+        ajax('set-certificate-id');
+      }
+    });
+
+  });
 </script>

@@ -28,16 +28,6 @@ CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for `Gem Details`
---
-CREATE TABLE IF NOT EXISTS `tbl_gem` (
-  `gemid` int(11) NOT NULL AUTO_INCREMENT,
-  `gem_name` varchar(30) NOT NULL,
-  `gem_description` varchar(30) NOT NULL,
-  PRIMARY KEY (`gemid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
 -- Table structure for `Memo Card`
 --
 CREATE TABLE IF NOT EXISTS `tbl_gem_memocard` (

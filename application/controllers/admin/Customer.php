@@ -100,7 +100,7 @@ class Customer extends CI_Controller
   }
 
   /**
-   * xmlHTTPRequest Call to parse customer list  
+   * xmlHTTPRequest Call to parse customer list
    *
    * @param none
    * @return none
@@ -151,6 +151,7 @@ class Customer extends CI_Controller
     if ($labreportid == null)
     {
       $data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
+      $this->session->set_userdata('customerid', $customer_id);
       return $this->load->view('admin/lab/customer/specific_data', $data);
     }
 
