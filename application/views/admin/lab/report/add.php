@@ -30,7 +30,7 @@
       <div class="form-group col-md-2">
         <label for="">Report Type <sup><strong>*</strong></sup></label>
         <select class="form-control form-control-sm" id="repType" name="repo-type">
-          <option selected>Choose...</option>
+          <option value="0" selected>Choose...</option>
           <option value="memo">Memo Card</option>
           <option value="repo">Certificate</option>
         </select>

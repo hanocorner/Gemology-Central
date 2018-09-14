@@ -20,7 +20,7 @@
         <h5><?php echo $customer->cus_number; ?></h5>
         <p><?php echo $customer->cus_email; ?></p>
         <div class="buttons">
-          <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-primary">Add</a>&nbsp;
+          <a href="<?php echo base_url(); ?>admin/report/add" class="btn btn-sm btn-primary">Add</a>&nbsp;
           <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-warning">Edit</a>&nbsp;
           <a href="Javascript void(0);" class="btn btn-sm btn-danger">Delete</a>
         </div>

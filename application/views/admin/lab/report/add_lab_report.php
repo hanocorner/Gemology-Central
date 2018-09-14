@@ -1,8 +1,5 @@
 <style media="screen">
-  #image-preview {
-    width: 220px;
-    height: 150px;
-  }
+
 </style>
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -14,7 +11,7 @@
       <li class="breadcrumb-item active">Gemstone</li>
     </ol>
       <?php
-        echo form_open_multipart('admin/report/insert-gemstone-data', '', $hidden);
+        echo form_open_multipart('admin/report/insert-gemstone-data');
       ?>
           <div class="padding-1"></div>
           <div class="row">
@@ -49,10 +46,15 @@
             </div>
             <div class="form-group">
               <label for="gem-img">Gem Image*</label>
-              <div id="image-preview" style="background-image: url(<?php echo base_url().'assets/admin/images/no-image.png';?>);">
-                <label for="image-upload" id="image-label">Choose File</label>
-                <input type="file" name="image" id="image-upload"/>
-                <span style="color: #000000"></span>
+              <div class="custom-file-container" data-upload-id="myUploader">
+                <label>Upload Image <sup><strong>*</strong></sup> &nbsp;&nbsp;<a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-sm btn-danger" title="Clear Image"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Remove</a></label>
+                <label class="custom-file-container__custom-file" >
+                  <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                  <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*" required>
+                  <span class="custom-file-container__custom-file__custom-file-control"></span>
+                </label>
+
+                <div class="custom-file-container__image-preview"></div>
               </div>
             </div>
 
@@ -124,7 +126,8 @@
           </div>
           <div class="col-md-6">
             <div class="padding-1"></div>
-            <input type="submit" class="btn btn-primary" value="Submit Report">
+            <input type="submit" class="btn btn-primary" value="Submit Report">&nbsp;&nbsp;
+            <input type="submit" class="btn btn-danger" value="Print">
             <div class="padding-1"></div>
           </div>
 

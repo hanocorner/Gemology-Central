@@ -3,6 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Report extends CI_Controller
 {
   /**
+   * Authenticating form data
+   * @var $valid bool
+   */
+  private $valid = false;
+
+  /**
    * Constructor (loading the important classes)
    *
    * @param none
@@ -49,13 +55,25 @@ class Report extends CI_Controller
     echo json_encode($data);
   }
 
-  /****/
+  /**
+   *
+   */
   public function insert_default_data()
   {
-    $repo_type = $this->input->post('repo-type');
+    if ($this->input->post('repo-type') == '0')
+    {
+      $this->valid = true;
+    }
+    else
+    {
+      $repo_type = $this->input->post('repo-type');
+    }
+
     $rep_mem_id = $this->input->post('rmid');
+    $date = date('Y-m-d');
 
     $this->form_validation->set_rules('amount','Amount','required|decimal');
+    $this->form_validation->set_rules('rmid','ID','required|alpha_dash');
 
     if(empty($_FILES['imagegem']['name']))
     {
@@ -69,6 +87,7 @@ class Report extends CI_Controller
     if ($this->form_validation->run() == FALSE)
     {
       $this->add();
+      $this->set_message('Some or all of fields are empty, Please Check...', $status);
       return false;
     }
     else
@@ -78,19 +97,22 @@ class Report extends CI_Controller
 
       $gem_id = $this->input->post('gem-type');
 
-      if (isset($gem_name) && isset($gem_des))
+      if (!empty($gem_name) && !empty($gem_des))
       {
         $gemdata = array(
           'gem_name'=>$gem_name,
           'gem_description'=>$gem_des
         );
-        //$gem_id = $this->Report_model->insert_gem($gemdata);
+        $gem_id = $this->Report_model->insert_gem($gemdata);
       }
 
       $customer_id = $this->session->customerid;
+      $this->session->unset_userdata('customerid');
+
       $labdata = array(
         'rep_customerID'=>$customer_id,
         'rep_gemID'=>$gem_id,
+        'rep_date'=>$date,
         'rep_imagename'=>$imgnewname,
         'rep_type'=>$repo_type
       );
@@ -98,8 +120,15 @@ class Report extends CI_Controller
 
       if (!is_null($labrepo_id))
       {
-        $date = date('Y-m-d');
+        switch ($repo_type) {
+          case 'memo':
+            // code...
+            break;
 
+          case 'repo':
+            // code...
+            break;
+        }
         if($repo_type == 'memo')
         {
           $memo_data = array(
@@ -110,9 +139,13 @@ class Report extends CI_Controller
             'mem_amount'=>$this->input->post('amount')
           );
 
-          $this->upload_image($imgnewname);
-
           $mid = $this->Report_model->insert_memocard($memo_data);
+
+          if (!is_null($this->upload_image($imgnewname)))
+          {
+            $this->set_message('Problem when uploading the image ', 'error');
+            redirect('admin/report/add');
+          }
 
           if (!is_null($mid)) redirect('admin/report/add-lab-report');
 
@@ -126,7 +159,7 @@ class Report extends CI_Controller
             'gsr_paymentStatus'=>$this->input->post('pstatus'),
             'gsr_amount'=>$this->input->post('amount')
           );
-          
+
           $gsr_id = $this->Report_model->insert_certificate($repo_data);
           if (!is_null($gsr_id))
           {
@@ -142,7 +175,14 @@ class Report extends CI_Controller
   /****/
   public function add_lab_report()
   {
-    echo "success";
+    $this->layout->set_title('Lab Report');
+    $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
+
+    $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
+    $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
+
+    return $this->layout->view('admin/lab/report/add_lab_report', '', 'admin/layouts/admin');
   }
 
   /****/
@@ -157,7 +197,6 @@ class Report extends CI_Controller
   /*****/
   public function upload_image($image)
   {
-    //echo $image;
     $config['file_name'] = $image;
     $config['upload_path'] ='./assets/admin/images/gem/';
     $config['allowed_types'] ='gif|jpg|png|jpeg';
@@ -167,9 +206,11 @@ class Report extends CI_Controller
 
     $this->load->library('upload', $config);
 
-    if (!$this->upload->do_upload('imagegem')) {
-      echo $this->upload->display_errors();
+    if (!$this->upload->do_upload('imagegem'))
+    {
+      return $this->upload->display_errors();
     }
+    return null;
   }
   /**
    * Function to insert new gemstone record
@@ -360,7 +401,7 @@ class Report extends CI_Controller
     {
       $number += 1;
       $number = str_pad($number, 4, '0', STR_PAD_LEFT);
-      return $prefix.$current_year."-".$current_month.$number;
+      echo $prefix.$current_year."-".$current_month.$number;
     }
     else
     {

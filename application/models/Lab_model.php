@@ -9,7 +9,7 @@ class Lab_model extends CI_Model
   {
     parent::__construct();
   }
-  
+
   /**
    * This will return no.of affected rows after
    * insert/update/delete/select
@@ -35,7 +35,11 @@ class Lab_model extends CI_Model
     $this->db->order_by("gsrid", "DESC");
     $this->db->limit(1);
 
-    return $this->db->get()->row()->gsrid;
+    $query = $this->db->get();
+    $row = $query->row();
+
+    if(isset($row->gsrid)) return $row->gsrid;
+    return null;
   }
 
   /**
@@ -54,7 +58,8 @@ class Lab_model extends CI_Model
     $query = $this->db->get();
     $row = $query->row();
 
-    return $row->memoid;
+    if(isset($row->memoid)) return $row->memoid;
+    return null;
   }
 
   /**
