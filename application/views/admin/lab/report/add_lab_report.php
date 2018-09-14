@@ -10,131 +10,108 @@
       <li class="breadcrumb-item">Report</li>
       <li class="breadcrumb-item active">Gemstone</li>
     </ol>
-      <?php
-        echo form_open_multipart('admin/report/insert-gemstone-data');
-      ?>
-          <div class="padding-1"></div>
-          <div class="row">
-            <div class="col-md-6">
-              <h2>Gem Details</h2>
-            </div>
 
+    <div class="card text-white bg-dark mb-3" style="width:20rem;">
+      <div class="card-body">
+        <h3 class="card-title">Sunil Perera</h3>
+        <p class="card-text">Customer ID: #GCLC-1001</p>
+        <p class="card-text">Report Type: Memo Card</p>
+        <p class="card-text">Report ID: #000001</p>
+      </div>
+    </div>
+
+    <div class="d-flex my-3">
+      <h4>New Lab Report</h4>
+    </div>
+
+        <?php echo form_open_multipart('admin/report/insert-gemstone-data'); ?>
+
+        <div class="form-row">
+          <div class="form-group col-md-2">
+            <label for="object">Object: </label>
+            <input type="text" class="form-control form-control-sm" name="object" value="" >
           </div>
-          <div class="padding-1"></div>
-          <div class="row">
-          <!-- First Column  -->
-          <div class="col-md-6">
-              <div class="form-group">
-                <label for="gem-no">Gem No: </label>
-                <input type="text" class="form-control" value="<?php //echo $gemid; ?>" disabled>
-              </div>
-              <div class="form-group">
-                <label for="certificate-type"></label>
-                <select class="custom-select" name="cert-type">
-                  <option value="verbal" selected>Verbal</option>
-                  <option value="memo-card">Memo Card</option>
-                  <option value="cert-report">Certificate Report</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="object">Object: </label>
-                <input type="text" class="form-control" name="object" placeholder="Ex: One faceted">
-              </div>
-            <div class="form-group">
-              <label for="identification">Identification: </label>
-              <input type="text" class="form-control" name="identification" placeholder="Ex: Diffusion Treated..">
-            </div>
-            <div class="form-group">
-              <label for="gem-img">Gem Image*</label>
-              <div class="custom-file-container" data-upload-id="myUploader">
-                <label>Upload Image <sup><strong>*</strong></sup> &nbsp;&nbsp;<a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-sm btn-danger" title="Clear Image"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Remove</a></label>
-                <label class="custom-file-container__custom-file" >
-                  <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-                  <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*" required>
-                  <span class="custom-file-container__custom-file__custom-file-control"></span>
-                </label>
+          <div class="form-group col-md-2">
+            <label for="identification">Identification:</label>
+            <input type="text" class="form-control form-control-sm" name="identification"  value="" >
+          </div>
+        </div>
 
-                <div class="custom-file-container__image-preview"></div>
+        <div class="form-row">
+          <div class="col-2">
+            <label for="Weight">Weight:</label>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control form-control-sm" name="weight">
+              <div class="input-group-append">
+                <div class="input-group-text">ct</div>
               </div>
             </div>
+          </div>
+          <div class="col-2">
+            <label for="cut">Cut: </label>
+            <input type="text" class="form-control form-control-sm" name="gemcut">
+          </div>
+        </div>
 
+        <div class="form-row">
+
+          <div class="col-2">
+            <label for="dimensions">Width:</label>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control form-control-sm" name="gemWidth">
+              <div class="input-group-append">
+                <div class="input-group-text">mm</div>
+              </div>
+            </div>
           </div>
 
-          <!-- Second Column  -->
-          <div class="col-md-6">
-            <div style="display:flex;">
-              <div class="col-sm-9" style="padding-left:0;">
-                <div class="form-group">
-                  <label for="Weight">Weight: </label>
-                  <input type="text" class="form-control" name="weight">
-                </div>
-              </div>
-              <div class="col-sm-3" style="padding-right:0;">
-                <div class="form-group">
-                  <label for="dimensions">Unit: </label>
-                  <input type="text" class="form-control" value="ct" disabled>
-                </div>
+          <div class="col-1">
+            <label for="dimensions">Height: </label>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control form-control-sm" name="gemHeight">
+              <div class="input-group-append">
+                <div class="input-group-text">mm</div>
               </div>
             </div>
-            <div style="display:flex;">
-              <div class="col-sm-3" style="padding-left:0;">
-                <div class="form-group">
-                  <label for="dimensions">Width: </label>
-                  <input type="text" class="form-control" name="gemWidth">
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dimensions">Height: </label>
-                  <input type="text" class="form-control" name="gemHeight">
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label for="dimensions">Length: </label>
-                  <input type="text" class="form-control" name="gemLength" >
-                </div>
-              </div>
-              <div class="col-sm-3" style="padding-right:0;">
-                <div class="form-group">
-                  <label for="dimensions">Unit: </label>
-                  <input type="text" class="form-control" value="mm" disabled>
-                </div>
-              </div>
-            </div>
+          </div>
 
-            <div class="form-group">
-              <label for="cut">Cut: </label>
-              <input type="text" class="form-control" name="gemcut" placeholder="modification">
+          <div class="col-1">
+            <label for="dimensions">Length:</label>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control form-control-sm" name="gemLength">
+              <div class="input-group-append">
+                <div class="input-group-text">mm</div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="shape">shape: </label>
-              <input type="text" class="form-control" name="shape" placeholder="Ex: Oval">
-            </div>
-          <div class="form-group">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-2">
             <label for="color">Color: </label>
-            <input type="text" class="form-control" name="color" placeholder="Ex: blue">
-            <span><?php echo form_error(''); ?></span>
+            <input type="text" class="form-control form-control-sm" name="color">
           </div>
 
-          <div class="form-group">
+          <div class="form-group col-md-2">
+            <label for="shape">shape: </label>
+            <input type="text" class="form-control form-control-sm" name="shape">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
             <label for="comment">Comment: </label>
-            <textarea name="comment"  class="form-control"  rows="8" cols="100"></textarea>
-            <span><?php echo form_error(''); ?></span>
+            <input type="text" class="form-control form-control-sm" name="comment">
           </div>
+        </div>
 
-          </div>
-          <div class="col-md-6">
-            <div class="padding-1"></div>
-            <input type="submit" class="btn btn-primary" value="Submit Report">&nbsp;&nbsp;
-            <input type="submit" class="btn btn-danger" value="Print">
-            <div class="padding-1"></div>
-          </div>
+        <div class="form-row ml-0">
+          <button type="submit" name="submit" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save</button>&nbsp;&nbsp;
+          <button type="submit" name="print" class="btn btn-sm btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button>
+        </div>
 
-       </div>
+        <?php echo form_close(); ?>
 
-       </div>
-      <?php echo form_close(); ?>
   </div>
 </div>
 

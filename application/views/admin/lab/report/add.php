@@ -18,6 +18,12 @@
       <li class="breadcrumb-item active">Add</li>
     </ol>
 
+    <!-- <div class="card text-white bg-dark mb-3" style="width:20rem;">
+      <div class="card-body">
+        <h5 class="card-title">Sunil Perera</h5>
+      </div>
+    </div> -->
+
     <div class="row mt-4">
       <div class="col-md-4">
         <h2>New Report</h2>
@@ -49,7 +55,7 @@
         <option value="0">Unpaid</option>
       </select>
     </div>
-    <div class="col-auto">
+    <div class="col-2">
         <label class="" for="inlineFormInputGroup">Amount <sup><strong>*</strong></sup></label>
         <div class="input-group input-group-sm mb-3">
           <div class="input-group-prepend">
