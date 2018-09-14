@@ -3,12 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Report extends CI_Controller
 {
   /**
-   * Authenticating form data
-   * @var $valid bool
-   */
-  private $valid = false;
-
-  /**
    * Constructor (loading the important classes)
    *
    * @param none
@@ -60,115 +54,117 @@ class Report extends CI_Controller
    */
   public function insert_default_data()
   {
+    $date = date('Y-m-d');
+    $rep_mem_id = $this->input->post('rmid');
+    $gem_name = $this->input->post('gem-name');
+    $gem_des = $this->input->post('gem-des');
+    $gem_id = $this->input->post('gem-type');
+    $repo_type = $this->input->post('repo-type');
+
     if ($this->input->post('repo-type') == '0')
     {
-      $this->valid = true;
+      $this->add();
+      return false;
     }
-    else
-    {
-      $repo_type = $this->input->post('repo-type');
-    }
-
-    $rep_mem_id = $this->input->post('rmid');
-    $date = date('Y-m-d');
 
     $this->form_validation->set_rules('amount','Amount','required|decimal');
     $this->form_validation->set_rules('rmid','ID','required|alpha_dash');
 
-    if(empty($_FILES['imagegem']['name']))
-    {
-      $this->form_validation->set_rules('imagegem','Document','required');
-    }
-    else {
-      $image = $_FILES['imagegem']['name'];
-      $imgnewname = $this->set_image_name($image, $rep_mem_id);
-    }
+    $image = $_FILES['imagegem']['name'];
+    $imgnewname = $this->set_image_name($image, $rep_mem_id);
 
     if ($this->form_validation->run() == FALSE)
     {
       $this->add();
-      $this->set_message('Some or all of fields are empty, Please Check...', $status);
+      $this->set_message('Some or all of fields are empty, Please Check...', 'error');
       return false;
     }
-    else
+
+    if (!empty($gem_name) && !empty($gem_des))
     {
-      $gem_name = $this->input->post('gem-name');
-      $gem_des = $this->input->post('gem-des');
+      $gemdata = array('gem_name'=>$gem_name,'gem_description'=>$gem_des);
+      $gem_id = $this->Report_model->insert_gem($gemdata);
 
-      $gem_id = $this->input->post('gem-type');
-
-      if (!empty($gem_name) && !empty($gem_des))
+      if (is_null($gem_id))
       {
-        $gemdata = array(
-          'gem_name'=>$gem_name,
-          'gem_description'=>$gem_des
+        $this->add();
+        return false;
+      }
+    }
+
+    $customer_id = $this->session->customerid;
+
+    $labdata = array(
+      'rep_customerID'=>$customer_id,
+      'rep_gemID'=>$gem_id,
+      'rep_date'=>$date,
+      'rep_imagename'=>$imgnewname,
+      'rep_type'=>$repo_type
+    );
+    $labrepo_id = $this->Report_model->insert_lab_report($labdata);
+
+    if(is_null($labrepo_id))
+    {
+      $this->add();
+      return false;
+    }
+
+    if (!is_null($labrepo_id))
+    {
+      switch ($repo_type) {
+        case 'memo':
+        $memo_data = array(
+          'memoid'=>$rep_mem_id,
+          'reportid'=>$labrepo_id,
+          'mem_date'=>$date,
+          'mem_paymentStatus'=>$this->input->post('pstatus'),
+          'mem_amount'=>$this->input->post('amount')
         );
-        $gem_id = $this->Report_model->insert_gem($gemdata);
-      }
 
-      $customer_id = $this->session->customerid;
-      $this->session->unset_userdata('customerid');
-
-      $labdata = array(
-        'rep_customerID'=>$customer_id,
-        'rep_gemID'=>$gem_id,
-        'rep_date'=>$date,
-        'rep_imagename'=>$imgnewname,
-        'rep_type'=>$repo_type
-      );
-      $labrepo_id = $this->Report_model->insert_lab_report($labdata);
-
-      if (!is_null($labrepo_id))
-      {
-        switch ($repo_type) {
-          case 'memo':
-            // code...
-            break;
-
-          case 'repo':
-            // code...
-            break;
-        }
-        if($repo_type == 'memo')
+        $mid = $this->Report_model->insert_memocard($memo_data);
+        if (is_null($mid))
         {
-          $memo_data = array(
-            'memoid'=>$rep_mem_id,
-            'reportid'=>$labrepo_id,
-            'mem_date'=>$date,
-            'mem_paymentStatus'=>$this->input->post('pstatus'),
-            'mem_amount'=>$this->input->post('amount')
-          );
-
-          $mid = $this->Report_model->insert_memocard($memo_data);
-
-          if (!is_null($this->upload_image($imgnewname)))
-          {
-            $this->set_message('Problem when uploading the image ', 'error');
-            redirect('admin/report/add');
-          }
-
-          if (!is_null($mid)) redirect('admin/report/add-lab-report');
-
+          //$this->add();
+          return false;
         }
-        elseif ($repo_type == 'repo')
+
+        if (is_null($this->upload_image($imgnewname)))
         {
-          $repo_data = array(
-            'gsrid'=>$rep_mem_id,
-            'reportid'=>$labrepo_id,
-            'gsr_date'=>$date,
-            'gsr_paymentStatus'=>$this->input->post('pstatus'),
-            'gsr_amount'=>$this->input->post('amount')
-          );
-
-          $gsr_id = $this->Report_model->insert_certificate($repo_data);
-          if (!is_null($gsr_id))
-          {
-            $this->upload_image($imgnewname);
-            redirect('admin/report/add-lab-report');
-          }
+          $this->add();
+          $this->set_message('Problem when uploading the image ', 'error');
         }
+        $this->session->unset_userdata('customerid');
+        redirect('admin/report/add-lab-report');
+
+          break;
+
+        case 'repo':
+        $repo_data = array(
+          'gsrid'=>$rep_mem_id,
+          'reportid'=>$labrepo_id,
+          'gsr_date'=>$date,
+          'gsr_paymentStatus'=>$this->input->post('pstatus'),
+          'gsr_amount'=>$this->input->post('amount')
+        );
+
+        $gsr_id = $this->Report_model->insert_certificate($repo_data);
+        if (is_null($gsr_id))
+        {
+          $this->add();
+          return false;
+        }
+
+        if (is_null($this->upload_image($imgnewname)))
+        {
+          $this->add();
+          $this->set_message('Problem when uploading the image ', 'error');
+          return false;
+        }
+        $this->session->unset_userdata('customerid');
+        redirect('admin/report/add-lab-report');
+
+          break;
       }
-      redirect('admin/report/add');
     }
   }
 
