@@ -259,12 +259,6 @@
     gemstone();
     addGemstone();
 
-    gemtype.change(function () {
-      var display = this.selectedIndex == 1 ? "inline" : "none";
-      $('#gemName').css('display', display);
-      $('#gemDes').css('display', display);
-    });
-
     reptype.change(function () {
       if (this.selectedIndex == 0) {
         $('#id').val('');

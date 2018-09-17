@@ -57,5 +57,30 @@ class Report_model extends CI_Model
   {
     return $this->db->affected_rows();
   }
+
+  /****/
+  public function get_data_by_memid($id)
+  {
+    $sql = "SELECT * FROM `tbl_gem_memocard` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.memoid = '$id'";
+
+    $query = $this->db->query($sql);
+    return $query->row();
+  }
+
+  /****/
+  public function get_data_by_gsrid($id)
+  {
+    $sql = "SELECT * FROM `tbl_gemstone_report` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.memoid = '$id'";
+
+    $query = $this->db->query($sql);
+    return $query->row();
+  }
+
+  /****/
+  public function update_lab_report($data, $customerid)
+  {
+    $this->db->where('rep_customerID', $customerid);
+    $this->db->update('tbl_lab_report', $data);
+  }
 }
 ?>

@@ -100,7 +100,7 @@ class Report extends CI_Controller
     $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
     $this->form_validation->set_rules('identification','Identification','trim|required|callback_alpha_dash_space');
     $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
-    $this->form_validation->set_rules('gemcut','Cut','trim|callback_alpha_dash_space');
+    $this->form_validation->set_rules('gemcut','Cut','trim');
     $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
     $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
     $this->form_validation->set_rules('gemLength','Length','trim|decimal');
@@ -170,8 +170,6 @@ class Report extends CI_Controller
         }
         break;
     }
-
-
   }
 
   /****/
@@ -249,13 +247,38 @@ class Report extends CI_Controller
   /*****/
   public function edit()
   {
+    $type = $this->uri->segment(4);
+    $id = $this->uri->segment(5);
+
+    $sessdata = array('repid'=>$id, 'reptype'=>$type);
+    $this->session->set_userdata($sessdata);
+
+    if($type == "memocard")
+    {
+      $data['result'] = $this->Report_model->get_data_by_memid($id);
+    }
+
+    if($type == "certificate")
+    {
+      $data['result'] = $this->Report_model->get_data_by_gsrid($id);
+    }
+
+    if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
+
+    $cid = $this->session->customerid;
+    $result = $this->Customer_model->get_customer_by_id($cid);
+    if (!isset($result)) redirect('admin/customer');
+
+    $data['cname'] = ucwords($result[0]->cus_firstname)." ".$result[0]->cus_lastname;
+    $data['cid'] = $result[0]->custid;
+
     $this->layout->set_title('Edit Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
 
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    return $this->layout->view('admin/lab/report/add_report', $data, 'admin/layouts/admin');
+    return $this->layout->view('admin/lab/report/edit', $data, 'admin/layouts/admin');
   }
   /**
    * Function to update gemstone record
@@ -265,7 +288,90 @@ class Report extends CI_Controller
    */
   public function update()
   {
+    $date = date('Y-m-d');
+    $rep_mem_id = $this->input->post('rmid');
+    $gem_type = $this->input->post('gem-type');
 
+    if ($gem_type == '0')
+    {
+      $this->set_message('Please Select Gem Type');
+      return $this->edit();
+    }
+
+    $repodata = array(
+      'rep_date'=>$date,
+      'rep_object'=>$this->input->post('object'),
+      'rep_identification'=>$this->input->post('identification'),
+      'rep_weight'=>$this->input->post('weight'),
+      'rep_gemID'=>$gem_type,
+      'rep_cut'=>$this->input->post('gemcut'),
+      'rep_gemWidth'=>$this->input->post('gemWidth'),
+      'rep_gemHeight'=>$this->input->post('gemHeight'),
+      'rep_gemLength'=>$this->input->post('gemLength'),
+      'rep_color'=>$this->input->post('color'),
+      'rep_shape'=>$this->input->post('shape'),
+      'rep_comment'=>$this->input->post('comment')
+    );
+
+    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
+    $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
+    $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('identification','Identification','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
+    $this->form_validation->set_rules('gemcut','Cut','trim');
+    $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
+    $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
+    $this->form_validation->set_rules('gemLength','Length','trim|decimal');
+    $this->form_validation->set_rules('color','Color','trim|alpha');
+    $this->form_validation->set_rules('shape','Shape','trim|alpha');
+    $this->form_validation->set_rules('comment','Comment','trim|callback_alpha_dash_space');
+
+    $image = $_FILES['imagegem']['name'];
+    $imgnewname = $this->set_image_name($image, $rep_mem_id);
+    $repodata['rep_imagename'] = $imgnewname;
+
+    if ($this->form_validation->run() == FALSE) return $this->index();
+
+    $labrepo_id = $this->Report_model->update_lab_report($repodata, $this->session->customerid);
+
+    if(is_null($labrepo_id))
+    {
+      $this->set_message('Problem when uploading data to the database');
+      return $this->index();
+    }
+
+    if (!is_null($this->upload_image($imgnewname))) return $this->index();
+
+    switch ($repo_type) {
+      case 'memo':
+      $id = $this->insert_memo($labrepo_id, $rep_mem_id, $date);
+        if (!is_null($id))
+        {
+          $this->session->unset_userdata('customerid');
+          redirect('admin/customer');
+        }
+        else
+        {
+          $this->set_message('Problem when uploading data to the database');
+          return $this->index();
+        }
+
+        break;
+
+      case 'repo':
+      $id = $this->insert_certificate_data($labrepo_id, $rep_mem_id, $date);
+        if(!is_null($id))
+        {
+          $this->session->unset_userdata('customerid');
+          redirect('admin/customer');
+        }
+        else
+        {
+          $this->set_message('Problem when uploading data to the database');
+          return $this->index();
+        }
+        break;
+    }
   }
 
   /**

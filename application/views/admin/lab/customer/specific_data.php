@@ -77,7 +77,7 @@
                 <a class="dropdown-item" href="#">Delete</a>
               </div>
             </div> -->
-            <a href="<?php echo base_url(); ?>admin/report/edit/<?php echo $memo->memoid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
+            <a href="<?php echo base_url(); ?>admin/report/edit/memocard/<?php echo $memo->memoid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
             &nbsp;<a href="<?php echo base_url(); ?>admin/printp/memocard/<?php echo $memo->memoid; ?>" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>
@@ -135,8 +135,8 @@
               </div>
 
             </div> -->
-            <a href="<?php echo base_url(); ?>admin/report/edit/<?php echo $cert->gsrid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
-            &nbsp;<a href="<?php echo base_url(); ?>admin/printp/memocard/<?php echo $cert->gsrid; ?>" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
+            <a href="<?php echo base_url(); ?>admin/report/edit/certificate/<?php echo $cert->gsrid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
+            &nbsp;<a href="<?php echo base_url(); ?>admin/printp/certificate/<?php echo $cert->gsrid; ?>" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>
       </tr>
