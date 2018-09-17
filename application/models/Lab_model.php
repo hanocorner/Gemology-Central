@@ -102,10 +102,12 @@ class Lab_model extends CI_Model
     return $query->result();
   }
 
-  public function get_gem_list()
+  /****/
+  public function get_data_by_id($labreportid)
   {
-    $this->db->select("gemid, gem_name");
-    $this->db->from('tbl_gem');
+    $this->db->select("rep_customerID, rep_type, reportid");
+    $this->db->from('tbl_lab_report');
+    $this->db->where("reportid", $labreportid);
 
     $query = $this->db->get();
     return $query->result();

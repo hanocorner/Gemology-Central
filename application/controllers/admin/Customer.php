@@ -48,7 +48,6 @@ class Customer extends CI_Controller
   public function add()
   {
     $this->layout->set_title('Add new Customer');
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
 
@@ -72,30 +71,24 @@ class Customer extends CI_Controller
     );
 
     $this->form_validation->set_rules('fname','FirstName','trim|required|alpha');
-    $this->form_validation->set_rules('lname','LastName','trim|alpha');
-    $this->form_validation->set_rules('number','Number','required|regex_match[/^[0-9]{10}$/]');
+    $this->form_validation->set_rules('lname','LastName','trim|required|alpha');
+    $this->form_validation->set_rules('number','Number','trim|required|regex_match[/^[0-9]{10}$/]');
     $this->form_validation->set_rules('email','Email','trim|valid_email');
 
-    if($this->form_validation->run()==FALSE)
-    {
-      $this->add();
-      return false;
-    }
-    else
-    {
-      $customer_id = $this->Customer_model->insert_customer($data);
+    if($this->form_validation->run()==FALSE) return $this->add();
+
+    $customer_id = $this->Customer_model->insert_customer($data);
 
       if($this->Customer_model->get_affected_rows() > 0)
       {
-        $this->session->set_userdata('customer_id', $customer_id, 300);
-        redirect('admin/customer');
+        $this->session->set_userdata('customerid', $customer_id);
+        redirect('admin/report');
       }
       else
       {
-        $this->set_message("Problem When adding this customer", "danger");
-        redirect('admin/customer/add');
+        $this->set_flashdata("status", "Problem When adding this customer");
+        return $this->add();
       }
-    }
 
   }
 
@@ -145,21 +138,21 @@ class Customer extends CI_Controller
    */
   public function customer_report()
   {
-    $customer_id = $_GET['id'];
+    $customer_id = $this->input->post('id');
     $labreportid = $this->Lab_model->get_labreport_id($customer_id);
+    $this->session->unset_userdata('customerid');
+    $this->session->set_userdata('customerid', $customer_id);
 
-    if ($labreportid == null)
+    if (is_null($labreportid))
     {
       $data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
-      $this->session->set_userdata('customerid', $customer_id);
       return $this->load->view('admin/lab/customer/specific_data', $data);
     }
 
     $data['customers'] = $this->Customer_model->get_customer_by_id($customer_id);
-
     $data['mdata'] = $this->Lab_model->memo_data($customer_id);
-
     $data['cdata'] = $this->Lab_model->certificate_data($customer_id);
+
     return $this->load->view('admin/lab/customer/specific_data', $data);
   }
 

@@ -11,18 +11,6 @@ class Report_model extends CI_Model
   }
 
   /**
-   * Inserting a gemstone
-   *
-   * @param $data Post values | array
-   * @return Last insert id
-   */
-  public function insert_gem($data)
-  {
-    $this->db->insert('tbl_gem', $data);
-    return $this->db->insert_id();
-  }
-
-  /**
    * Inserting Lab Report Basic data
    *
    * @param $data Post values | array
@@ -43,7 +31,7 @@ class Report_model extends CI_Model
   public function insert_memocard($data)
   {
     $this->db->insert('tbl_gem_memocard', $data);
-    return $this->db->insert_id();
+    return $this->db->affected_rows();
   }
 
   /**
@@ -55,7 +43,7 @@ class Report_model extends CI_Model
   public function insert_certificate($data)
   {
     $this->db->insert('tbl_gemstone_report', $data);
-    return $this->db->insert_id();
+    return $this->db->affected_rows();
   }
 
   /**

@@ -14,6 +14,21 @@
           font-weight: normal;
           font-style: normal;
       }
+      .back-btn{
+        width: 150px;
+        display: block;
+        margin: auto;
+        background-color: rgb(46,101,204);
+        color: #fff;
+        padding: 5px;
+        text-decoration: none;
+        text-align: center;
+        border: 1px solid rgb(46,101,204);
+        border-radius: 5px;
+      }
+      .back-btn:hover{
+        text-decoration: none;
+      }
     </style>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/print/paper.min.css">
@@ -43,50 +58,50 @@
           <tbody>
             <tr>
               <td width="120">No.</td>
-              <td width="350"><?php echo $data[0]->cerno; ?></td>
+              <td width="350"><?php echo $data[0]->gsrid; ?></td>
             </tr>
             <tr>
               <td width="100">Date</td>
-              <td width="350"><?php echo $data[0]->cer_date; ?></td>
+              <td width="350"><?php echo $data[0]->rep_date; ?></td>
             </tr>
             <tr>
               <td width="100">Object</td>
-              <td width="350"><?php echo $data[0]->cer_object; ?></td>
+              <td width="350"><?php echo $data[0]->rep_object; ?></td>
             </tr>
             <tr>
               <td width="100"><strong>Identification</strong></td>
-              <td width="350"><strong><?php echo $data[0]->cer_identification; ?></strong></td>
+              <td width="350"><strong><?php echo $data[0]->rep_identification; ?></strong></td>
             </tr>
             <tr>
               <td width="100">Weight</td>
-              <td width="350"><?php echo $data[0]->cer_weight; ?></td>
+              <td width="350"><?php echo $data[0]->rep_weight; ?></td>
             </tr>
 
             <tr>
               <td width="100">Cut</td>
-              <td width="350"><?php echo $data[0]->cer_cut; ?></td>
+              <td width="350"><?php echo $data[0]->rep_cut; ?></td>
             </tr>
 
             <tr>
               <td width="100">Dimensions</td>
               <td width="350">
-                <?php echo $data[0]->cer_gemWidth.' x '.$data[0]->cer_gemHeight. ' x '. $data[0]->cer_gemLength.' (mm) '; ?>
+                <?php echo $data[0]->rep_gemWidth.' x '.$data[0]->rep_gemHeight. ' x '. $data[0]->rep_gemLength.' (mm) '; ?>
               </td>
             </tr>
 
             <tr>
               <td width="100">Shape</td>
-              <td width="350"><?php echo $data[0]->cer_shape; ?></td>
+              <td width="350"><?php echo $data[0]->rep_shape; ?></td>
             </tr>
 
             <tr>
               <td width="100">Color</td>
-              <td width="350"><?php echo $data[0]->cer_color; ?></td>
+              <td width="350"><?php echo $data[0]->rep_color; ?></td>
             </tr>
 
             <tr>
               <td width="100"><strong>Comment</strong></td>
-              <td width="350"><strong><?php echo $data[0]->cer_comment; ?></strong></td>
+              <td width="350"><strong><?php echo $data[0]->rep_comment; ?></strong></td>
             </tr>
 
           </tbody>
@@ -99,7 +114,7 @@
         <div style="text-align:center;">
           <div class="gem">
             <?php
-                $image = $data[0]->cer_imagename;
+                $image = $data[0]->rep_imagename;
                 if(isset($image))
                 {
                 ?>
@@ -134,5 +149,6 @@
     </div>
   </section>
 
+  <a href="<?php echo base_url(); ?>admin/customer" class="back-btn">Go Back</a>
 </body>
 </html>

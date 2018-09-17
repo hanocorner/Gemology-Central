@@ -28,157 +28,183 @@ class Report extends CI_Controller
   }
 
   /**
+   * Form to add new Report i.e. Memocard | Certificate
    *
+   * @param none
+   * @return layout
    */
-  public function add()
+  public function index()
   {
-    $this->layout->set_title('Report');
+    if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
+
+    $cid = $this->session->customerid;
+    $result = $this->Customer_model->get_customer_by_id($cid);
+    if (!isset($result)) redirect('admin/customer');
+
+    $data['cname'] = ucwords($result[0]->cus_firstname)." ".$result[0]->cus_lastname;
+    $data['cid'] = $result[0]->custid;
+
+    $this->layout->set_title('New Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
 
     $this->layout->add_include('assets/admin/js/report.js');
-    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    return $this->layout->view('admin/lab/report/add', '', 'admin/layouts/admin');
-  }
-
-  /*****/
-  public function gem_list()
-  {
-    $data = $this->Lab_model->get_gem_list();
-    echo json_encode($data);
+    return $this->layout->view('admin/lab/report/add_report', $data, 'admin/layouts/admin');
   }
 
   /**
+   * Insert Post Report data to DB
    *
+   * @param none
+   * @return none
    */
-  public function insert_default_data()
+  public function add()
   {
     $date = date('Y-m-d');
     $rep_mem_id = $this->input->post('rmid');
-    $gem_name = $this->input->post('gem-name');
-    $gem_des = $this->input->post('gem-des');
-    $gem_id = $this->input->post('gem-type');
     $repo_type = $this->input->post('repo-type');
+    $gem_type = $this->input->post('gem-type');
 
-    if ($this->input->post('repo-type') == '0')
+    if($repo_type == '0')
     {
-      $this->add();
-      return false;
+      $this->set_message('Please Select Report Type First');
+      return $this->index();
     }
 
-    $this->form_validation->set_rules('amount','Amount','required|decimal');
-    $this->form_validation->set_rules('rmid','ID','required|alpha_dash');
+    if ($gem_type == '0')
+    {
+      $this->set_message('Please Select Gem Type');
+      return $this->index();
+    }
+
+    $repodata = array(
+      'rep_customerID'=>$this->session->customerid,
+      'rep_date'=>$date,
+      'rep_type'=>$repo_type,
+      'rep_object'=>$this->input->post('object'),
+      'rep_identification'=>$this->input->post('identification'),
+      'rep_weight'=>$this->input->post('weight'),
+      'rep_gemID'=>$gem_type,
+      'rep_cut'=>$this->input->post('gemcut'),
+      'rep_gemWidth'=>$this->input->post('gemWidth'),
+      'rep_gemHeight'=>$this->input->post('gemHeight'),
+      'rep_gemLength'=>$this->input->post('gemLength'),
+      'rep_color'=>$this->input->post('color'),
+      'rep_shape'=>$this->input->post('shape'),
+      'rep_comment'=>$this->input->post('comment')
+    );
+
+    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
+    $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
+    $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('identification','Identification','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
+    $this->form_validation->set_rules('gemcut','Cut','trim|callback_alpha_dash_space');
+    $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
+    $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
+    $this->form_validation->set_rules('gemLength','Length','trim|decimal');
+    $this->form_validation->set_rules('color','Color','trim|alpha');
+    $this->form_validation->set_rules('shape','Shape','trim|alpha');
+    $this->form_validation->set_rules('comment','Comment','trim|callback_alpha_dash_space');
 
     $image = $_FILES['imagegem']['name'];
     $imgnewname = $this->set_image_name($image, $rep_mem_id);
+    $repodata['rep_imagename'] = $imgnewname;
 
-    if ($this->form_validation->run() == FALSE)
-    {
-      $this->add();
-      $this->set_message('Some or all of fields are empty, Please Check...', 'error');
-      return false;
-    }
+    if ($this->form_validation->run() == FALSE) return $this->index();
 
-    if (!empty($gem_name) && !empty($gem_des))
-    {
-      $gemdata = array('gem_name'=>$gem_name,'gem_description'=>$gem_des);
-      $gem_id = $this->Report_model->insert_gem($gemdata);
-
-      if (is_null($gem_id))
-      {
-        $this->add();
-        return false;
-      }
-    }
-
-    $customer_id = $this->session->customerid;
-
-    $labdata = array(
-      'rep_customerID'=>$customer_id,
-      'rep_gemID'=>$gem_id,
-      'rep_date'=>$date,
-      'rep_imagename'=>$imgnewname,
-      'rep_type'=>$repo_type
-    );
-    $labrepo_id = $this->Report_model->insert_lab_report($labdata);
+    $labrepo_id = $this->Report_model->insert_lab_report($repodata);
 
     if(is_null($labrepo_id))
     {
-      $this->add();
-      return false;
+      $this->set_message('Problem when uploading data to the database');
+      return $this->index();
     }
 
-    if (!is_null($labrepo_id))
-    {
-      switch ($repo_type) {
-        case 'memo':
-        $memo_data = array(
-          'memoid'=>$rep_mem_id,
-          'reportid'=>$labrepo_id,
-          'mem_date'=>$date,
-          'mem_paymentStatus'=>$this->input->post('pstatus'),
-          'mem_amount'=>$this->input->post('amount')
-        );
+    if (!is_null($this->upload_image($imgnewname))) return $this->index();
 
-        $mid = $this->Report_model->insert_memocard($memo_data);
-        if (is_null($mid))
+    switch ($repo_type) {
+      case 'memo':
+      $id = $this->insert_memo($labrepo_id, $rep_mem_id, $date);
+        if (!is_null($id))
         {
-          //$this->add();
-          return false;
+          $this->session->unset_userdata('customerid');
+          if (isset($_POST['submit']))
+          {
+            redirect('admin/customer');
+          }
+          elseif (isset($_POST['print']))
+          {
+            $this->session->set_userdata('printid', $rep_mem_id);
+            redirect('admin/printp');
+          }
+        }
+        else
+        {
+          $this->set_message('Problem when uploading data to the database');
+          return $this->index();
         }
 
-        if (is_null($this->upload_image($imgnewname)))
+        break;
+
+      case 'repo':
+      $id = $this->insert_certificate_data($labrepo_id, $rep_mem_id, $date);
+        if(!is_null($id))
         {
-          $this->add();
-          $this->set_message('Problem when uploading the image ', 'error');
+          $this->session->unset_userdata('customerid');
+          if (isset($_POST['submit']))
+          {
+            redirect('admin/customer');
+          }
+          elseif (isset($_POST['print']))
+          {
+            $this->session->set_userdata('printid', $rep_mem_id);
+            redirect('admin/printp/certificate/'.$rep_mem_id);
+          }
         }
-        $this->session->unset_userdata('customerid');
-        redirect('admin/report/add-lab-report');
-
-          break;
-
-        case 'repo':
-        $repo_data = array(
-          'gsrid'=>$rep_mem_id,
-          'reportid'=>$labrepo_id,
-          'gsr_date'=>$date,
-          'gsr_paymentStatus'=>$this->input->post('pstatus'),
-          'gsr_amount'=>$this->input->post('amount')
-        );
-
-        $gsr_id = $this->Report_model->insert_certificate($repo_data);
-        if (is_null($gsr_id))
+        else
         {
-          $this->add();
-          return false;
+          $this->set_message('Problem when uploading data to the database');
+          return $this->index();
         }
-
-        if (is_null($this->upload_image($imgnewname)))
-        {
-          $this->add();
-          $this->set_message('Problem when uploading the image ', 'error');
-          return false;
-        }
-        $this->session->unset_userdata('customerid');
-        redirect('admin/report/add-lab-report');
-
-          break;
-      }
+        break;
     }
+
+
   }
 
   /****/
-  public function add_lab_report()
+  public function insert_memo($labrepoid, $id, $date)
   {
-    $this->layout->set_title('Lab Report');
-    $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
+    $data = array(
+      'memoid'=> $id,
+      'reportid'=>$labrepoid,
+      'mem_date'=>$date,
+      'mem_paymentStatus'=>$this->input->post('pstatus'),
+      'mem_amount'=>$this->input->post('amount')
+    );
 
-    $this->layout->add_include('assets/admin/js/report.js');
-    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
-    $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
+    $mid = $this->Report_model->insert_memocard($data);
+    if ($mid < 1) return $mid;
+    return FALSE;
+  }
 
-    return $this->layout->view('admin/lab/report/add_lab_report', '', 'admin/layouts/admin');
+  /****/
+  public function insert_certificate_data($labrepoid, $id, $date)
+  {
+    $certdata = array(
+      'gsrid'=>$id,
+      'reportid'=>$labrepoid,
+      'gsr_date'=>$date,
+      'gsr_paymentStatus'=>$this->input->post('pstatus'),
+      'gsr_amount'=>$this->input->post('amount')
+    );
+
+    $gsr_id = $this->Report_model->insert_certificate($certdata);
+
+    if ($gsr_id < 1) return $gsr_id;
+    return FALSE;
   }
 
   /****/
@@ -186,7 +212,7 @@ class Report extends CI_Controller
   {
     if(empty($image)) return false;
     $ext = pathinfo($image, PATHINFO_EXTENSION);
-    $newname = "gcl"."-".$img_name.".".$ext;
+    $newname = $img_name.".".$ext;
     return $newname;
   }
 
@@ -204,119 +230,13 @@ class Report extends CI_Controller
 
     if (!$this->upload->do_upload('imagegem'))
     {
-      return $this->upload->display_errors();
+      return $this->set_message($this->upload->display_errors());
     }
     return null;
   }
-  /**
-   * Function to insert new gemstone record
-   *
-   * @param none
-   * @return void
-   */
-  public function insert_gemstone_data()
-  {
-    $gemid = $this->input->post('gemid');
-    $customerID = $this->input->post('cstid');
-
-    $data = array(
-      'cerno'=>$gemid,
-      'cer_date'=>date('Y-m-d'),
-      'cer_object'=>$this->input->post('object'),
-      'cer_type'=>$this->input->post('cert-type'),
-      'cer_identification'=>$this->input->post('identification'),
-      'cer_weight'=>$this->input->post('weight'),
-      'cer_gemWidth'=>$this->input->post('gemWidth'),
-      'cer_gemHeight'=>$this->input->post('gemHeight'),
-      'cer_gemlength'=>$this->input->post('gemLength'),
-      'cer_cut'=>$this->input->post('gemcut'),
-      'cer_shape'=>$this->input->post('shape'),
-      'cer_color'=>$this->input->post('color'),
-      'cer_comment'=>$this->input->post('comment'),
-      'customerID'=>$customerID
-    );
-
-    $filename = $_FILES['image']['name'];
-    $exp = explode('.', $filename);
-    $ext = end($exp);
-
-    $img_allowed_types = array('gif', 'png', 'jpg', 'jpeg', 'tif');
-    if (in_array($ext, $img_allowed_types))
-    {
-      $newname = $gemid.".".$ext;
-
-      $config['file_name'] = $newname;
-      $config['upload_path']='./assets/admin/images/gem/';
-      $config['allowed_types']='gif|jpg|png|jpeg|tif';
-      $config['max_size']='200000';
-      $config['max_width']='1024';
-      $config['max_height']='1024';
-      $this->load->library('upload',$config);
-      $this->upload->do_upload('image');
-      $data['cer_imagename']=$newname;
-    }
-    else
-    {
-      $data['cer_imagename'] = 'null';
-    }
-
-    $this->form_validation->set_rules('object','Object','required');
-    $this->form_validation->set_rules('identification','Identification','required');
-    $this->form_validation->set_rules('weight','Weight','required');
-
-    if($this->form_validation->run()==FALSE)
-    {
-      $this->add_gemstone();
-      return false;
-    }
-    else
-    {
-      if($this->Customer_model->add_gemstone($data)<>0)
-      {
-        $this->set_message("Gemstone added successfully", "success");
-        $this->session->unset_userdata('customer_id');
-        $this->session->set_userdata('cerno', $gemid);
-      }
-      else
-      {
-        $this->set_message("gemstone adding failed", "danger");
-      }
-      redirect('admin/report/add-gemstone/'.$customerID);
-    }
-  }
 
   /**
-   * Public view for admin to edit existing gemstone
-   *
-   * @param none
-   * @return void
-   */
-  public function edit_gemstone()
-  {
-    $id = $this->uri->segment(4);
-    $this->layout->set_title('Edit Report');
-    $data['data'] = $this->Customer_model->get_specific_data($id, 'tbl_certificate', 'cerno');
-    $data['name'] = $this->security->get_csrf_token_name();
-    $data['hash'] = $this->security->get_csrf_hash();
-
-    $this->layout->view('admin/report/update_gemstone', $data, 'admin/layouts/admin');
-  }
-
-
-
-  /**
-   * Public view for admin to preview existing report data
-   *
-   * @param none
-   * @return void
-   */
-  public function preview_modal()
-  {
-    // code
-  }
-
-  /**
-   * Function to delete gemstone record
+   * Function to delete
    *
    * @param $id String
    * @return void
@@ -326,55 +246,26 @@ class Report extends CI_Controller
     // code
   }
 
+  /*****/
+  public function edit()
+  {
+    $this->layout->set_title('Edit Report');
+    $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
+
+    $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
+
+    return $this->layout->view('admin/lab/report/add_report', $data, 'admin/layouts/admin');
+  }
   /**
    * Function to update gemstone record
    *
    * @param none
    * @return void
    */
-  public function update_gemstone_data()
+  public function update()
   {
-    $gemid = $this->input->post('gem-no');
-    $data = array(
-      'cerno'=>$gemid,
-      'cer_date'=>$this->input->post('date'),
-      'cer_object'=>$this->input->post('object'),
-      'cer_identification'=>$this->input->post('identification'),
-      'cer_weight'=>$this->input->post('weight'),
-      'cer_gemWidth'=>$this->input->post('gemWidth'),
-      'cer_gemHeight'=>$this->input->post('gemHeight'),
-      'cer_gemlength'=>$this->input->post('gemLength'),
-      'cer_cut'=>$this->input->post('gemcut'),
-      'cer_shape'=>$this->input->post('shape'),
-      'cer_color'=>$this->input->post('color'),
-      'cer_comment'=>$this->input->post('comment')
-    );
 
-    $filename=$_FILES['image']['name'];
-    $exp=  explode('.', $filename);
-    $ext=  end($exp);
-    $newname=$gemid.".".$ext;
-
-    $config['file_name']=$newname;
-    $config['upload_path']='./assets/img/';
-    $config['allowed_types']='gif|jpg|png';
-    $config['max_size']='200000';
-    $config['max_width']='1024';
-    $config['max_height']='1024';
-    $config['file_name'] = $newname;
-    $this->load->library('upload',$config);
-    $this->upload->do_upload('image');
-    $data['cer_imagename']=$newname;
-
-    if($this->Customer_model->update('tbl_certificate','cerno', $data['cerno'], $data))
-    {
-      $this->set_message('Report updated successfully','success');
-      redirect('admin/report');
-    }else
-    {
-      $this->set_message('Report updated failed','danger');
-      redirect('admin/report/edit-gemstone');
-    }
   }
 
   /**
@@ -416,47 +307,24 @@ class Report extends CI_Controller
    */
   public function set_memo_id()
   {
-    $number = 000001;
+    $prefix = "GCL";
+    $number = 000000;
 
     $memoid = $this->Lab_model->get_memo_id();
 
     if(is_null($memoid))
     {
       $number += 1;
-      $number = str_pad($number, 6, '0', STR_PAD_LEFT);
-      return $number;
+      $numb = str_pad($number, 6, '0', STR_PAD_LEFT);
+      echo $prefix."-".$numb;
     }
     else
     {
       $memoid = preg_replace('/[^0-9]/', '', $memoid);
       $memoid += 1;
-      echo str_pad($memoid, 6, '0', STR_PAD_LEFT);
+      $memoid = str_pad($memoid, 6, '0', STR_PAD_LEFT);
+      echo $prefix."-".$memoid;
     }
-  }
-
-  /**
-   * QR Code generator
-   *
-   * @param $gemid
-   * @return qr image url
-   */
-  public function qr_generator($gemid)
-  {
-    $this->load->library('ciqrcode');
-
-    $img_url="";
-
-    $qr_image=$gemid.'.png';
-    $params['data'] = base_url()."report";
-    $params['level'] = 'H';
-    $params['size'] = 8;
-    $params['savename'] ="assets/admin/images/qr/".$qr_image;
-
-    if($this->ciqrcode->generate($params))
-    {
-      return $qr_image;
-    }
-    return false;
   }
 
   /**
@@ -465,14 +333,20 @@ class Report extends CI_Controller
    * @param none
    * @return void
    */
-  public function set_message($msg, $status)
+  public function set_message($msg)
   {
-    $data = array(
-      'message'=> $msg,
-      'status'=> $status
-    );
-    $this->session->set_flashdata($data);
+    return $this->session->set_flashdata('status', $msg);
   }
 
+  /*****/
+  public function alpha_dash_space($string = '')
+  {
+    if (!preg_match("/^([-a-z0-9_ ])+$/i", $string))
+    {
+      $this->form_validation->set_message('alpha_dash_space', 'The %s field may only contain alpha-numeric characters, spaces, underscores, and dashes.');
+      return FALSE;
+   }
+   return TRUE;
+  }
 }
 ?>

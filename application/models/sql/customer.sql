@@ -13,6 +13,5 @@ CREATE TABLE `tbl_customer` (
   `cus_lastname` varchar(30) NOT NULL,
   `cus_email` varchar(50) NOT NULL,
   `cus_number` varchar(30) NOT NULL,
-  `cus_address` varchar(50) NOT NULL,
   PRIMARY KEY (`custid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -24,6 +24,10 @@ $(function(){
       e.preventDefault();
       var page = $(this).data("ci-pagination-page");
       getCustomerAll(page);
+    },
+    reFresh:function (e){
+      e.preventDefault();
+      location.reload();
     }
   };
 
@@ -75,7 +79,7 @@ function getCustomerAll(page) {
 function dataBundle(cstid) {
   $.ajax({
     url: baseurl+'admin/customer/customer-report',
-    type: 'GET',
+    type: 'POST',
     dataType: 'html',
     data: {
       "id": cstid

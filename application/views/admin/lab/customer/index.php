@@ -10,7 +10,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:searchfield-
         <a href="#">Dashboard</a>
       </li>
       <li class="breadcrumb-item active">
-        All Reports
+        My Customers
       </li>
     </ol>
     <!-- /. of Breadcrumbs-->
@@ -19,7 +19,13 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:searchfield-
     <div class="row my-4">
       <div class="col-md-3">
         <div class="form-group">
-          <input type="search" class="form-control" id="squery"  autocomplete="off" placeholder="Search Customer">
+          <input type="search" class="form-control" id="squery"  autocomplete="off" placeholder="Search customer by name..">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-row">
+          <a href="#" data-action="reFresh" class="btn btn-info mr-3"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp; Refresh</a>
+          <a href="<?php echo base_url(); ?>admin/customer/add" class="btn btn-primary"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp; Add Customer</a>
         </div>
       </div>
     </div>
