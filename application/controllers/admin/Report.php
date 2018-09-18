@@ -253,16 +253,6 @@ class Report extends CI_Controller
     $sessdata = array('repid'=>$id, 'reptype'=>$type);
     $this->session->set_userdata($sessdata);
 
-    if($type == "memocard")
-    {
-      $data['result'] = $this->Report_model->get_data_by_memid($id);
-    }
-
-    if($type == "certificate")
-    {
-      $data['result'] = $this->Report_model->get_data_by_gsrid($id);
-    }
-
     if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
 
     $cid = $this->session->customerid;
@@ -280,6 +270,24 @@ class Report extends CI_Controller
 
     return $this->layout->view('admin/lab/report/edit', $data, 'admin/layouts/admin');
   }
+
+  /****/
+  public function append_data_toedit()
+  {
+    echo $this->session->reptype;
+    if($this->session->reptype == "memo")
+    {
+      $data = $this->Report_model->get_data_by_memid($this->session->repid);
+    }
+
+    if($this->session->reptype == "repo")
+    {
+      $data = $this->Report_model->get_data_by_gsrid($this->session->repid);
+    }
+
+    //echo json_encode($data);
+  }
+
   /**
    * Function to update gemstone record
    *
@@ -291,6 +299,13 @@ class Report extends CI_Controller
     $date = date('Y-m-d');
     $rep_mem_id = $this->input->post('rmid');
     $gem_type = $this->input->post('gem-type');
+    $payment_status = $this->input->post('pstatus');
+
+    if ($payment_status == 'default')
+    {
+      $this->set_message('Please Select Payment Status');
+      return $this->edit();
+    }
 
     if ($gem_type == '0')
     {
@@ -326,49 +341,63 @@ class Report extends CI_Controller
     $this->form_validation->set_rules('shape','Shape','trim|alpha');
     $this->form_validation->set_rules('comment','Comment','trim|callback_alpha_dash_space');
 
-    $image = $_FILES['imagegem']['name'];
-    $imgnewname = $this->set_image_name($image, $rep_mem_id);
-    $repodata['rep_imagename'] = $imgnewname;
+    if ($this->form_validation->run() == FALSE) return $this->edit();
 
-    if ($this->form_validation->run() == FALSE) return $this->index();
-
-    $labrepo_id = $this->Report_model->update_lab_report($repodata, $this->session->customerid);
-
-    if(is_null($labrepo_id))
+    if (!empty($_FILES['imagegem']['name']))
     {
-      $this->set_message('Problem when uploading data to the database');
-      return $this->index();
+      $image = $_FILES['imagegem']['name'];
+      $imgnewname = $this->set_image_name($image, $rep_mem_id);
+      $repodata['rep_imagename'] = $imgnewname;
+    }
+    else
+    {
+      $imgnewname = null;
+      $repodata['rep_imagename'] = $this->input->post('oldimage');
     }
 
-    if (!is_null($this->upload_image($imgnewname))) return $this->index();
+    if($this->Report_model->update_lab_report($repodata, $this->session->customerid) == FALSE)
+    {
+      $this->set_message('Problem when updating data');
+      return $this->edit();
+    }
 
-    switch ($repo_type) {
+    if(!is_null($imgnewname))
+    {
+      if (!is_null($this->upload_image($imgnewname))) return $this->edit();
+    }
+
+    $report_type = $this->session->reptype;
+    $report_id = $this->session->repid; // Memo ID | Certificate ID
+
+    switch ($this->session->reptype) {
       case 'memo':
-      $id = $this->insert_memo($labrepo_id, $rep_mem_id, $date);
-        if (!is_null($id))
+        $data = array('mem_amount'=>$this->input->post('amount'), 'mem_paymentStatus'=>$payment_status);
+        if ($this->Report_model->update_memo($data, $this->session->repid))
         {
-          $this->session->unset_userdata('customerid');
+          $array_items = array('customerid', 'reptype', 'repid');
+          $this->session->unset_userdata($array_items);
           redirect('admin/customer');
         }
         else
         {
-          $this->set_message('Problem when uploading data to the database');
-          return $this->index();
+          $this->set_message('Problem when updating data');
+          return $this->edit();
         }
 
         break;
 
       case 'repo':
-      $id = $this->insert_certificate_data($labrepo_id, $rep_mem_id, $date);
-        if(!is_null($id))
+        $data = array('gsr_amount'=>$this->input->post('amount'), 'gsr_paymentStatus'=>$payment_status);
+        if($this->Report_model->update_repo($data, $this->session->repid))
         {
-          $this->session->unset_userdata('customerid');
+          $array_items = array('customerid', 'reptype', 'repid');
+          $this->session->unset_userdata($array_items);
           redirect('admin/customer');
         }
         else
         {
-          $this->set_message('Problem when uploading data to the database');
-          return $this->index();
+          $this->set_message('Problem when updating data');
+          return $this->edit();
         }
         break;
     }

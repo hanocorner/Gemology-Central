@@ -58,5 +58,19 @@ function addGemstone() {
     $('#gemForm').css('display', 'block');
   });
 
+}
+
+function append_toedit() {
+  $.ajax({
+    url: baseurl +'admin/report/append-data-toedit',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      $('#rmid').val(data.rep_object);
+    },
+    fail: function () {
+      console.log("error");
+    }
+  });
 
 }

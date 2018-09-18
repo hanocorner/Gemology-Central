@@ -70,7 +70,7 @@ class Report_model extends CI_Model
   /****/
   public function get_data_by_gsrid($id)
   {
-    $sql = "SELECT * FROM `tbl_gemstone_report` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.memoid = '$id'";
+    $sql = "SELECT * FROM `tbl_gemstone_report` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.gsrid = '$id'";
 
     $query = $this->db->query($sql);
     return $query->row();
@@ -80,7 +80,21 @@ class Report_model extends CI_Model
   public function update_lab_report($data, $customerid)
   {
     $this->db->where('rep_customerID', $customerid);
-    $this->db->update('tbl_lab_report', $data);
+    return $this->db->update('tbl_lab_report', $data);
+  }
+
+  /****/
+  public function update_memo($data, $memid)
+  {
+    $this->db->where('memoid', $memid);
+    return $this->db->update('tbl_gem_memocard', $data);
+  }
+
+  /****/
+  public function update_repo($data, $repid)
+  {
+    $this->db->where('gsrid', $repid);
+    return $this->db->update('tbl_gemstone_report', $data);
   }
 }
 ?>
