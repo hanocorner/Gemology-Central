@@ -61,12 +61,7 @@
         <div class="form-row">
           <div class="form-group col-4">
             <label for="id">Next #ID</label>
-            <?php //if(isset($result->memoid)): ?>
-              <input type="text" class="form-control form-control-sm" name="rmid" value="<?php // echo $result->memoid; ?>" readonly id="rmid">
-            <?php //endif; ?>
-            <?php //if(isset($result->gsrid)): ?>
-              <!-- <input type="text" class="form-control form-control-sm" name="rmid" value="<?php // echo $result->gsrid; ?>" readonly> -->
-            <?php //endif; ?>
+            <input type="text" class="form-control form-control-sm" name="rmid" value="" readonly id="rmid">
           </div>
 
           <div class="col-4">
@@ -98,10 +93,10 @@
                 <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
               </div>
               <?php //if(isset($result->mem_amount)): ?>
-                <input type="text" class="form-control" name="amount" value="<?php // echo $result->mem_amount; ?>">
+                <input type="text" class="form-control" name="amount" value="" id="amount">
               <?php //endif; ?>
               <?php //if(isset($result->gsr_amount)): ?>
-                <input type="text" class="form-control" name="amount" value="<?php // echo $result->gsr_amount; ?>">
+                <!-- <input type="text" class="form-control" name="amount" value="<?php // echo $result->gsr_amount; ?>"> -->
               <?php //endif; ?>
             </div>
           </div>
@@ -163,7 +158,7 @@
           <div class="col-4">
             <label for="dimensions">Length:</label>
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control form-control-sm" name="gemLength" value="<?php // echo $result->rep_gemLength; ?>" autocomplete="off">
+              <input type="text" class="form-control form-control-sm" name="gemLength" value="<?php //echo $result->rep_gemLength; ?>" autocomplete="off">
               <div class="input-group-append">
                 <div class="input-group-text"><i class="fa fa-long-arrow-down" aria-hidden="true"></i>&nbsp; mm</div>
               </div>

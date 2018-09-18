@@ -247,11 +247,12 @@ class Report extends CI_Controller
   /*****/
   public function edit()
   {
-    $type = $this->uri->segment(4);
     $id = $this->uri->segment(5);
 
-    $sessdata = array('repid'=>$id, 'reptype'=>$type);
-    $this->session->set_userdata($sessdata);
+    if(!$this->session->has_userdata('repid'))
+    {
+      $this->session->set_userdata('repid', $id);
+    }
 
     if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
 
@@ -274,18 +275,8 @@ class Report extends CI_Controller
   /****/
   public function append_data_toedit()
   {
-    echo $this->session->reptype;
-    if($this->session->reptype == "memo")
-    {
-      $data = $this->Report_model->get_data_by_memid($this->session->repid);
-    }
-
-    if($this->session->reptype == "repo")
-    {
-      $data = $this->Report_model->get_data_by_gsrid($this->session->repid);
-    }
-
-    //echo json_encode($data);
+    $data = $this->Report_model->get_data_by_mrid($this->session->repid);
+    echo json_encode($data);
   }
 
   /**

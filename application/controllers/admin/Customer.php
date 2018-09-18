@@ -140,7 +140,8 @@ class Customer extends CI_Controller
   {
     $customer_id = $this->input->post('id');
     $labreportid = $this->Lab_model->get_labreport_id($customer_id);
-    $this->session->unset_userdata('customerid');
+    $items = array('customerid', 'repid');
+    $this->session->unset_userdata($items);
     $this->session->set_userdata('customerid', $customer_id);
 
     if (is_null($labreportid))

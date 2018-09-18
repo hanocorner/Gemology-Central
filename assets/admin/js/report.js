@@ -66,7 +66,8 @@ function append_toedit() {
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      $('#rmid').val(data.rep_object);
+      $('#rmid').val(data.memoid);
+      $('#amount').val(data.mem_amount);
     },
     fail: function () {
       console.log("error");

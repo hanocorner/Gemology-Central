@@ -59,21 +59,40 @@ class Report_model extends CI_Model
   }
 
   /****/
-  public function get_data_by_memid($id)
+  public function get_data_by_mrid($id)
   {
-    $sql = "SELECT * FROM `tbl_gem_memocard` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.memoid = '$id'";
+    $sql = "SELECT memoid FROM tbl_gem_memocard WHERE memoid = '$id' UNION SELECT gsrid FROM tbl_gemstone_report WHERE gsrid = '$id'";
 
-    $query = $this->db->query($sql);
-    return $query->row();
-  }
+    $this->db->select('memoid');
+    $this->db->from('tbl_gem_memocard');
+    $this->db->where('memoid', $id);
+    $query1 = $this->db->get_compiled_select();
 
-  /****/
-  public function get_data_by_gsrid($id)
-  {
-    $sql = "SELECT * FROM `tbl_gemstone_report` AS t1 INNER JOIN `tbl_lab_report` AS t2 ON t1.reportid = t2.reportid WHERE t1.gsrid = '$id'";
+    $this->db->select('gsrid');
+    $this->db->from('tbl_gemstone_report');
+    $this->db->where('gsrid', $id);
+    $query2 = $this->db->get_compiled_select();
 
-    $query = $this->db->query($sql);
-    return $query->row();
+    $query = $this->db->query($query1 . ' UNION ' . $query2);
+
+    $row = $query->result();
+
+    if (!empty($row[0]->memoid))
+    {
+      $id = $row[0]->memoid;
+      $sql = "SELECT * FROM `tbl_lab_report` AS t1 LEFT JOIN `tbl_gem_memocard` as t2 ON t1.reportid = t2.reportid WHERE memoid = '$id' ";
+      $query = $this->db->query($sql);
+      return $query->row();
+    }
+
+    if(!empty($row[0]->memoid))
+    {
+      $id = $row[0]->memoid;
+      $sql = "SELECT * FROM `tbl_lab_report` AS t1 LEFT JOIN `tbl_gemstone_report` as t2 ON t1.reportid = t2.reportid WHERE gsrid = '$id' ";
+      $query = $this->db->query($sql);
+      return $query->row();
+    }
+
   }
 
   /****/
