@@ -136,7 +136,7 @@
         <div class="padding-4"></div>
           <div class="flex-wrap">
             <div class="qr-block">
-              <img src="<?php echo base_url(); ?>assets/admin/images/qr/<?php echo $img_url; ?>" alt="QRCode Image" width="100px" height="100px">
+              <img src="<?php echo base_url(); ?>assets/admin/images/qr/<?php echo $qrcode; ?>" alt="QRCode Image" width="100px" height="100px">
               <p>Verification</p>
               <span>Translation</span>
             </div>

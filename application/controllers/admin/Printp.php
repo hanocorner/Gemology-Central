@@ -22,6 +22,12 @@ class Printp extends CI_Controller
     }
   }
 
+  /*****/
+  public function index()
+  {
+    echo "&nbsp;&nbsp;&nbsp;&nbsp;<a href='".base_url()."admin/report/customer'>click here to go Back to customer page</a> ";
+  }
+
   /**
    * public view for the admin to print the Gemstone report
    *
@@ -30,12 +36,11 @@ class Printp extends CI_Controller
    */
   public function memocard()
   {
+    if(!$this->uri->segment(4)) redirect('admin/customer');
     $id = $this->uri->segment(4);
 
-    if(is_null($id)) redirect('admin/customer');
-
-    $data['data'] = $this->Print_model->get_certificate_by_id($id);
-    $data['img_url'] = $this->qr_generator($id);
+    $data['data'] = $this->Print_model->get_memocard_by_id($id);
+    $data['qrcode'] = $this->qr_generator($id);
     return $this->load->view('admin/lab/print/memo_card', $data);
   }
 
@@ -47,12 +52,11 @@ class Printp extends CI_Controller
    */
   public function certificate()
   {
+    if(!$this->uri->segment(4)) redirect('admin/customer');
     $id = $this->uri->segment(4);
 
-    if(is_null($id)) redirect('admin/customer');
-
     $data['data'] = $this->Print_model->get_certificate_by_id($id);
-    $data['img_url'] = $this->qr_generator($id);
+    $data['qrcode'] = $this->qr_generator($id);
     return $this->load->view('admin/lab/print/certificate_report', $data);
   }
 
@@ -62,14 +66,14 @@ class Printp extends CI_Controller
    * @param $gemid
    * @return qr image url
    */
-  public function qr_generator($gemid)
+  public function qr_generator($id)
   {
     $this->load->library('ciqrcode');
 
     $img_url="";
 
-    $qr_image=$gemid.'.png';
-    $params['data'] = base_url()."report";
+    $qr_image=$id.'.png';
+    $params['data'] = base_url()."report/".$id;
     $params['level'] = 'H';
     $params['size'] = 8;
     $params['savename'] ="assets/admin/images/qr/".$qr_image;

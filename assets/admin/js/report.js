@@ -66,8 +66,44 @@ function append_toedit() {
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      $('#rmid').val(data.memoid);
-      $('#amount').val(data.mem_amount);
+      // ID according to Report Type
+      if(typeof(data.gsrid) == "undefined") {
+        $('#rmid').val(data.memoid);
+      }
+      if(typeof(data.memoid) == "undefined") {
+        $('#rmid').val(data.gsrid);
+      }
+
+      // Amount value according to Report Type
+      if (typeof(data.mem_amount) == "undefined" ) {
+        $('#amount').val(data.gsr_amount);
+      }
+      if (typeof(data.gsr_amount) == "undefined" ) {
+        $('#amount').val(data.mem_amount);
+      }
+
+      // Payment Status according to Report Type
+      if (typeof(data.gsr_paymentStatus) == "undefined" ) {
+        $('#pstatus').val(data.mem_paymentStatus);
+      }
+      if (typeof(data.mem_paymentStatus) == "undefined" ) {
+        $('#pstatus').val(data.gsr_paymentStatus);
+      }
+
+      $('#newGem').val(data.rep_gemID);
+      $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.rep_imagename);
+      $('#object').val(data.rep_object);
+      $('#identification').val(data.rep_identification);
+      $('#weight').val(data.rep_weight);
+      $('#cut').val(data.rep_cut);
+      $('#color').val(data.rep_color);
+      $('#width').val(data.rep_gemWidth);
+      $('#height').val(data.rep_gemHeight);
+      $('#length').val(data.rep_gemLength);
+      $('#shape').val(data.rep_shape);
+      $('#comment').val(data.rep_comment);
+      $('#labRepid').val(data.reportid);
+      $('#oldImage').val(data.rep_imagename);
     },
     fail: function () {
       console.log("error");

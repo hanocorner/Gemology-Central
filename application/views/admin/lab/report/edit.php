@@ -40,12 +40,13 @@
     </div><!-- End of card Row  -->
 
     <?php echo form_open_multipart('admin/report/update'); ?>
+    <input type="hidden" name="lab_repid" value="" id="labRepid">
     <div class="row">
       <div class="col-md-6">
         <div class="form-row">
           <div class="d-block">
             <!-- <label for="Gem">Existing Image</label> -->
-            <img src="<?php echo base_url(); ?>assets/admin/images/gem/<?php // echo $result->rep_imagename; ?>" width="250" height="250" class="ml-2 mr-5" alt="Gem Image">
+            <img src="" width="250" height="250" class="ml-2 mr-5" alt="Gem Image" id="imgGem">
           </div>
           <div class="custom-file-container" data-upload-id="myUploader">
             <label>New Image<sup><strong>*</strong></sup> &nbsp;&nbsp;<a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-outline-danger btn-sm" title="Clear Image"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Remove</a></label>
@@ -54,7 +55,7 @@
               <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*">
               <span class="custom-file-container__custom-file__custom-file-control"></span>
             </label>
-            <input type="hidden" name="oldimage" value="<?php // echo $result->rep_imagename; ?>">
+            <input type="hidden" name="oldimage" value="" id="oldImage">
             <div class="custom-file-container__image-preview"></div>
           </div>
         </div>
@@ -78,7 +79,7 @@
 
           <div class="form-group col-4">
             <label for="paymentstatus">Payment Status <sup><strong>*</strong></sup></label>
-            <select class="form-control form-control-sm" name="pstatus">
+            <select class="form-control form-control-sm" name="pstatus" id="pstatus">
               <option value="default" <?php echo  set_select('pstatus', 'default', TRUE); ?> selected>Choose...</option>
               <option value="1" <?php echo  set_select('pstatus', '1'); ?>>Paid</option>
               <option value="0" <?php echo  set_select('pstatus', '0'); ?>>Unpaid</option>
@@ -92,23 +93,18 @@
               <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
               </div>
-              <?php //if(isset($result->mem_amount)): ?>
                 <input type="text" class="form-control" name="amount" value="" id="amount">
-              <?php //endif; ?>
-              <?php //if(isset($result->gsr_amount)): ?>
-                <!-- <input type="text" class="form-control" name="amount" value="<?php // echo $result->gsr_amount; ?>"> -->
-              <?php //endif; ?>
             </div>
           </div>
 
           <div class="form-group col-4">
             <label for="object">Object<sup><strong>*</strong></sup> </label>
-            <input type="text" class="form-control form-control-sm" name="object" value="<?php // echo $result->rep_object; ?>" autocomplete="off" required>
+            <input type="text" class="form-control form-control-sm" name="object" value="" autocomplete="off" required id="object">
           </div>
 
           <div class="form-group col-4">
             <label for="identification">Identification<sup><strong>*</strong></sup></label>
-            <input type="text" class="form-control form-control-sm" name="identification"  value="<?php // echo $result->rep_identification; ?>" autocomplete="off" required>
+            <input type="text" class="form-control form-control-sm" name="identification"  value="" autocomplete="off" required id="identification">
           </div>
 
         </div>
@@ -117,7 +113,7 @@
           <div class="col-4">
             <label for="Weight">Weight<sup><strong>*</strong></sup></label>
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control form-control-sm" name="weight" value="<?php // echo $result->rep_weight; ?>" autocomplete="off">
+              <input type="text" class="form-control form-control-sm" name="weight" value="" autocomplete="off" id="weight">
               <div class="input-group-append">
                 <div class="input-group-text">ct</div>
               </div>
@@ -125,12 +121,12 @@
           </div>
           <div class="col-4">
             <label for="cut">Cut: </label>
-            <input type="text" class="form-control form-control-sm" name="gemcut" value="<?php // echo $result->rep_cut; ?>" autocomplete="off">
+            <input type="text" class="form-control form-control-sm" name="gemcut" value="" autocomplete="off" id="cut">
           </div>
 
           <div class="form-group col-4">
             <label for="color">Color: </label>
-            <input type="text" class="form-control form-control-sm" name="color" value="<?php // echo $result->rep_color; ?>" autocomplete="off">
+            <input type="text" class="form-control form-control-sm" name="color" value="" autocomplete="off" id="color">
           </div>
         </div>
 
@@ -138,7 +134,7 @@
           <div class="col-4">
             <label for="dimensions">Width:</label>
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control form-control-sm" name="gemWidth" value="<?php // echo $result->rep_gemWidth; ?>" autocomplete="off">
+              <input type="text" class="form-control form-control-sm" name="gemWidth" value="" autocomplete="off" id="width">
               <div class="input-group-append">
                 <div class="input-group-text"><i class="fa fa-long-arrow-right" aria-hidden="true"></i>&nbsp; mm</div>
               </div>
@@ -148,7 +144,7 @@
           <div class="col-4">
             <label for="dimensions">Height: </label>
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control form-control-sm" name="gemHeight" value="<?php // echo $result->rep_gemHeight; ?>"  autocomplete="off">
+              <input type="text" class="form-control form-control-sm" name="gemHeight" value=""  autocomplete="off" id="height">
               <div class="input-group-append">
                 <div class="input-group-text"><i class="fa fa-long-arrow-up" aria-hidden="true"></i>&nbsp; mm</div>
               </div>
@@ -158,7 +154,7 @@
           <div class="col-4">
             <label for="dimensions">Length:</label>
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control form-control-sm" name="gemLength" value="<?php //echo $result->rep_gemLength; ?>" autocomplete="off">
+              <input type="text" class="form-control form-control-sm" name="gemLength" value="" autocomplete="off" id="length">
               <div class="input-group-append">
                 <div class="input-group-text"><i class="fa fa-long-arrow-down" aria-hidden="true"></i>&nbsp; mm</div>
               </div>
@@ -168,12 +164,12 @@
         <div class="form-row">
           <div class="form-group col-4">
             <label for="shape">Shape: </label>
-            <input type="text" class="form-control form-control-sm" name="shape" value="<?php // echo $result->rep_shape; ?>" autocomplete="off">
+            <input type="text" class="form-control form-control-sm" name="shape" value="" autocomplete="off" id="shape">
           </div>
 
           <div class="form-group col-8">
             <label for="comment">Comment: </label>
-            <input type="text" class="form-control form-control-sm" name="comment" value="<?php // echo $result->rep_comment; ?>" autocomplete="off">
+            <input type="text" class="form-control form-control-sm" name="comment" value="" autocomplete="off" id="comment">
           </div>
         </div>
 

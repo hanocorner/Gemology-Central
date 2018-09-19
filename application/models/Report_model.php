@@ -58,47 +58,49 @@ class Report_model extends CI_Model
     return $this->db->affected_rows();
   }
 
-  /****/
+  /**
+   * Ftech data by custom id and append to edit
+   *
+   * @param $id memoid | srid | string
+   * @return result
+   */
   public function get_data_by_mrid($id)
   {
-    $sql = "SELECT memoid FROM tbl_gem_memocard WHERE memoid = '$id' UNION SELECT gsrid FROM tbl_gemstone_report WHERE gsrid = '$id'";
-
-    $this->db->select('memoid');
+    $this->db->select('memoid AS `repid`');
     $this->db->from('tbl_gem_memocard');
     $this->db->where('memoid', $id);
     $query1 = $this->db->get_compiled_select();
 
-    $this->db->select('gsrid');
+    $this->db->select('gsrid AS `repid`');
     $this->db->from('tbl_gemstone_report');
     $this->db->where('gsrid', $id);
     $query2 = $this->db->get_compiled_select();
 
     $query = $this->db->query($query1 . ' UNION ' . $query2);
-
     $row = $query->result();
 
-    if (!empty($row[0]->memoid))
-    {
-      $id = $row[0]->memoid;
-      $sql = "SELECT * FROM `tbl_lab_report` AS t1 LEFT JOIN `tbl_gem_memocard` as t2 ON t1.reportid = t2.reportid WHERE memoid = '$id' ";
-      $query = $this->db->query($sql);
-      return $query->row();
-    }
+    $this->db->select('*');
+    $this->db->from('tbl_lab_report');
+    $this->db->join('tbl_gem_memocard', 'tbl_lab_report.reportid = tbl_gem_memocard.reportid', 'left');
+    $this->db->where('memoid', $row[0]->repid);
+    $query = $this->db->get();
 
-    if(!empty($row[0]->memoid))
-    {
-      $id = $row[0]->memoid;
-      $sql = "SELECT * FROM `tbl_lab_report` AS t1 LEFT JOIN `tbl_gemstone_report` as t2 ON t1.reportid = t2.reportid WHERE gsrid = '$id' ";
-      $query = $this->db->query($sql);
-      return $query->row();
-    }
+    if($query->num_rows() > 0) return $query->row();
 
+    $this->db->select('*');
+    $this->db->from('tbl_lab_report');
+    $this->db->join('tbl_gemstone_report', 'tbl_lab_report.reportid = tbl_gemstone_report.reportid', 'left');
+    $this->db->where('gsrid', $row[0]->repid);
+    $query = $this->db->get();
+
+    if($query->num_rows() > 0) return $query->row();
   }
 
   /****/
-  public function update_lab_report($data, $customerid)
+  public function update_lab_report($data, $customerid, $labrepoid)
   {
     $this->db->where('rep_customerID', $customerid);
+    $this->db->where('reportid', $labrepoid);
     return $this->db->update('tbl_lab_report', $data);
   }
 

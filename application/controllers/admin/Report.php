@@ -248,10 +248,14 @@ class Report extends CI_Controller
   public function edit()
   {
     $id = $this->uri->segment(5);
+    $type = $this->uri->segment(4);
+
+    if (!$this->uri->segment(4) || !$this->uri->segment(5)) redirect('admin/customer');
 
     if(!$this->session->has_userdata('repid'))
     {
-      $this->session->set_userdata('repid', $id);
+      $items = array('repid'=>$id, 'reptype'=>$type);
+      $this->session->set_userdata($items);
     }
 
     if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
@@ -289,6 +293,7 @@ class Report extends CI_Controller
   {
     $date = date('Y-m-d');
     $rep_mem_id = $this->input->post('rmid');
+    $lab_repid = $this->input->post('lab_repid');
     $gem_type = $this->input->post('gem-type');
     $payment_status = $this->input->post('pstatus');
 
@@ -346,7 +351,7 @@ class Report extends CI_Controller
       $repodata['rep_imagename'] = $this->input->post('oldimage');
     }
 
-    if($this->Report_model->update_lab_report($repodata, $this->session->customerid) == FALSE)
+    if($this->Report_model->update_lab_report($repodata, $this->session->customerid, $lab_repid) == FALSE)
     {
       $this->set_message('Problem when updating data');
       return $this->edit();
@@ -356,9 +361,6 @@ class Report extends CI_Controller
     {
       if (!is_null($this->upload_image($imgnewname))) return $this->edit();
     }
-
-    $report_type = $this->session->reptype;
-    $report_id = $this->session->repid; // Memo ID | Certificate ID
 
     switch ($this->session->reptype) {
       case 'memo':

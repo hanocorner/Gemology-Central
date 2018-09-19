@@ -12,10 +12,10 @@ gulp.task('sass', function () {
   return gulp.src('assets/admin/scss/style.scss')
     .pipe(sourcemaps.init())
     .pipe(sass.sync().on('error', sass.logError))
-    .pipe(concat('main.css'))
+    .pipe(concat('memocard.css'))
     .pipe(sourcemaps.write())
     .pipe(cssnano())
-    .pipe(gulp.dest('assets/admin/css'));
+    .pipe(gulp.dest('assets/admin/css/print'));
 });
 
 gulp.task('watch', function () {
