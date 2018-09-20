@@ -103,8 +103,9 @@ class Customer_model extends CI_Model
     $this->db->from('tbl_customer');
     $this->db->order_by("custid", "DESC");
     $this->db->limit(1);
-
-    return $this->db->get()->row()->custid;
+    $query = $this->db->get();
+    $result = $query->row();
+    return $result->custid;
   }
 
   /**

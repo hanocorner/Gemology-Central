@@ -22,10 +22,10 @@
         <h4><?php echo ucwords($customer->cus_firstname)." ".$customer->cus_lastname; ?></h4>
         <h5><?php echo $customer->cus_number; ?></h5>
         <p><?php echo $customer->cus_email; ?></p>
-        <div class="buttons">
+      <!--  <div class="buttons">
           <a href="<?php echo base_url(); ?>admin/customer/edit" class="btn btn-sm btn-warning">Edit Customer</a>&nbsp;
           <a href="Javascript void(0);" class="btn btn-sm btn-danger">Delete Customer</a>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

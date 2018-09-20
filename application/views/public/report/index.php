@@ -1,65 +1,74 @@
+<style media="screen">
+.borderless td, .borderless th {
+  border: none;
+}
+.table td {
+  padding: .45rem;
+}
+.img-gem img {
+  margin: 0 10px;
+}
+</style>
 <section class="report mt-3">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12 col-sm-12">
+      <div class="col-md-4">
         <h1>GCL Online Report Verification</h1>
-        <br/>
-        <p>
-          Please fill in all the fields below exactly as they appear on the document to facilitate authenticating your report. All fields are case sensitive.
-           If you encounter any difficulty in authenticating your report, please conatct us
-         </p>
+        <h4 id="noData"></h4>
+        <div class="my-3 img-gem">
+          <img src="" alt="" class="img-fluid" id="imgGem" width="80px" height="80px">
+        </div>
+        <table class="table borderless">
+          <tbody>
+            <tr>
+              <td width="100">No.</td>
+              <td id="repno"></td>
+            </tr>
+            <tr>
+              <td width="100">Date</td>
+              <td id="date"></td>
+            </tr>
+            <tr>
+              <td width="100">Object</td>
+              <td id="object"></td>
+            </tr>
+            <tr>
+              <td width="100">Identification</td>
+              <td id="identification"></td>
+            </tr>
+            <tr>
+              <td width="100">Weight</td>
+              <td id="weight"></td>
+            </tr>
+            <tr>
+              <td width="100">Dimensions</td>
+              <td id="dimension"></td>
+            </tr>
+            <tr>
+              <td width="100">Cut</td>
+              <td id="cut"></td>
+            </tr>
+            <tr>
+              <td width="100">Shape</td>
+              <td id="shape"></td>
+            </tr>
+            <tr>
+              <td width="100">Color</td>
+              <td id="color"></td>
+            </tr>
+            <tr>
+              <td width="100">Comment</td>
+              <td id="comment"></td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="hidden" value="<?php echo $reportno; ?>" id="reportid">
       </div>
-
-    </div>
-    <div class="row mt-4">
-      <div class="col-md-3">
-        <form action="<?php echo base_url(); ?>report-verification" method="post">
-          <div class="form-group">
-            <label for="report">GCL Report Number</label>
-            <input type="text" class="form-control" id="repno" name="repno" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label for="report">GCL Report Date</label>
-            <input type="date" class="form-control" id="re" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label for="report">Security Check</label>
-            <?php echo $captcha; ?>
-
-            <input type="text" class="form-control mt-2" id="rep" autocomplete="off">
-          </div>
-          <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $hash; ?>" />
-          <input type="submit" value="Verify" class="btn btn-primary mt-2">
-        </form>
-      </div>
-
     </div>
   </div>
+
 </section>
-<!-- /. Report -->
-
-<!--  -->
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col col-lg-2">
-
-    </div>
-  </div>
-</div>
-<!-- /. -->
-
-<div class="py-5"></div>
-
 <script type="text/javascript">
-  $(document).ready(function() {
-    $(document).on('click', '#submit', function(event) {
-      event.preventDefault();
-      var repno = $('#repno').val();
-
-      if (repno == '') {
-        alert('Please Enter your Certificate number');
-      }
-
-    });
-  });
+  var baseurl = "<?php echo base_url(); ?>";
+  report();
 </script>

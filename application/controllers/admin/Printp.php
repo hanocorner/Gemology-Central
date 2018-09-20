@@ -12,7 +12,7 @@ class Printp extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->library('session');
+    $this->load->library(array('session', 'encrypt'));
     $this->load->helper('url');
     $this->load->model('Print_model');
 
@@ -69,11 +69,11 @@ class Printp extends CI_Controller
   public function qr_generator($id)
   {
     $this->load->library('ciqrcode');
+    $encrypted_id = urlencode($this->encrypt->encode($id));
 
     $img_url="";
-
-    $qr_image=$id.'.png';
-    $params['data'] = base_url()."report/".$id;
+    $qr_image = $id.'.png';
+    $params['data'] = base_url()."report/".$encrypted_id;
     $params['level'] = 'H';
     $params['size'] = 8;
     $params['savename'] ="assets/admin/images/qr/".$qr_image;

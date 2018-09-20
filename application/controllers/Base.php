@@ -12,12 +12,13 @@ class Base extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->model('Article_model');
+    $this->load->model(array('Article_model','Base_model'));
 
     $config = array('layoutManager'=>'public');
     $this->load->library('layout', $config);
+    $this->load->library(array('session', 'encrypt'));
 
-    $this->load->helper('captcha');
+    $this->load->helper(array('captcha', 'url', 'form'));
   }
 
   /**
@@ -53,32 +54,51 @@ class Base extends CI_Controller
   }
 
   /*****/
-  public function report()
+  public function report($id = false)
   {
-    $data['captcha'] = $this->captcha();
-    $data['name'] = $this->security->get_csrf_token_name();
-    $data['hash'] = $this->security->get_csrf_hash();
-
+    $data['reportno'] = $this->uri->segment(2);
     $this->layout->set_title('GRS Report Verfication');
-    $this->layout->view('public/report/index', $data, 'public/layouts/public');
+    $this->layout->add_include('assets/public/js/base.js');
+    return $this->layout->view('public/report/index', $data, 'public/layouts/public');
+  }
+
+  public function report_data()
+  {
+    $id = $this->input->post('reportno');
+    $id = urldecode($this->encrypt->decode($id));
+    $data = $this->Base_model->get_labreport_by_id($id);
+    echo json_encode($data);
   }
 
   /****/
   public function report_verification()
   {
+    $data['captcha'] = $this->captcha();
     $this->layout->set_title('GRS Report Verfication');
-    $report_no = $this->input->post('repno');
-    $result = $this->Article_model->get_report_data($report_no);
+    $this->layout->add_include('assets/public/js/base.js');
+    return $this->layout->view('public/report/manuel_form', $data, 'public/layouts/public');
+  }
 
-    if(is_null($result))
+  /*****/
+  public function authenticating_report()
+  {
+    $repono = $this->input->post('repono');
+    $weight = $this->input->post('weight');
+
+    $this->form_validation->set_rules('repono','Report No.','trim|required|alpha_dash');
+    $this->form_validation->set_rules('weight','Weight','trim|required');
+
+    if ($this->form_validation->run() == FALSE) return $this->report_verification();
+
+    if($this->Base_model->auth_report_data($repono, $weight))
     {
-      $this->layout->view('public/report/no_report', '', 'public/layouts/public');
-      return false;
+      $repono = urlencode($this->encrypt->encode($repono));
+      redirect('report/'.$repono);
     }
     else
     {
-      $data['data'] = $result;
-      $this->layout->view('public/report/report_verified', $data, 'public/layouts/public');
+      $this->set_flashdata('status', "Report you submit doesn't exist, Please recheck ");
+      return $this->report_verification();
     }
   }
 
@@ -86,7 +106,7 @@ class Base extends CI_Controller
   public function captcha()
   {
     $vals = array(
-        'word'          => 'World',
+        'word'          => rand(10, 10000),
         'img_path'      => './assets/public/images/captcha/',
         'img_url'       =>  base_url().'/assets/public/images/captcha/',
         'font_path'     => './assets/public/fonts/times/TimesNewRomanPSMT.woff',

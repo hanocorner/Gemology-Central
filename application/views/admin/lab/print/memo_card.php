@@ -71,7 +71,7 @@
 
             <tr>
               <td width="100">Dimensions</td>
-              <td width="130">
+              <td width="150">
                 <?php echo $data[0]->rep_gemWidth.' x '.$data[0]->rep_gemHeight. ' x '. $data[0]->rep_gemLength.' (mm) '; ?>
               </td>
             </tr>
@@ -98,9 +98,7 @@
           <img src="<?php echo base_url(); ?>assets/admin/images/qr/<?php echo $qrcode; ?>" alt="QRCode Image" class="qr-code">
         </div>
       </div>
-      <div class="footer">
-
-      </div>
+      <div class="footer" style="margin-top:2px;"></div>
     </section>
   <a href="<?php echo base_url(); ?>admin/customer" class="back-btn">Go Back</a>
 </body>

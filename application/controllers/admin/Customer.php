@@ -82,7 +82,7 @@ class Customer extends CI_Controller
       if($this->Customer_model->get_affected_rows() > 0)
       {
         $this->session->set_userdata('customerid', $customer_id);
-        redirect('admin/report');
+        redirect('admin/customer');
       }
       else
       {

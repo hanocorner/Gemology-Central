@@ -62,5 +62,6 @@ $route['developer'] = 'developer/base';
 $route['blog/(:any)']  = 'blog/article/$1';
 
 $route['about'] = 'base/about';
-$route['report'] = 'base/report';
 $route['report-verification'] = 'base/report-verification';
+$route['authenticating-report'] = 'base/authenticating-report';
+$route['report/(:any)']  = 'base/report/$1';

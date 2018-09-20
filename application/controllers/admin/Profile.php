@@ -33,18 +33,18 @@ class Profile extends CI_Controller
   {
     $this->layout->set_title('Dashboard');
 
-    $counts = $this->System_model->counts();
+    /*$counts = $this->System_model->counts();
 
     if($counts == 0)
     {
       $data['total_unpaid_certificates'] = 0;
-      $data['noOfComments'] = 0;      
+      $data['noOfComments'] = 0;
     }
     else
     {
       $data['total_unpaid_certificates'] = $counts[0]->totalCertificates;
       $data['noOfComments'] = $counts[0]->totalComments;
-    }
+    }*/
 
     $admin_log = $this->System_model->log_data($_SESSION['user_id']);
 
