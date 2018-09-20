@@ -29,6 +29,11 @@
       .back-btn:hover{
         text-decoration: none;
       }
+      @media print {
+        .back-btn {
+          display: none;
+        }
+      }
     </style>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/print/paper.min.css">
@@ -40,7 +45,12 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>@page { size: A4 landscape }</style>
+    <style>
+    @page { size: A4 landscape }
+    @page :right {
+      margin: 30pt 0 10pt 0;
+    }
+    </style>
 
   </head>
   <body class="A4 landscape" onload="window.print();">

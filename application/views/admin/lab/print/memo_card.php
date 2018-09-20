@@ -14,6 +14,12 @@
           font-weight: normal;
           font-style: normal;
       }
+      @media print {
+        a.back-btn {
+          display: none;
+        }
+      }
+      
     </style>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/print/paper.min.css">
@@ -100,6 +106,6 @@
       </div>
       <div class="footer" style="margin-top:2px;"></div>
     </section>
-  <a href="<?php echo base_url(); ?>admin/customer" class="back-btn">Go Back</a>
+  <!-- <a href="<?php echo base_url(); ?>admin/customer" class="back-btn">Go Back</a> -->
 </body>
 </html>
