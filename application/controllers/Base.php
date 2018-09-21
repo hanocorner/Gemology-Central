@@ -97,7 +97,7 @@ class Base extends CI_Controller
     }
     else
     {
-      $this->set_flashdata('status', "Report you submit doesn't exist, Please recheck ");
+      $this->session->set_flashdata('status', "Report you submit doesn't exist, Please recheck ");
       return $this->report_verification();
     }
   }

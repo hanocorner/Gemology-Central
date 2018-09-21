@@ -83,7 +83,7 @@
               GCL provides the service of report verification for a higher assurance, by using this service you will be able to quickly confirm that the details on your report matches to the details  in GCL report database
             </p>
             <div class="py-1"></div>
-            <a href="<?php echo base_url();?>report" class="btn btn-primary">Click Here</a>
+            <a href="<?php echo base_url();?>report-verification" class="btn btn-primary">Click Here</a>
           </div>
         </div>
     </div>

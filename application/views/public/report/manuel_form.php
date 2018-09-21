@@ -11,29 +11,27 @@
       </div>
     </div>
     <div class="row mt-4">
-      <div class="col-md-6">
-
-        <?php if(validation_errors() !=''): ?>
+      <?php if(validation_errors() !=''): ?>
+        <div class="alert alert-danger" role="alert">
+          <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
+          <?php echo validation_errors();  ?>
+        </div>
+      <?php endif; ?>
+        <?php if(isset($_SESSION['status'])): ?>
           <div class="alert alert-danger" role="alert">
             <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo validation_errors();  ?>
+            <?php echo $_SESSION['status']; ?>
           </div>
         <?php endif; ?>
-          <?php if(isset($_SESSION['status'])): ?>
-            <div class="alert alert-danger" role="alert">
-              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-              <?php echo $_SESSION['status']; ?>
-            </div>
-          <?php endif; ?>
-
+      <div class="col-md-3">
         <?php echo form_open('authenticating-report'); ?>
           <div class="form-group">
             <label for="report">GCL Report Number</label>
-            <input type="text" class="form-control" name="repono" id="repoNo" autocomplete="off">
+            <input type="text" class="form-control" name="repono" id="repoNo" autocomplete="off" value="<?php set_value('repono'); ?>">
           </div>
           <div class="form-group">
             <label for="report">GCL Report Weight</label>
-            <input type="text" class="form-control" name="weight" id="rWeight" autocomplete="off">
+            <input type="text" class="form-control" name="weight" id="rWeight" autocomplete="off" value="<?php set_value('weight'); ?>">
           </div>
           <div class="form-group">
             <label for="report">Security Check</label>
