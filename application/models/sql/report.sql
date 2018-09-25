@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
   `rep_shape` varchar(30) NOT NULL,
   `rep_color` varchar(30) NOT NULL,
   `rep_comment` varchar(200) NOT NULL,
+  `rep_other` varchar(200) NOT NULL,
   PRIMARY KEY (`reportid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -49,4 +50,14 @@ CREATE TABLE IF NOT EXISTS `tbl_gemstone_report` (
   `gsr_paymentStatus` tinyint(1) NOT NULL DEFAULT 0,
   `gsr_amount` decimal(8,2) NOT NULL,
   PRIMARY KEY (`gsrid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for `Verbal Gemstone Report`
+--
+CREATE TABLE IF NOT EXISTS `tbl_gem_verbal` (
+  `verbid`  varchar(20) NOT NULL,
+  `reportid` int(11) DEFAULT NULL,
+  `veb_date` date NOT NULL,
+  PRIMARY KEY (`verbid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

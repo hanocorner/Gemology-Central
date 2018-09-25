@@ -37,7 +37,7 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapsegemstone">
               <li>
-                <a href="#">Upcoming New Feature</a>
+                <a href="<?php echo base_url();?>admin/gemstone/search">Search Report</a>
               </li>
 
             </ul>

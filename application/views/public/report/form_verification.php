@@ -11,20 +11,10 @@
       </div>
     </div>
     <div class="row mt-4">
-      <?php if(validation_errors() !=''): ?>
-        <div class="alert alert-danger" role="alert">
-          <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-          <?php echo validation_errors();  ?>
-        </div>
-      <?php endif; ?>
-        <?php if(isset($_SESSION['status'])): ?>
-          <div class="alert alert-danger" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo $_SESSION['status']; ?>
-          </div>
-        <?php endif; ?>
-      <div class="col-md-3">
-        <?php echo form_open('authenticating-report'); ?>
+      <div class="col-md-4">
+        <div id="alertMsg"></div>
+        <form action="#" method="post" accept-charset="utf-8">
+          <input type="hidden" name="" value=""  id="csrfToken">
           <div class="form-group">
             <label for="report">GCL Report Number</label>
             <input type="text" class="form-control" name="repono" id="repoNo" autocomplete="off" value="<?php set_value('repono'); ?>">
@@ -37,10 +27,10 @@
             <label for="report">Security Check</label>
             <?php echo $captcha; ?>
 
-            <input type="text" class="form-control mt-2" id="rep" autocomplete="off">
+            <input type="text" class="form-control mt-2" id="captcha" autocomplete="off">
           </div>
 
-          <input type="submit" value="Verify" class="btn btn-primary mt-2" id="submitRepo">
+          <input type="submit" value="Verify Report" class="btn btn-primary mt-2" id="submitRepo">
         <?php echo form_close(); ?>
       </div>
 
@@ -48,6 +38,10 @@
   </div>
 </section>
 <!-- /. Report -->
-
-
 <div class="py-5"></div>
+
+<script type="text/javascript">
+  var baseurl = '<?php echo base_url(); ?>';
+  reportAuthentication();
+  create_csrf();
+</script>

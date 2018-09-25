@@ -1,16 +1,20 @@
 function report() {
+  var message = $('#messageBox');
   $.ajax({
-    url: baseurl +'base/report-data',
+    url: baseurl +'public/report/data',
     type: 'POST',
     dataType: 'json',
     data: {
+      'csrf_test_name':csrfhash,
       'reportno': $('#reportid').val()
     },
     success: function (data) {
       if(data == null) {
-        $('#noData').html("No Records Found");
+        message.html('<div class="alert alert-danger" role="alert"><strong><i class="fa fa-times-circle-o" aria-hidden="true"></i>&nbsp;&nbsp; Report not found</strong></div>');
+        $('#table').hide();
       }
       else {
+        message.html('<div class="alert alert-success" role="alert"><strong><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp; Your report is verfied</strong></div>');
         // ID according to Report Type
         if(typeof(data.gsrid) == "undefined") {
           $('#repno').html(data.memoid);
@@ -29,6 +33,7 @@ function report() {
         $('#dimension').html(data.rep_gemWidth + " x " + data.rep_gemHeight + " x " + data.rep_gemLength + " (mm) ");
         $('#shape').html(data.rep_shape);
         $('#comment').html(data.rep_comment);
+        //$('#qrCode').attr('src', baseurl + 'assets/admin/images/qr/'+data.rep_imagename).attr('alt', data.rep_identification);
       }
     },
     fail: function () {
@@ -38,35 +43,58 @@ function report() {
 
 }
 
-function verify_report() {
+function reportAuthentication() {
   var alertbox = $('#alertMsg');
+  
+  var error = '<div class="alert alert-danger" role="alert">'+
+              '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
+              '</div>';
+
+  var success = '<div class="alert alert-success" role="alert">'+
+                '<strong><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp; Authentication successful, Redirecting...</strong>'+
+                '</div>';
+
+  var info = '<div class="alert alert-primary" role="alert">'+
+              '<strong><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; Authenticating your report...</strong>'+
+              '</div>';
+
 
   $(document).on('click', '#submitRepo', function(event) {
     event.preventDefault();
     $.ajax({
-      url: baseurl + 'authenticating-report',
+      url: baseurl + 'public/report/form-authentication',
       type: 'POST',
       dataType: 'JSON',
       data: {
-        reportno: $('#repoNo').val(),
-        repweight: $('#rWeight').val()
+        'csrf_test_name':$('#csrfToken').val(),
+        'reportno': $('#repoNo').val(),
+        'repweight': $('#rWeight').val(),
+        'captcha': $('#captcha').val()
       },
       beforeSend: function () {
-        $('#alertMsg').html('<div class="alert alert-primary" role="alert">Checking your input data...</div>');
+        alertbox.html(info);
       },
       success: function (response) {
-        $('#alertMsg').html('<div class="alert alert-danger" role="alert">'+response+'</div>');
-        //alert(response);
-
-        if(response == 'success') {
-          window.location.href = baseurl;
+        if(!response.valid) {
+          alertbox.html(error);
+          $(response.message).insertAfter('strong');
         }
-
+        if (response.valid) {
+          alertbox.html(success);
+          setTimeout(function(){ window.location.href = baseurl + response.url; }, 2000);
+        }
+        create_csrf();
       },
       fail: function () {
         console.log("error");
       }
     });
 
+  });
+}
+
+function create_csrf() {
+  $.getJSON(baseurl + 'public/report/set-csrf', function(data) {
+    $("#csrfToken").attr('name', data.name).attr('value', data.hash);
   });
 }

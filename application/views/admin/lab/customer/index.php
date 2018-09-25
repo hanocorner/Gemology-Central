@@ -48,7 +48,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:searchfield-
 
     </div>
     <!-- /. Customer & Gem Data  -->
-
+    
   </div>
 </div>
 <!-- /.container-fluid-->

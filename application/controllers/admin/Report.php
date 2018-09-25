@@ -204,7 +204,7 @@ class Report extends CI_Controller
     if ($gsr_id < 1) return $gsr_id;
     return FALSE;
   }
-
+  
   /****/
   public function set_image_name($image, $img_name)
   {
@@ -452,6 +452,34 @@ class Report extends CI_Controller
       $memoid += 1;
       $memoid = str_pad($memoid, 6, '0', STR_PAD_LEFT);
       echo $prefix."-".$memoid;
+    }
+  }
+
+  /**
+   * Creating Memo Card ID for unique identification
+   *
+   * @param null
+   * @return id string
+   */
+  public function set_verbal_id()
+  {
+    $prefix = "VEB";
+    $number = 000000;
+
+    $verbalid = $this->Lab_model->get_memo_id();
+
+    if(is_null($verbalid))
+    {
+      $number += 1;
+      $numb = str_pad($number, 6, '0', STR_PAD_LEFT);
+      echo $prefix."-".$numb;
+    }
+    else
+    {
+      $verbalid = preg_replace('/[^0-9]/', '', $verbalid);
+      $verbalid += 1;
+      $verbalid = str_pad($verbalid, 6, '0', STR_PAD_LEFT);
+      echo $prefix."-".$verbalid;
     }
   }
 

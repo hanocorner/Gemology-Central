@@ -28,6 +28,7 @@ class Customer extends CI_Controller
 
   public function index()
   {
+    //$this->load->helper('');
     $this->layout->set_title('My Customer List');
 
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
@@ -35,7 +36,6 @@ class Customer extends CI_Controller
     $this->layout->add_include('assets/admin/js/customer.js');
 
     $data['form'] = array('class'=>'form-inline');
-
     $this->layout->view('admin/lab/customer/index', $data, 'admin/layouts/admin');
   }
 

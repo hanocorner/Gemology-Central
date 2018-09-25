@@ -7,7 +7,7 @@
 --
 -- Table structure for captcha
 --
-CREATE TABLE IF NOT EXISTS `captcha` (
+CREATE TABLE IF NOT EXISTS `tbl_captcha` (
   `captcha_id` bigint(13) unsigned NOT NULL auto_increment,
   `captcha_time` int(10) unsigned NOT NULL,
   `ip_address` varchar(45) NOT NULL,

@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Layout Title -->
     <title><?php echo $title; ?></title>
 
+    <link rel="icon" type="image/png" href="<?php echo base_url();?>assets/public/images/favicon.png">
+
     <!-- Core Css with Bootstrap, FontAwesome & Custom Css -->
-    <link href="<?php echo base_url();?>assets/admin/css/main.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/public/css/main.css" rel="stylesheet">
 
     <!-- Core Js Cdn  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-    <!-- Core Bootstrap Bundle Js with Popper and Jquery -->
-    <script src="<?php echo base_url();?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Jquery Core ui -->
-    <script src="<?php echo base_url();?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom Css or Js files -->
     <?php echo $this->layout->print_includes(); ?>
@@ -41,6 +42,6 @@
     <?php echo $footer; ?>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo base_url();?>assets/admin/js/sb-admin.min.js"></script>
+
   </body>
 </html>
