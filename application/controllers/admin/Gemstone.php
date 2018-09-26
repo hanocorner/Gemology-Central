@@ -34,12 +34,11 @@ class Gemstone extends CI_Controller
   /*****/
   public function search()
   {
-    $data['csrfhash'] = $this->security->get_csrf_hash();
     $this->layout->set_title('Search Report');
     $this->layout->add_include('assets/admin/js/gemstone.js');
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
 
-    return $this->layout->view('admin/lab/gemstone/search', $data, 'admin/layouts/admin');
+    return $this->layout->view('admin/lab/gemstone/search', '', 'admin/layouts/admin');
   }
 
   /****/
@@ -80,7 +79,7 @@ class Gemstone extends CI_Controller
         $values->rep_shape,
         $values->rep_comment,
         '#',
-        '<button type="button" class="btn btn-sm btn-primary" data-id="'.$values->repid.'" onclick="previewReport()" data-toggle="modal" data-target="#previewModal"><i class="fa fa-eye" aria-hidden="true"></i></button>&nbsp;&nbsp;
+        '<button type="button" class="btn btn-sm btn-primary" data-id="'.$values->repid.'" onclick="previewReport()"><i class="fa fa-eye" aria-hidden="true"></i></button>&nbsp;&nbsp;
         <button type="button" class="btn btn-sm btn-warning" data-action="search"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>&nbsp;&nbsp;
         <button type="button" class="btn btn-sm btn-danger" data-id="'.$values->repid.'" data-action="delete" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash-o" aria-hidden="true"></i></button>&nbsp;&nbsp;
         <input type="hidden" id="repid" value="'.$values->repid.'">
@@ -139,8 +138,8 @@ class Gemstone extends CI_Controller
   {
     $id = $this->input->post('repid');
     $report_type = $this->input->post('repoType');
-    $result = (array)$this->Gem_model->get_data_for_preview($id, $report_type);
-
+    $result = $this->Gem_model->get_data_for_preview($id, $report_type);
+    //$result = array('message'=>'Right');
     echo json_encode($result);
   }
 }

@@ -1,5 +1,7 @@
 $(function(){
 
+  create_csrf();
+
   var btnActions = {
     search:function (e){
       e.preventDefault();
@@ -10,10 +12,8 @@ $(function(){
       $('select').val('default');
       $('#dataTable').html('');
     },
-    preview:function () {
-      var id = $(this).data('id');
-      var reportType = $('select').val();
-      previewReport(id, reportType);
+    preClose: function () {
+      create_csrf();
     },
     delete: function () {
       var id = $(this).data('id');
@@ -75,7 +75,7 @@ function deleteReport(id, reportType)
     type: 'POST',
     data: {
       'repid': id,
-      'csrf_test_name':csrfhash,
+      'csrf_test_name':$('#csrfToken').val(),
       'repoType': reportType
     },
     success :function (data) {
@@ -92,6 +92,9 @@ function previewReport()
 {
   var id = $('#repid').val();
   var reportType = $('select').val();
+  var tbody = $('#previewResults');
+
+  $('#previewModal').modal({backdrop: 'static', keyboard: false});
 
   $.ajax({
     url: baseurl+'admin/gemstone/preview',
@@ -99,14 +102,33 @@ function previewReport()
     dataType: 'JSON',
     data: {
       'repid': id,
-      'csrf_test_name':csrfhash,
+      'csrf_test_name':$('#csrfToken').val(),
       'repoType': reportType
     },
+    beforeSend:function () {
+      tbody.html(null);
+    },
     success :function (data) {
-      $('#repNumber').html('GCL');
+      tbody.append('<tr><td><img src="'+baseurl+'assets/admin/images/gem/'+data.rep_imagename+'" alt="'+ data.memoid+'" width="80px" height="80px"></td></tr>');
+      tbody.append('<tr><td width="120"><strong>Number:</strong></td> <td>'+ data.memoid+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Date:</strong></td> <td>'+data.memoid+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Object:</strong></td> <td>'+data.rep_object+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Identification:</strong></td> <td>'+data.rep_identification+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Weight:</strong></td> <td>'+data.rep_weight+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Cut:</strong></td> <td>'+data.rep_cut+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Dimensions:</strong></td> <td>'+data.rep_gemWidth+' x '+data.rep_gemHeight+' x '+data.rep_gemLength+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Shape:</strong></td> <td>'+data.rep_shape+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Color:</strong></td> <td>'+data.rep_color+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Comment:</strong></td> <td>'+data.rep_comment+'</td></tr>');
+
     },
     fail :function () {
       console.log('error');
     }
+  });
+}
+function create_csrf() {
+  $.getJSON(baseurl + 'public/report/set-csrf', function(data) {
+    $("#csrfToken").attr('name', data.name).attr('value', data.hash);
   });
 }

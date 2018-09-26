@@ -60,29 +60,6 @@ class Printp extends CI_Controller
     return $this->load->view('admin/lab/print/certificate_report', $data);
   }
 
-  /**
-   * QR Code generator
-   *
-   * @param $gemid
-   * @return qr image url
-   */
-  public function qr_generator($id)
-  {
-    $this->load->library('ciqrcode');
-    $encrypted_id = urlencode($this->encrypt->encode($id));
-
-    $img_url="";
-    $qr_image = $id.'.png';
-    $params['data'] = base_url()."report/".$encrypted_id;
-    $params['level'] = 'H';
-    $params['size'] = 8;
-    $params['savename'] ="assets/admin/images/qr/".$qr_image;
-
-    if($this->ciqrcode->generate($params))
-    {
-      return $qr_image;
-    }
-    return false;
-  }
+  
 }
 ?>

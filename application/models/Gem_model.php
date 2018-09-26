@@ -205,7 +205,7 @@ class Gem_model extends CI_Model
         $this->db->join($this->tbl_memocard.' AS t2', 't1.reportid = t2.reportid');
         $this->db->where('t2.memoid', $id);
         $query = $this->db->get();
-        return $query->result();
+        return $query->row();
         break;
 
       case 'repo':

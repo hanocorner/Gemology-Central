@@ -57,22 +57,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="previewModalLabel">Preview</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div class="modal-body">
         <table>
-          <tbody>
-            <tr>
-              <td width="120">Number:</td>
-              <td id="repNumber" ></td>
-            </tr>
-          </tbody>
+          <tbody id="previewResults"></tbody>
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-action="preClose">Close</button>
       </div>
     </div>
   </div>
@@ -101,9 +93,10 @@
   </div>
 </div>
 <!-- /. Delete Modal -->
-<script type="text/javascript">
+
+<input type="hidden" name="" value="" id="csrfToken">
+<script>
   var baseurl = '<?php echo base_url(); ?>';
-  var csrfhash = '<?php echo $csrfhash; ?>';
 </script>
 <?php if(isset($_SESSION['success'])): ?>
   <script>

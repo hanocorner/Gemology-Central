@@ -61,6 +61,7 @@ class Report extends CI_Controller
    */
   public function add()
   {
+    $this->load->helper('download');
     $date = date('Y-m-d');
     $rep_mem_id = $this->input->post('rmid');
     $repo_type = $this->input->post('repo-type');
@@ -155,7 +156,9 @@ class Report extends CI_Controller
           $this->session->unset_userdata('customerid');
           if (isset($_POST['submit']))
           {
-            redirect('admin/customer');
+            $this->qr_generator($rep_mem_id);
+            force_download('GCL2018-091005.png','http://localhost/gem/assets/admin/images/qr/GCL2018-091005.png', TRUE);
+            //redirect('admin/customer');
           }
           elseif (isset($_POST['print']))
           {
@@ -204,7 +207,7 @@ class Report extends CI_Controller
     if ($gsr_id < 1) return $gsr_id;
     return FALSE;
   }
-  
+
   /****/
   public function set_image_name($image, $img_name)
   {
@@ -503,6 +506,31 @@ class Report extends CI_Controller
       return FALSE;
    }
    return TRUE;
+  }
+
+  /**
+   * QR Code generator
+   *
+   * @param $gemid
+   * @return qr image url
+   */
+  private function qr_generator($id)
+  {
+    $this->load->library('ciqrcode');
+    $encrypted_id = $id;
+
+    $img_url="";
+    $qr_image = $id.'.png';
+    $params['data'] = base_url()."report/".$encrypted_id;
+    $params['level'] = 'H';
+    $params['size'] = 8;
+    $params['savename'] ="assets/admin/images/qr/".$qr_image;
+
+    if($this->ciqrcode->generate($params))
+    {
+      return $qr_image;
+    }
+    return false;
   }
 }
 ?>
