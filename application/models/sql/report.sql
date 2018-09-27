@@ -61,3 +61,14 @@ CREATE TABLE IF NOT EXISTS `tbl_gem_verbal` (
   `veb_date` date NOT NULL,
   PRIMARY KEY (`verbid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for `Gemstone Image`
+--
+CREATE TABLE IF NOT EXISTS `tbl_gem_image` (
+  `imgid`  varchar(20) NOT NULL,
+  `img_gemstone` text NOT NULL,
+  `img_qrcode` text NOT NULL,
+  `img_date` date NOT NULL
+  PRIMARY KEY (`verbid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

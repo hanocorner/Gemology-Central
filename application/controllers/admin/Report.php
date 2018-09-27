@@ -3,7 +3,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Report extends CI_Controller
 {
   /**
-   * Constructor (loading the important classes)
+   * System generated report id
+   *
+   * @var string
+   */
+  private $_id = '';
+
+  /**
+   * Report type selected by the user
+   *
+   * @var string
+   */
+  private $_rep_type = '';
+
+  /**
+   * Customer id
+   *
+   * @var string
+   */
+  private $_customer_id = '';
+
+  /**
+   * Current date
+   *
+   * @var date
+   */
+  public $_date = date('Y-m-d');
+  
+  /**
+   * Constructor initializing  all the the required classes
    *
    * @param none
    * @return void
@@ -156,9 +184,10 @@ class Report extends CI_Controller
           $this->session->unset_userdata('customerid');
           if (isset($_POST['submit']))
           {
-            $this->qr_generator($rep_mem_id);
-            force_download('GCL2018-091005.png','http://localhost/gem/assets/admin/images/qr/GCL2018-091005.png', TRUE);
-            //redirect('admin/customer');
+            $qr = $this->qr_generator($rep_mem_id);
+            $data = file_get_contents(base_url().'assets/admin/images/qr/'.$qr);
+            force_download($qr, $data);
+            redirect('admin/customer');
           }
           elseif (isset($_POST['print']))
           {
