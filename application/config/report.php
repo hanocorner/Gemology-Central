@@ -3,13 +3,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
-| Gemstone report
+| Default id items
+|--------------------------------------------------------------------------
+|
+| This set default items for an id
+|
+*/
+$config['default_prefix'] = 'GCL';
+$config['default_suffix'] =  100000;
+$config['default_separator'] = '-';
+
+$config['verbal_prefix'] = 'VEB';
+
+
+/*
+|--------------------------------------------------------------------------
+| Gemstone report image path
 |--------------------------------------------------------------------------
 |
 |
 */
-$config['report_prefix'] = 'GCL';
-$config['verbal_prefix'] = 'VEB';
-$config['str_separator'] = '-';
-$config['report_number'] =  100000;
+$config['img_path'] = './assets/images/';
 ?>

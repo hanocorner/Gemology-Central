@@ -78,7 +78,7 @@
       <label for="Gem" class="col-sm-2 col-form-label">Gemstone<sup>*</sup></label>
       <div class="col-sm-4">
         <div class="input-group input-group-sm mb-3">
-          <select class="form-control form-control-sm" id="newGem" name="gem-type">
+          <select class="form-control form-control-sm" id="newGem" name="gemid">
             <option value="0" selected>Choose...</option>
           </select>
           <div class="input-group-append">

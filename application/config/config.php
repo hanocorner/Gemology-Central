@@ -6,7 +6,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Application default time zone
 |--------------------------------------------------------------------------
 |
-|
 */
 date_default_timezone_set('Asia/Colombo');
 

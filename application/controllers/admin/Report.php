@@ -28,8 +28,8 @@ class Report extends CI_Controller
    *
    * @var date
    */
-  public $_date = date('Y-m-d');
-  
+  public $_date = null;
+
   /**
    * Constructor initializing  all the the required classes
    *
@@ -39,11 +39,11 @@ class Report extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
-    $this->load->library(array('session', 'pagination', 'table'));
+    $this->_date = date('Y-m-d');
 
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
+    $this->load->library(array('session', 'pagination', 'table'));
 
     $this->load->helper(array('url', 'form'));
     $this->load->model(array('Customer_model', 'Lab_model', 'Report_model'));
@@ -65,9 +65,7 @@ class Report extends CI_Controller
   {
     if (!$this->session->has_userdata('customerid')) redirect('admin/customer');
 
-    $cid = $this->session->customerid;
-    $result = $this->Customer_model->get_customer_by_id($cid);
-    if (!isset($result)) redirect('admin/customer');
+    $result = $this->Customer_model->get_customer_by_id($this->session->customerid);
 
     $data['cname'] = ucwords($result[0]->cus_firstname)." ".$result[0]->cus_lastname;
     $data['cid'] = $result[0]->custid;
@@ -90,10 +88,23 @@ class Report extends CI_Controller
   public function add()
   {
     $this->load->helper('download');
-    $date = date('Y-m-d');
-    $rep_mem_id = $this->input->post('rmid');
-    $repo_type = $this->input->post('repo-type');
-    $gem_type = $this->input->post('gem-type');
+    $this->config->load('report');
+
+    $this->_id = $this->input->post('rmid');
+    $this->_rep_type = $this->input->post('repo-type');
+
+    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
+    $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
+    $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('identification','Identification','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
+    $this->form_validation->set_rules('gemcut','Cut','trim');
+    $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
+    $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
+    $this->form_validation->set_rules('gemLength','Length','trim|decimal');
+    $this->form_validation->set_rules('color','Color','trim|alpha');
+    $this->form_validation->set_rules('shape','Shape','trim|alpha');
+    $this->form_validation->set_rules('comment','Comment','trim|callback_alpha_dash_space');
 
     if($repo_type == '0')
     {
@@ -109,12 +120,12 @@ class Report extends CI_Controller
 
     $repodata = array(
       'rep_customerID'=>$this->session->customerid,
-      'rep_date'=>$date,
-      'rep_type'=>$repo_type,
+      'rep_date'=>$this->_date,
+      'rep_type'=>$this->_rep_type,
       'rep_object'=>$this->input->post('object'),
       'rep_identification'=>$this->input->post('identification'),
       'rep_weight'=>$this->input->post('weight'),
-      'rep_gemID'=>$gem_type,
+      'rep_gemID'=>$this->input->post('gemid'),
       'rep_cut'=>$this->input->post('gemcut'),
       'rep_gemWidth'=>$this->input->post('gemWidth'),
       'rep_gemHeight'=>$this->input->post('gemHeight'),
@@ -124,18 +135,6 @@ class Report extends CI_Controller
       'rep_comment'=>$this->input->post('comment')
     );
 
-    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
-    $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
-    $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
-    $this->form_validation->set_rules('identification','Identification','trim|required|callback_alpha_dash_space');
-    $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
-    $this->form_validation->set_rules('gemcut','Cut','trim');
-    $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
-    $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
-    $this->form_validation->set_rules('gemLength','Length','trim|decimal');
-    $this->form_validation->set_rules('color','Color','trim|alpha');
-    $this->form_validation->set_rules('shape','Shape','trim|alpha');
-    $this->form_validation->set_rules('comment','Comment','trim|callback_alpha_dash_space');
 
     $image = $_FILES['imagegem']['name'];
     $imgnewname = $this->set_image_name($image, $rep_mem_id);

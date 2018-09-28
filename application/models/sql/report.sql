@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `tbl_gemstone_report` (
 -- Table structure for `Verbal Gemstone Report`
 --
 CREATE TABLE IF NOT EXISTS `tbl_gem_verbal` (
-  `verbid`  varchar(20) NOT NULL,
+  `verbid` varchar(20) NOT NULL,
   `reportid` int(11) DEFAULT NULL,
   `veb_date` date NOT NULL,
   PRIMARY KEY (`verbid`)
@@ -66,9 +66,10 @@ CREATE TABLE IF NOT EXISTS `tbl_gem_verbal` (
 -- Table structure for `Gemstone Image`
 --
 CREATE TABLE IF NOT EXISTS `tbl_gem_image` (
-  `imgid`  varchar(20) NOT NULL,
+  `imgid` int(11) NOT NULL AUTO_INCREMENT,
   `img_gemstone` text NOT NULL,
   `img_qrcode` text NOT NULL,
-  `img_date` date NOT NULL
-  PRIMARY KEY (`verbid`)
+  `reportid` int(11) DEFAULT NULL,
+  `img_date` date NOT NULL,
+  PRIMARY KEY (`imgid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
