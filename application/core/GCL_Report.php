@@ -12,23 +12,14 @@ class GCL_Report extends CI_Controller
   /*****/
   protected $_id = '';
 
-  /****/
-  protected $_title = '';
+  /*****/
+  protected $_report_type = '';
 
   /****/
-  protected $_result = null;
+  protected $_result = array();
 
   /****/
   protected $_data = array();
-
-  /****/
-  protected $_date_format = 'Y-m-d';
-
-  /****/
-  private $_renamed_image = null;
-
-  /*****/
-  private $_file_path = null;
 
   /****/
   public $_json_reponse = array();
@@ -41,8 +32,6 @@ class GCL_Report extends CI_Controller
     $this->load->helper(array('form'));
     $this->load->model(array('Customer_model'));
     $this->config->load('report');
-
-
   }
 
   /*****/
@@ -84,17 +73,7 @@ class GCL_Report extends CI_Controller
     return true;
   }
 
-  /****/
-  public function set_report_type($report_type)
-  {
-    $this->_report_type = $report_type;
-  }
 
-  /****/
-  public function get_report_type()
-  {
-    return $this->_report_type;
-  }
 
   /*****/
   public function lab_data()
@@ -126,7 +105,7 @@ class GCL_Report extends CI_Controller
     $this->_data = array(
       'memoid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'mem_date'=>date($this->_date_format),
+      'mem_date'=>date('Y-m-d'),
       'mem_paymentStatus'=>$this->input->post('pstatus'),
       'mem_amount'=>$this->input->post('amount')
     );
@@ -160,7 +139,7 @@ class GCL_Report extends CI_Controller
   }
 
   /****/
-  public function image_data($value='')
+  public function image_data()
   {
     $this->_data = array(
       'reportid'=>$this->_labreport_id,
@@ -205,15 +184,6 @@ class GCL_Report extends CI_Controller
     return null;
   }
 
-  protected function set_image_path($dir_name)
-  {
-    $this->_file_path = $this->config->item('img_basepath').$dir_name;
-  }
-
-  private function get_image_path()
-  {
-    return $this->_file_path;
-  }
 
   /**
    * Creating Main directory inside images folder
@@ -224,13 +194,21 @@ class GCL_Report extends CI_Controller
    */
   public function create_main_directory()
   {
-    if (!file_exists($this->get_image_path()))
+    if (file_exists($this->config->item('img_basepath')) || file_exists($this->config->item('img_basepath').'Certificate' || file_exists($this->config->item('img_basepath').'Verbal')
+    if($this->_report_type == 'memo')
     {
-      if(!mkdir($this->get_image_path(), 0777, true)) return false;
-
-      return true;
+      $file_path = $this->config->item('img_basepath').'Memocard';
     }
-    return;
+    elseif ($this->_report_type == 'repo')
+    {
+      $file_path = $this->config->item('img_basepath').'Certificate';
+    }
+    elseif ($this->_report_type == 'verb')
+    {
+      $file_path = $this->config->item('img_basepath').'Verbal';
+    }
+
+    mkdir($file_path, 0777, true)
   }
 
   /**

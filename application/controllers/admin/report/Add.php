@@ -43,7 +43,7 @@ class Add extends GCL_Report
   public function insert_todb()
   {
     $this->_id = $this->input->post('rmid');
-    $this->set_report_type($this->input->post('repo-type'));
+    $this->_report_type = $this->input->post('repo-type');
 
     if(!$this->form_verification())
     {
@@ -60,10 +60,14 @@ class Add extends GCL_Report
       return false;
     }
 
+    $this->create_main_directory();
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
     {
-      $this->set_image_path($dir_name);
-      $this->_file_name = $_FILES['imagegem']['name'];
+      $this->set_image_path();
+
+
+
+      //$this->_file_name = $_FILES['imagegem']['name'];
       $this->_renamed_image = $this->set_imagename();
       $upload = $this->upload_image('imagegem');
       if($upload != null) return $this->set_message($upload);
