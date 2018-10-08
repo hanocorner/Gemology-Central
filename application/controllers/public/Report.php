@@ -84,23 +84,19 @@ class Report extends CI_Controller
     {
       $json = array('valid'=>false, 'message'=>validation_errors());
       echo json_encode($json);
-      return false;
     }
 
     if($this->Report_model->get_captcha($this->input->post('captcha'), $time, $this->input->ip_address()) == 0)
     {
       $json = array('valid'=>false, 'message'=>'<p>Incorrect captcha combination</p>');
       echo json_encode($json);
-      return false;
     }
 
     if($this->Report_model->auth_report_data($repono, $weight))
     {
-      $repono = urlencode($this->encrypt->encode($repono));
       $url = 'report/'.$repono;
       $json = array('valid'=>true, 'url'=>$url);
       echo json_encode($json);
-      return true;
     }
     else
     {
@@ -123,7 +119,6 @@ class Report extends CI_Controller
         'word'          => rand(10, 10000),
         'img_path'      => './assets/public/images/captcha/',
         'img_url'       =>  base_url().'/assets/public/images/captcha/',
-        'font_path'     => './assets/public/fonts/times/TimesNewRomanPSMT.woff',
         'img_width'     => '150',
         'img_height'    => 30,
         'expiration'    => 7200,
@@ -176,7 +171,6 @@ class Report extends CI_Controller
   public function data()
   {
     $id = $this->input->post('reportno');
-    $id = urldecode($this->encrypt->decode($id));
     $data = $this->Report_model->get_labreport_by_id($id);
     echo json_encode($data);
   }

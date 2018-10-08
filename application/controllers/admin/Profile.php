@@ -44,7 +44,7 @@ class Profile extends CI_Controller
     {
       $data['total_unpaid_certificates'] = $counts[0]->totalCertificates;
       $data['noOfComments'] = $counts[0]->totalComments;
-    }*/
+    }
 
     $admin_log = $this->System_model->log_data($_SESSION['user_id']);
 
@@ -53,10 +53,8 @@ class Profile extends CI_Controller
       "lastLogin"=>date("F jS, Y", strtotime($admin_log->log_timestamp)),
       "lastUpdated"=>date("F jS, Y", strtotime($admin_log->log_userModified)),
       "ipAddress"=>$admin_log->log_ipAddress
-    );
-
-    $this->layout->add_include('assets/admin/js/notify.js');
-
+    );*/
+    $data['username'] = $this->session->username;
     $this->layout->view('admin/profile', $data, 'admin/layouts/admin');
   }
 

@@ -34,8 +34,12 @@
               <td id="object"></td>
             </tr>
             <tr>
-              <td width="120"><strong>Identification:</strong></td>
-              <td id="identification"></td>
+              <td width="120"><strong>Variety:</strong></td>
+              <td id="variety"></td>
+            </tr>
+            <tr>
+              <td width="120"><strong>Species/Group:</strong></td>
+              <td id="spgroup"></td>
             </tr>
             <tr>
               <td width="120"><strong>Weight:</strong></td>
@@ -46,36 +50,38 @@
               <td id="dimension"></td>
             </tr>
             <tr>
-              <td width="120"><strong>Cut:</strong></td>
-              <td id="cut"></td>
-            </tr>
-            <tr>
-              <td width="120"><strong>Shape:</strong></td>
-              <td id="shape"></td>
+              <td width="120"><strong>Shape & Cut:</strong></td>
+              <td id="shapecut"></td>
             </tr>
             <tr>
               <td width="120"><strong>Color:</strong></td>
               <td id="color"></td>
             </tr>
             <tr>
-              <td width="120"><strong>Comment:</strong></td>
+              <td width="120"><strong>Comments:</strong></td>
               <td id="comment"></td>
             </tr>
           </tbody>
         </table>
-        <div class="my-4">
-          <p>&nbsp; <strong>NOTE:</strong>&nbsp; QR code contains a direct link to this report's verification page.</p><br/>
-        <!--   <img src="" alt="" id="qrCode"> -->
-        </div>
+        <div class="my-4"></div>
         <input type="hidden" value="<?php echo $reportno;?>" id="reportid">
       </div>
     </div>
   </div>
 
 </section>
+<?php if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443): ?>
+  <script type="text/javascript">
+    var baseurl = "<?php echo 'https://gemologycentral.com/'; ?>";
+  </script>
+<?php else: ?>
+  <script type="text/javascript">
+    var baseurl = "<?php echo 'http://gemologycentral.com/'; ?>";
+  </script>
+<?php endif; ?>
+
 <script type="text/javascript">
   var csrfname = '<?php echo $csrfname; ?>';
   var csrfhash = '<?php echo $csrfhash; ?>';
-  var baseurl = "<?php echo base_url(); ?>";
   report();
 </script>

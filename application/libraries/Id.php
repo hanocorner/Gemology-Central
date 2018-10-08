@@ -14,21 +14,35 @@ class Id
    *
    * @var string
    */
-  private $_prefix = '';
+  private $_prefix = 'DEF';
 
   /**
    * Six digit number for unique identification
    *
    * @var int
    */
-  private $_suffix = (int)100000;
+  private $_suffix = 100000;
 
   /**
-   * Id format
+   * Is template set
+   *
+   * @var bool
+   */
+  private $_templated = false;
+
+  /**
+   * Template Options
    *
    * @var string
    */
-  private $_template = '';
+  private $_options = '';
+
+  /**
+   * Last Id from DB
+   *
+   * @var mixed
+   */
+  private $_lastid = null;
 
   /**
    * Constructor for this class & module initialization
@@ -39,43 +53,75 @@ class Id
   public function __construct()
   {
     $this->CI =& get_instance();
-    $this->config->load('report');
-  }
+    $this->CI->config->load('report');
 
-  /****/
-  public function set_template($template = array())
-  {
-    if(!is_array($template)) return;
-    $this->_template = $template;
-
-    $this->_prefix.$this->_suffix;
-
-
-  }
-  /*****/
-  public function create_id($report_type)
-  {
-    $this->config->item('item_name');
-
-    $prefix = "VEB";
-    $number = 000000;
-
-    $verbalid = $this->Lab_model->get_memo_id();
-
-    if(is_null($verbalid))
+    if($this->CI->config->item('default_prefix') && $this->CI->config->item('default_suffix'))
     {
-      $number += 1;
-      $numb = str_pad($number, 6, '0', STR_PAD_LEFT);
-      echo $prefix."-".$numb;
+      $this->_prefix = $this->CI->config->item('default_prefix');
+      $this->_suffix = $this->CI->config->item('default_suffix');
+    }
+  }
+
+  /*****/
+  public function create_id()
+  {
+    $this->_suffix = $this->increment_id();
+
+    if($this->_templated)
+    {
+      return $this->_prefix.$this->_options.$this->_suffix;
     }
     else
     {
-      $verbalid = preg_replace('/[^0-9]/', '', $verbalid);
-      $verbalid += 1;
-      $verbalid = str_pad($verbalid, 6, '0', STR_PAD_LEFT);
-      echo $prefix."-".$verbalid;
+      return $this->default_id();
+    }
+
+  }
+
+  /****/
+  public function set_lastid($lastid = null)
+  {
+    $this->_lastid = $lastid;
+  }
+
+  /*****/
+  public function set_format($format = array())
+  {
+    foreach ($format as $key => $value) {
+      if(isset($format[$key]))
+      {
+        $this->_options .= $value;
+        $this->_templated = true;
+      }
+      else
+      {
+        $this->_templated = false;
+      }
+    }
+    return $this->_options;
+  }
+
+  /*****/
+  protected function increment_id()
+  {
+    if(is_null($this->_lastid))
+    {
+      $this->_suffix += 1;
+      return $this->_suffix;
+    }
+    else
+    {
+      $this->_suffix = preg_replace('/[^0-9]/', '', $this->_lastid);
+      $this->_suffix = substr($this->_suffix, -6);
+      $this->_suffix += 1;
+      return $this->_suffix;
     }
   }
 
+  /*****/
+  protected function default_id()
+  {
+    return $this->_prefix.$this->_suffix;
+  }
 }
 ?>

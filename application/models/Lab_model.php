@@ -63,6 +63,26 @@ class Lab_model extends CI_Model
   }
 
   /**
+   * Fetcing existing memo card id to generate a new id
+   *
+   * @param none
+   * @return id | string
+   */
+  public function get_verb_id()
+  {
+    $this->db->select("verbid");
+    $this->db->from('tbl_gem_verbal');
+    $this->db->order_by("verbid", "DESC");
+    $this->db->limit(1);
+
+    $query = $this->db->get();
+    $row = $query->row();
+
+    if(isset($row->verbid)) return $row->verbid;
+    return null;
+  }
+
+  /**
    * Fetcing existing lab report id
    *
    * @param $customerid | string

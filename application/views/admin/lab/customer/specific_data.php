@@ -2,7 +2,7 @@
 <div class="cg-data">
   <?php if(isset($empty)): ?>
     <div class="d-flex align-items-center">
-      <p style="margin-bottom:0;"><?php echo $empty; ?></p>&nbsp;&nbsp; <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-primary">
+      <p style="margin-bottom:0;"><?php echo $empty; ?></p>&nbsp;&nbsp; <a href="<?php echo base_url(); ?>admin/report/add" class="btn btn-sm btn-primary">
         <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp; Add Report
       </a>
       <?php return false; ?>
@@ -12,7 +12,7 @@
   <div class="cs-data mx-auto my-3">
     <div class="float-right cs-id">
        <h4>#<?php echo $customer->custid; ?></h4>
-       <a href="<?php echo base_url(); ?>admin/report" class="btn btn-sm btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add Report</a>
+       <a href="<?php echo base_url(); ?>admin/report/add" class="btn btn-sm btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add Report</a>
     </div>
     <div class="d-flex align-items-center ">
       <div class="d-block mr-2">
@@ -44,7 +44,7 @@
         <th scope="col">Object</th>
         <th scope="col">Weight</th>
         <th scope="col">Color</th>
-        <th scope="col">Identification</th>
+        <th scope="col">Variety</th>
         <th scope="col">Payment Status</th>
         <th scope="col">Action</th>
       </tr>
@@ -57,7 +57,7 @@
         <td><?php echo $memo->rep_object; ?></td>
         <td><?php echo $memo->rep_weight; ?></td>
         <td><?php echo $memo->rep_color; ?></td>
-        <td><?php echo $memo->rep_identification; ?></td>
+        <td><?php echo $memo->rep_variety; ?></td>
         <?php if($memo->mem_paymentStatus == '0'): ?>
           <td style="color:rgb(209,70,83);"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp; Unpaid</td>
         <?php endif; ?>
@@ -78,7 +78,7 @@
               </div>
             </div> -->
             <a href="<?php echo base_url(); ?>admin/report/edit/memo/<?php echo $memo->memoid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
-            &nbsp;<a href="<?php echo base_url(); ?>admin/printp/memocard/<?php echo $memo->memoid; ?>" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
+            &nbsp;<a href="#" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>
       </tr
@@ -103,7 +103,7 @@
         <th scope="col">Object</th>
         <th scope="col">Weight</th>
         <th scope="col">Color</th>
-        <th scope="col">Identification</th>
+        <th scope="col">Variety</th>
         <th scope="col">Payment Status</th>
         <th scope="col">Action</th>
       </tr>
@@ -115,7 +115,7 @@
         <td><?php echo $cert->rep_object; ?></td>
         <td><?php echo $cert->rep_weight; ?></td>
         <td><?php echo $cert->rep_color; ?></td>
-        <td><?php echo $cert->rep_identification; ?></td>
+        <td><?php echo $cert->rep_variety; ?></td>
         <?php if($cert->gsr_paymentStatus == '0'): ?>
           <td style="color:rgb(209,70,83);"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp; Unpaid</td>
         <?php endif; ?>
@@ -136,7 +136,7 @@
 
             </div> -->
             <a href="<?php echo base_url(); ?>admin/report/edit/repo/<?php echo $cert->gsrid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
-            &nbsp;<a href="<?php echo base_url(); ?>admin/printp/certificate/<?php echo $cert->gsrid; ?>" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
+            &nbsp;<a href="#" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>
       </tr>

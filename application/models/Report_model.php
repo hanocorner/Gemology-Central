@@ -47,6 +47,30 @@ class Report_model extends CI_Model
   }
 
   /**
+   * Inserting Lab Report Basic data
+   *
+   * @param $data Post values | array
+   * @return Last insert id
+   */
+  public function insert_verbal($data)
+  {
+    $this->db->insert('tbl_gem_verbal', $data);
+    return $this->db->affected_rows();
+  }
+
+  /**
+   * Inserting Lab Report Basic data
+   *
+   * @param $data Post values | array
+   * @return Last insert id
+   */
+  public function insert_image($data)
+  {
+    $this->db->insert('tbl_gem_image', $data);
+    return $this->db->affected_rows();
+  }
+
+  /**
    * This will return no.of affected rows after
    * insert/update/delete/select
    *
@@ -82,6 +106,7 @@ class Report_model extends CI_Model
     $this->db->select('*');
     $this->db->from('tbl_lab_report');
     $this->db->join('tbl_gem_memocard', 'tbl_lab_report.reportid = tbl_gem_memocard.reportid', 'left');
+    $this->db->join('tbl_gem_image', 'tbl_lab_report.reportid = tbl_gem_image.reportid', 'left');
     $this->db->where('memoid', $row[0]->repid);
     $query = $this->db->get();
 
@@ -90,6 +115,7 @@ class Report_model extends CI_Model
     $this->db->select('*');
     $this->db->from('tbl_lab_report');
     $this->db->join('tbl_gemstone_report', 'tbl_lab_report.reportid = tbl_gemstone_report.reportid', 'left');
+    $this->db->join('tbl_gem_image', 'tbl_lab_report.reportid = tbl_gem_image.reportid', 'left');
     $this->db->where('gsrid', $row[0]->repid);
     $query = $this->db->get();
 

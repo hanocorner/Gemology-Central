@@ -23,5 +23,6 @@ $config['verbal_prefix'] = 'VEB';
 |
 |
 */
-$config['img_path'] = './assets/images/';
+$config['img_basepath'] = './assets/images/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
 ?>

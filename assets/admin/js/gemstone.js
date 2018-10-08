@@ -25,6 +25,12 @@ $(function(){
       var reportType = $('select').val();
       deleteReport(repid, reportType);
       location.reload();
+    },
+    preview: function () {
+      var id = $(this).data('id');
+      var repoType = $('select').val();
+      previewReport(id, repoType)
+      create_csrf();
     }
   };
 
@@ -88,38 +94,35 @@ function deleteReport(id, reportType)
 
 }
 
-function previewReport()
+function previewReport(id, repoType)
 {
-  var id = $('#repid').val();
-  var reportType = $('select').val();
   var tbody = $('#previewResults');
 
   $('#previewModal').modal({backdrop: 'static', keyboard: false});
 
   $.ajax({
     url: baseurl+'admin/gemstone/preview',
-    type: 'POST',
+    type: 'GET',
     dataType: 'JSON',
     data: {
       'repid': id,
-      'csrf_test_name':$('#csrfToken').val(),
-      'repoType': reportType
+      'repoType': repoType
     },
     beforeSend:function () {
       tbody.html(null);
     },
     success :function (data) {
-      tbody.append('<tr><td><img src="'+baseurl+'assets/admin/images/gem/'+data.rep_imagename+'" alt="'+ data.memoid+'" width="80px" height="80px"></td></tr>');
-      tbody.append('<tr><td width="120"><strong>Number:</strong></td> <td>'+ data.memoid+'</td></tr>');
-      tbody.append('<tr><td width="120"><strong>Date:</strong></td> <td>'+data.memoid+'</td></tr>');
+      tbody.append('<tr><td><img src="'+baseurl+'assets/admin/images/gem/'+data.img_gemstone+'" alt="'+ data.repid+'" width="80px" height="80px"></td></tr>');
+      tbody.append('<tr><td width="120"><strong>Number:</strong></td> <td>'+ data.repid+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Date:</strong></td> <td>'+data.rep_date+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Object:</strong></td> <td>'+data.rep_object+'</td></tr>');
-      tbody.append('<tr><td width="120"><strong>Identification:</strong></td> <td>'+data.rep_identification+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Variety:</strong></td> <td>'+data.rep_variety+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Species/Group:</strong></td> <td>'+data.rep_spgroup+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Weight:</strong></td> <td>'+data.rep_weight+'</td></tr>');
-      tbody.append('<tr><td width="120"><strong>Cut:</strong></td> <td>'+data.rep_cut+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Dimensions:</strong></td> <td>'+data.rep_gemWidth+' x '+data.rep_gemHeight+' x '+data.rep_gemLength+'</td></tr>');
-      tbody.append('<tr><td width="120"><strong>Shape:</strong></td> <td>'+data.rep_shape+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Shape & Cut:</strong></td> <td>'+data.rep_shapecut+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Color:</strong></td> <td>'+data.rep_color+'</td></tr>');
-      tbody.append('<tr><td width="120"><strong>Comment:</strong></td> <td>'+data.rep_comment+'</td></tr>');
+      tbody.append('<tr><td width="120"><strong>Comments:</strong></td> <td>'+data.rep_comment+'</td></tr>');
 
     },
     fail :function () {

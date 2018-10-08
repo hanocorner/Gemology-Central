@@ -31,6 +31,13 @@ class Gem_model extends CI_Model
   protected $tbl_verbal = 'tbl_gem_verbal';
 
   /**
+   * Table Image Gemstone | child table
+   *
+   * @var string
+   */
+  protected $tbl_image = 'tbl_gem_image';
+
+  /**
    * Default Constructor init Database
    */
   public function __construct()
@@ -76,7 +83,7 @@ class Gem_model extends CI_Model
 
      switch ($value['reptype']) {
        case 'memo':
-          $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shape, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.memoid AS repid');
+          $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shapecut, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.memoid AS repid');
           $this->db->from($this->tbl_lab.' AS t1 ');
           $this->db->join($this->tbl_memocard.' AS t2', 't1.reportid = t2.reportid','left');
           $this->db->where('t1.rep_type', $value['reptype']);
@@ -106,7 +113,7 @@ class Gem_model extends CI_Model
          break;
 
        case 'repo':
-          $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shape, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.gsrid AS repid');
+          $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shapecut, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.gsrid AS repid');
           $this->db->from($this->tbl_lab.' AS t1');
           $this->db->join($this->tbl_report.' AS t2', 't1.reportid = t2.reportid','left');
           $this->db->where('t1.rep_type', $value['reptype']);
@@ -136,7 +143,7 @@ class Gem_model extends CI_Model
          break;
 
       case 'verb':
-         $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shape, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.verbid AS repid');
+         $this->db->select('t1.rep_weight, t1.rep_color, t1.rep_shapecut, t1.rep_comment, t1.rep_gemWidth, t1.rep_gemHeight, t1.rep_gemLength, t2.verbid AS repid');
          $this->db->from($this->tbl_lab.' AS t1');
          $this->db->join($this->tbl_verbal.' AS t2', 't1.reportid = t2.reportid','left');
          $this->db->where('t1.rep_type', $value['reptype']);
@@ -200,22 +207,33 @@ class Gem_model extends CI_Model
   {
     switch ($report_type) {
       case 'memo':
-        $this->db->select('*');
+        $this->db->select('t1.*, t2.memoid AS repid, t2.reportid, t3.img_gemstone, t3.reportid');
         $this->db->from($this->tbl_lab.' AS t1');
         $this->db->join($this->tbl_memocard.' AS t2', 't1.reportid = t2.reportid');
+        $this->db->join($this->tbl_image.' AS t3', 't1.reportid = t3.reportid', 'left');
         $this->db->where('t2.memoid', $id);
         $query = $this->db->get();
         return $query->row();
         break;
 
       case 'repo':
-
-        if($this->db->affected_rows() > 0) return true;
+        $this->db->select('t1.*, t2.gsrid AS repid, t2.reportid, t3.img_gemstone, t3.reportid');
+        $this->db->from($this->tbl_lab.' AS t1');
+        $this->db->join($this->tbl_report.' AS t2', 't1.reportid = t2.reportid');
+        $this->db->join($this->tbl_image.' AS t3', 't1.reportid = t3.reportid', 'left');
+        $this->db->where('t2.gsrid', $id);
+        $query = $this->db->get();
+        return $query->row();
         break;
 
       case 'verb':
-
-        if($this->db->affected_rows() > 0) return true;
+        $this->db->select('t1.*, t2.verbid AS repid, t2.reportid, t3.img_gemstone, t3.reportid');
+        $this->db->from($this->tbl_lab.' AS t1');
+        $this->db->join($this->tbl_verbal.' AS t2', 't1.reportid = t2.reportid');
+        $this->db->join($this->tbl_image.' AS t3', 't1.reportid = t3.reportid', 'left');
+        $this->db->where('t2.verbid', $id);
+        $query = $this->db->get();
+        return $query->row();
         break;
     }
   }

@@ -13,15 +13,14 @@ CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
   `rep_date` date NOT NULL,
   `rep_gemID` int(11) DEFAULT NULL,
   `rep_object` varchar(100) NOT NULL,
-  `rep_identification` varchar(100) NOT NULL,
+  `rep_variety` varchar(100) NOT NULL,
   `rep_type` varchar(04) NOT NULL,
-  `rep_imagename` text NOT NULL,
   `rep_weight` decimal(4,2) NOT NULL,
   `rep_gemWidth` decimal(4,2) NOT NULL,
   `rep_gemHeight` decimal(4,2) NOT NULL,
   `rep_gemLength` decimal(4,2) NOT NULL,
-  `rep_cut` varchar(100) NOT NULL,
-  `rep_shape` varchar(30) NOT NULL,
+  `rep_spgroup` varchar(100) NOT NULL,
+  `rep_shapecut` varchar(30) NOT NULL,
   `rep_color` varchar(30) NOT NULL,
   `rep_comment` varchar(200) NOT NULL,
   `rep_other` varchar(200) NOT NULL,
@@ -67,9 +66,9 @@ CREATE TABLE IF NOT EXISTS `tbl_gem_verbal` (
 --
 CREATE TABLE IF NOT EXISTS `tbl_gem_image` (
   `imgid` int(11) NOT NULL AUTO_INCREMENT,
+  `reportid` int(11) DEFAULT NULL,
   `img_gemstone` text NOT NULL,
   `img_qrcode` text NOT NULL,
-  `reportid` int(11) DEFAULT NULL,
   `img_date` date NOT NULL,
   PRIMARY KEY (`imgid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

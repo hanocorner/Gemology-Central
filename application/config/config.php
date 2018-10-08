@@ -122,7 +122,7 @@ $config['enable_hooks'] = FALSE;
 | https://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = '';
+$config['subclass_prefix'] = 'GCL_';
 
 /*
 |--------------------------------------------------------------------------
@@ -462,7 +462,7 @@ $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/comment/all',
-                             'base/report-data', 'admin/gemstone/add', 'admin/customer/customer-report');
+                             'base/report-data', 'admin/gemstone/add', 'admin/customer/customer-report', 'public/report/form-authentication');
 
 /*
 |--------------------------------------------------------------------------

@@ -24,7 +24,7 @@
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link btn btn-primary" href="<?php echo base_url(); ?>report-verification">Verify your Report</a>
+                <a class="nav-link btn btn-primary" href="<?php echo base_url(); ?>report">Verify your Report</a>
               </li>
             </ul>
           </div>

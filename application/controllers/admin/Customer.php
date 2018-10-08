@@ -81,7 +81,6 @@ class Customer extends CI_Controller
 
       if($this->Customer_model->get_affected_rows() > 0)
       {
-        $this->session->set_userdata('customerid', $customer_id);
         redirect('admin/customer');
       }
       else
@@ -140,7 +139,7 @@ class Customer extends CI_Controller
   {
     $customer_id = $this->input->post('id');
     $labreportid = $this->Lab_model->get_labreport_id($customer_id);
-    $items = array('customerid', 'repid');
+    $items = array('customerid', 'repid', 'qrcode');
     $this->session->unset_userdata($items);
     $this->session->set_userdata('customerid', $customer_id);
 

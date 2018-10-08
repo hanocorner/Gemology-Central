@@ -91,19 +91,19 @@ function append_toedit() {
       }
 
       $('#newGem').val(data.rep_gemID);
-      $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.rep_imagename);
+      $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.img_gemstone);
       $('#object').val(data.rep_object);
-      $('#identification').val(data.rep_identification);
+      $('#variety').val(data.rep_variety);
       $('#weight').val(data.rep_weight);
-      $('#cut').val(data.rep_cut);
+      $('#spgroup').val(data.rep_spgroup);
       $('#color').val(data.rep_color);
       $('#width').val(data.rep_gemWidth);
       $('#height').val(data.rep_gemHeight);
       $('#length').val(data.rep_gemLength);
-      $('#shape').val(data.rep_shape);
+      $('#shapecut').val(data.rep_shapecut);
       $('#comment').val(data.rep_comment);
       $('#labRepid').val(data.reportid);
-      $('#oldImage').val(data.rep_imagename);
+      $('#other').val(data.rep_other);
     },
     fail: function () {
       console.log("error");

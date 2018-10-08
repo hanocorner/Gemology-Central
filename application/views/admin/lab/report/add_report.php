@@ -31,7 +31,7 @@
       <div class="col-md-3">
         <div class="card text-white bg-dark">
           <div class="card-body">
-            <h5 class="card-title"><?php echo $cname; ?></h5>
+            <h5 class="card-title"><?php echo $name; ?></h5>
             <p class="card-text">Customer-id #<?php echo $cid; ?></p>
           </div>
         </div>
@@ -39,7 +39,7 @@
 
     </div><!-- End of card Row  -->
 
-    <?php echo form_open_multipart('admin/report/add'); ?>
+    <?php echo form_open_multipart('admin/report/insert-todb'); ?>
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
@@ -91,7 +91,7 @@
     <div class="form-group row">
       <label for="paymentstatus" class="col-sm-2 col-form-label">Payment<sup>*</sup></label>
       <div class="col-sm-2">
-        <select class="form-control form-control-sm" name="pstatus">
+        <select class="form-control form-control-sm" name="pstatus" id="pStatus">
           <option value="default" <?php echo  set_select('pstatus', 'default', TRUE); ?> selected>Choose...</option>
           <option value="1" <?php echo  set_select('pstatus', '1'); ?>>Paid</option>
           <option value="0" <?php echo  set_select('pstatus', '0'); ?>>Unpaid</option>
@@ -102,7 +102,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
           </div>
-          <input type="text" class="form-control" name="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
+          <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
         </div>
         <small class="form-text text-muted">Amount field is decimal (i.e. 650.00)</small>
       </div>
@@ -116,12 +116,16 @@
     </div>
 
     <div class="form-group row">
-      <label for="identification" class="col-sm-2 col-form-label">Identification Species group<sup>*</sup></label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control form-control-sm" name="identification"  value="<?php echo set_value('identification'); ?>" autocomplete="off" required>
+      <label for="variety" class="col-sm-2 col-form-label">Variety<sup>*</sup></label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control form-control-sm" name="variety" value="<?php echo set_value('variety'); ?>" autocomplete="off" required>
       </div>
-      <div class="col-sm-2">
-        <input type="text" class="form-control form-control-sm" name=""  value="<?php echo set_value(''); ?>" autocomplete="off" required>
+    </div>
+
+    <div class="form-group row">
+      <label for="species/group" class="col-sm-2 col-form-label">Species/Group<sup>*</sup></label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control form-control-sm" name="spgroup" value="<?php echo set_value('spgroup'); ?>" autocomplete="off" required>
       </div>
     </div>
 
@@ -138,15 +142,8 @@
     </div>
 
     <div class="form-group row">
-      <label for="cut" class="col-sm-2 col-form-label">Cut:</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control form-control-sm" name="gemcut" value="<?php echo set_value('gemcut'); ?>" autocomplete="off">
-      </div>
-    </div>
-
-    <div class="form-group row">
       <label for="dimensions" class="col-sm-2 col-form-label">Dimensions (W x H  x L):</label>
-      <div class="col-sm-1">
+      <div class="col-2">
         <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control form-control-sm" name="gemWidth" value="<?php echo set_value('gemWidth'); ?>" autocomplete="off">
           <div class="input-group-append">
@@ -173,9 +170,9 @@
     </div>
 
     <div class="form-group row">
-      <label for="shape" class="col-sm-2 col-form-label">Shape: </label>
+      <label for="shape&cut" class="col-sm-2 col-form-label">Shape & Cut:</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control form-control-sm" name="shape" value="<?php echo set_value('shape'); ?>" autocomplete="off">
+        <input type="text" class="form-control form-control-sm" name="shapecut" value="<?php echo set_value('shapecut'); ?>" autocomplete="off">
       </div>
     </div>
 
@@ -194,6 +191,13 @@
     </div>
 
     <div class="form-group row">
+      <label for="other" class="col-sm-2 col-form-label">Other</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control form-control-sm" name="other" value="<?php echo set_value('other'); ?>" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="form-group row">
       <label for="image" class="col-sm-2 col-form-label">Upload Image:</label>
       <div class="col-sm-4">
         <div class="custom-file-container" data-upload-id="myUploader">
@@ -205,7 +209,7 @@
           </label>
           <label class="custom-file-container__custom-file" >
             <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-            <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*" required>
+            <input type="file" class="custom-file-container__custom-file__custom-file-input" name="imagegem" accept="*">
             <span class="custom-file-container__custom-file__custom-file-control"></span>
           </label>
           <div class="custom-file-container__image-preview"></div>
@@ -214,15 +218,12 @@
       </div>
     </div>
 
-    <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
     <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
 
-    <div class="mb-4"></div>
-
-
-    <div class="form-row">
+    <div class="form-group row mb-4">
+      <div class="col-2"></div>
       <div class="col-4">
-
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
       </div>
     </div>
     <?php echo form_close(); ?><!-- End of form  -->
@@ -267,6 +268,8 @@
   var baseurl = '<?php echo base_url(); ?>';
   var gemtype = $('#newGem');
   var reptype = $('#repType');
+  var pstatus = $('#pStatus');
+  var amount = $("#amount");
 
   $(document).ready(function() {
     gemstone();
@@ -275,12 +278,23 @@
     reptype.change(function () {
       if (this.selectedIndex == 0) {
         $('#id').val('');
+        pstatus.removeAttr('disabled');
+        amount.removeAttr('disabled');
       }
       if (this.selectedIndex == 1) {
-        ajax('set-memo-id');
+        ajax('memoid');
+        pstatus.removeAttr('disabled');
+        amount.removeAttr('disabled');
       }
       if (this.selectedIndex == 2) {
-        ajax('set-certificate-id');
+        ajax('certificateid');
+        pstatus.removeAttr('disabled');
+        amount.removeAttr('disabled');
+      }
+      if (this.selectedIndex == 3) {
+        ajax('verbalid');
+        pstatus.attr('disabled', 'disabled');
+        amount.attr('disabled', 'disabled');
       }
     });
 

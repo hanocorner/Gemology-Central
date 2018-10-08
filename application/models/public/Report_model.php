@@ -24,6 +24,13 @@ class Report_model extends CI_Model
   protected $tbl_report = 'tbl_gemstone_report';
 
   /**
+   * Table Captcha
+   *
+   * @var string
+   */
+  protected $tbl_captcha = 'tbl_captcha';
+
+  /**
    * Default Constructor
    *
    * @param none
@@ -40,7 +47,7 @@ class Report_model extends CI_Model
    */
   public function insert_captcha($data)
   {
-    $query = $this->db->insert_string('tbl_captcha', $data);
+    $query = $this->db->insert_string($this->tbl_captcha, $data);
     $this->db->query($query);
   }
 
@@ -55,7 +62,7 @@ class Report_model extends CI_Model
    */
   public function get_captcha($word, $time, $ip)
   {
-    $this->db->where('captcha_time < ', $time)->delete('tbL_captcha');
+    $this->db->where('captcha_time < ', $time)->delete($this->tbl_captcha);
 
     $sql = 'SELECT COUNT(*) AS count FROM tbl_captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?';
 
@@ -78,6 +85,7 @@ class Report_model extends CI_Model
     $this->db->select('*');
     $this->db->from($this->tbl_lab.' AS t1 ');
     $this->db->join($this->tbl_memocard.' AS t2 ', 't1.reportid = t2.reportid', 'left');
+    $this->db->join('tbl_gem_image AS t3 ', 't1.reportid = t3.reportid', 'left');
     $this->db->where('memoid', $id);
     $query = $this->db->get();
 
@@ -86,6 +94,7 @@ class Report_model extends CI_Model
     $this->db->select('*');
     $this->db->from($this->tbl_lab.' AS t1 ');
     $this->db->join($this->tbl_report.' AS t2 ', 't1.reportid = t2.reportid', 'left');
+    $this->db->join('tbl_gem_image AS t3 ', 't1.reportid = t3.reportid', 'left');
     $this->db->where('gsrid', $id);
     $query = $this->db->get();
 
@@ -121,6 +130,16 @@ class Report_model extends CI_Model
     if($query->num_rows() > 0) return true;
 
     return false;
+  }
+
+  public function get_image($labrepid)
+  {
+    $this->db->select('reportid, img_gemstone');
+    $this->db->from('tbl_gem_image');
+    $this->db->where('reportid', $labrepid);
+    $query = $this->db->get();
+
+    if($query->num_rows() > 0) return $query->row();
   }
 }
 ?>

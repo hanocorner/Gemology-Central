@@ -41,7 +41,7 @@
             </div>
           <div class="form-group">
             <label for="email">Email: </label>
-            <input type="email" class="form-control" name="email" data-validation="email" autocomplete="off" value="<?php echo set_value('email'); ?>">
+            <input type="email" class="form-control" name="email" autocomplete="off" value="<?php echo set_value('email'); ?>">
           </div>
          <input type="submit" class="btn btn-primary" value="Submit">
         <?php echo form_close(); ?>

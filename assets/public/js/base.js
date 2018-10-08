@@ -24,16 +24,15 @@ function report() {
         }
 
         $('#date').html(data.rep_date);
-        $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.rep_imagename).attr('alt', data.rep_identification);
+        $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.img_gemstone).attr('alt', 'Image not available');
         $('#object').html(data.rep_object);
-        $('#identification').html(data.rep_identification);
+        $('#variety').html(data.rep_variety);
+        $('#spgroup').html(data.rep_spgroup);
         $('#weight').html(data.rep_weight + " ct ");
-        $('#cut').html(data.rep_cut);
+        $('#shapecut').html(data.rep_shapecut);
         $('#color').html(data.rep_color);
         $('#dimension').html(data.rep_gemWidth + " x " + data.rep_gemHeight + " x " + data.rep_gemLength + " (mm) ");
-        $('#shape').html(data.rep_shape);
         $('#comment').html(data.rep_comment);
-        //$('#qrCode').attr('src', baseurl + 'assets/admin/images/qr/'+data.rep_imagename).attr('alt', data.rep_identification);
       }
     },
     fail: function () {
@@ -45,7 +44,7 @@ function report() {
 
 function reportAuthentication() {
   var alertbox = $('#alertMsg');
-  
+
   var error = '<div class="alert alert-danger" role="alert">'+
               '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
               '</div>';
