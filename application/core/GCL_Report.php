@@ -3,20 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class GCL_Report extends CI_Controller
 {
   /**
+   * System generated ID
+   *
+   * @var string
+   */
+  protected $_id = '';
+
+  /**
    * MYSQL generated lab report id
    *
-   * @var mixed
+   * @var int
    */
-  protected $_labreport_id = null;
-
-  /*****/
-  protected $_id = '';
+  protected $_labreport_id = 100;
 
   /*****/
   protected $_report_type = '';
 
   /****/
-  protected $_result = array();
+  protected $_db_result = array();
 
   /****/
   protected $_data = array();
@@ -43,8 +47,8 @@ class GCL_Report extends CI_Controller
     if($this->session->has_userdata('customerid'))
     {
       $this->_result = $this->Customer_model->get_customer_by_id($this->session->customerid);
-      $this->_data['name'] = ucwords($this->_result[0]->cus_firstname)." ".$this->_result[0]->cus_lastname;
-      $this->_data['cid'] = $this->_result[0]->custid;
+      $this->_data['name'] = ucwords($this->_db_result[0]->cus_firstname)." ".$this->_db_result[0]->cus_lastname;
+      $this->_data['cid'] = $this->_db_result[0]->custid;
     }
     redirect('admin/report');
   }
@@ -76,14 +80,12 @@ class GCL_Report extends CI_Controller
     return true;
   }
 
-
-
   /*****/
   public function lab_data()
   {
     $this->_data = array(
       'rep_customerID'=>$this->encrypt->decode($this->session->customerid),
-      'rep_date'=>date($this->_date_format),
+      'rep_date'=>date('Y-m-d'),
       'rep_type'=>$this->get_report_type(),
       'rep_object'=>$this->input->post('object'),
       'rep_variety'=>$this->input->post('variety'),
@@ -112,7 +114,6 @@ class GCL_Report extends CI_Controller
       'mem_paymentStatus'=>$this->input->post('pstatus'),
       'mem_amount'=>$this->input->post('amount')
     );
-
     return $this->_data;
   }
 
@@ -146,19 +147,26 @@ class GCL_Report extends CI_Controller
   {
     $this->_data = array(
       'reportid'=>$this->_labreport_id,
-      'img_gemstone'=>$this->_renamed_image,
-      'img_qrcode'=>$this->_qr,
-      'img_date'=>date($this->_date_format)
+      'img_gemstone'=>$this->get_imagename(),
+      'img_date'=>date('Y-m-d')
     );
-
     return $this->_data;
   }
 
   /****/
-  protected function set_imagename($file_name)
+  public function set_imagename($image_name)
   {
-    $ext = pathinfo($file_name, PATHINFO_EXTENSION);
-    $this->_renamed_image = $this->_id.".".$ext;
+    if(file_exists($this->_img_path.'/'.$image_name))
+    {
+      $file_parts = pathinfo($image_name);
+      $extension = $file_parts['extension'];
+      $filename = $file_parts['filename'];
+      $this->_renamed_image = $filename.'-'.rand(1, 10).'.'.$extension;
+    }
+    else {
+      $ext = pathinfo($image_name, PATHINFO_EXTENSION);
+      $this->_renamed_image = $this->_id.".".$ext;
+    }
   }
 
   /*****/
@@ -172,7 +180,7 @@ class GCL_Report extends CI_Controller
     $config = array();
 
     $config['file_name'] = $this->get_imagename();
-    $config['upload_path'] =
+    $config['upload_path'] = $this->_img_path;
     $config['allowed_types'] = $this->config->item('allowed_types');
     $config['max_size'] ='200000';
     $config['max_width'] ='1024';
@@ -187,62 +195,58 @@ class GCL_Report extends CI_Controller
     return null;
   }
 
-
-  /**
-   * Creating Main directory inside images folder
-   * (assets/images/Memocard)
-   *
-   * @param null
-   * @return mixed bool | null
-   */
-  public function create_main_directory()
-  {
-    $folder_a = $this->config->item('img_basepath').$this->config->item('img_folder_a');
-    $folder_b = $this->config->item('img_basepath').$this->config->item('img_folder_b');
-    $folder_c = $this->config->item('img_basepath').$this->config->item('img_folder_c');
-
-    if (!file_exists($folder_a))
-    {
-      mkdir($folder_a, 0777, true);
-    }
-    elseif (!file_exists($folder_b))
-    {
-      mkdir($folder_b, 0777, true);
-    }
-    elseif (!file_exists($folder_c))
-    {
-      mkdir($folder_c, 0777, true);
-    }
-    else
-    {
-      return;
-    }
-  }
-
   /**
    * Creating Sub directory inside Main directory
    * (assets/images/Memocard/GCL-100001)
    *
    * @param null
-   * @return mixed bool | null
+   * @return null
    */
-  public function create_sub_directory($dir_name)
+  public function create_directory()
   {
-    if(!is_int($dir_name)) return false;
+    switch ($this->_report_type) {
+      case 'memo':
+        $base_directory = $this->config->item('img_basepath').$this->config->item('img_folder_a');
+        if (file_exists($base_directory))
+        {
+          $this->_img_path = $base_directory.'/'.$this->_labreport_id;
 
-    if ($this->_report_type == 'memo')
-    {
-      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_a').'/'.$dir_name;
+          if (!file_exists($this->_img_path)) mkdir($this->_img_path, 0777, true);
+        }
+        else
+        {
+          mkdir($base_directory, 0777, true);
+        }
+        break;
+
+      case 'repo':
+        $base_directory = $this->config->item('img_basepath').$this->config->item('img_folder_b');
+        if (file_exists($base_directory))
+        {
+          $this->_img_path = $base_directory.'/'.$this->_labreport_id;
+
+          if (!file_exists($this->_img_path)) mkdir($this->_img_path, 0777, true);
+        }
+        else
+        {
+          mkdir($base_directory, 0777, true);
+        }
+        break;
+
+      case 'verb':
+        $base_directory = $this->config->item('img_basepath').$this->config->item('img_folder_c');
+        if (file_exists($base_directory))
+        {
+          $this->_img_path = $base_directory.'/'.$this->_labreport_id;
+
+          if (!file_exists($this->_img_path)) mkdir($this->_img_path, 0777, true);
+        }
+        else
+        {
+          mkdir($base_directory, 0777, true);
+        }
+        break;
     }
-    elseif ($this->_report_type == 'repo')
-    {
-      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_b').'/'.$dir_name;
-    }
-    elseif ($this->_report_type == 'verb')
-    {
-      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_c').'/'.$dir_name;
-    }
-    mkdir($directory, 0777, true);
   }
 
   /*****/

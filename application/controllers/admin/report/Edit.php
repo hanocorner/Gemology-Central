@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Add extends GCL_Report
+class Edit extends GCL_Report
 {
   /**
    * Constructor initializing  all the the required classes
@@ -16,7 +16,7 @@ class Add extends GCL_Report
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
 
-    $this->load->helper(array('form', 'encrypt'));
+    $this->load->helper(array('form'));
     $this->load->model(array('Lab_model', 'Report_model'));
 
     if (!$this->session->has_userdata('logged_in'))
@@ -25,23 +25,31 @@ class Add extends GCL_Report
     }
   }
 
-  /*****/
+  /****/
   public function index()
   {
     $this->customer();
 
-    $this->layout->set_title('Add Report');
+    $this->layout->set_title('Edit Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    $this->layout->view('admin/lab/report/add_report', $this->_data, 'admin/layouts/admin');
+    $this->layout->view('admin/lab/report/edit_report', $this->_data, 'admin/layouts/admin');
   }
 
-  /*****/
-  public function insert_todb()
+  /****/
+  public function append_toedit()
+  {
+    $this->_json_reponse = $this->Report_model->get_data_by_mrid($this->encrypt->decode($this->session->reportid));
+    echo json_encode($this->_json_reponse);
+  }
+
+  /****/
+  public function update_todb()
   {
     $this->_id = $this->input->post('rmid');
+    $this->_labreport_id = $this->input->post('editid');
     $this->_report_type = $this->input->post('repo-type');
 
     if(!$this->form_verification())
@@ -49,12 +57,7 @@ class Add extends GCL_Report
       return $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
     }
 
-    $this->_labreport_id = $this->Report_model->insert_lab_report($this->lab_data());
-
-    if(is_null($this->_labreport_id))
-    {
-      return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting, Please try again...');
-    }
+    $this->Report_model->update_lab_report($this->lab_data(), $this->session->customerid, $this->_labreport_id);
 
     $this->create_directory();
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
@@ -66,28 +69,29 @@ class Add extends GCL_Report
         return $this->_json_reponse = array('authentication'=>false, 'message'=>$upload_status);
       }
 
-      if ($this->Report_model->insert_image($this->image_data()) < 0 )
+      if ($this->Report_model->update_image($this->image_data(), $this->_labreport_id) < 0 )
       {
-        return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting image, Please try again...');
+        return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when updating image, Please try again...');
       }
     }
 
     if($this->_report_type == 'memo')
     {
       $this->set_reportid($this->_id);
-      $this->Report_model->insert_memocard($this->memo_data());
+      $this->Report_model->update_memo($this->memo_data(), $this->_labreport_id);
     }
     elseif ($this->_report_type == 'repo')
     {
       $this->set_reportid($this->_id);
-      $this->Report_model->insert_certificate($this->certificate_data());
+      $this->Report_model->update_repo($this->certificate_data(), $this->_labreport_id);
     }
     elseif ($this->_report_type == 'verb')
     {
-      $this->Report_model->insert_verbal($this->verbal_data());
+      $this->Report_model->update_verbal($this->verbal_data(), $this->_labreport_id);
     }
 
-    return $this->_json_reponse = array('authentication'=>true, 'message'=>'Data added successfully, Redirecting...');
+    return $this->_json_reponse = array('authentication'=>true, 'message'=>'Data Updated successfully, Redirecting...');
   }
+
 }
 ?>

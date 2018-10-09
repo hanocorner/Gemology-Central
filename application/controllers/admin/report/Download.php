@@ -49,7 +49,7 @@ class Download extends CI_Controller
       redirect('admin/home');
     }
 
-    $this->qr();
+
   }
 
   /**
@@ -60,7 +60,7 @@ class Download extends CI_Controller
    */
   public function index()
   {
-    $data['qr'] = $this->_qrcode;
+    $data['qr'] = $this->qr();
 
     $this->layout->set_title('Download QR');
     $this->layout->add_include('assets/admin/js/download.js');
@@ -87,7 +87,9 @@ class Download extends CI_Controller
    */
   private function qr()
   {
-    $this->_id = $this->encrypt->decode($this->session->qrid);
+    if(!$this->session->has_userdata('reportid')) redirect('admin/report');
+
+    $this->_id = $this->encrypt->decode($this->session->reportid);
     $this->_qrcode = $this->_id.'.'.$this->_extension;
     $this->_params['data'] = base_url()."report/".$this->_id;
     $this->_params['level'] = 'H';

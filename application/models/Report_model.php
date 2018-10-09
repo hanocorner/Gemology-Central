@@ -131,17 +131,30 @@ class Report_model extends CI_Model
   }
 
   /****/
-  public function update_memo($data, $memid)
+  public function update_memo($data, $reportid)
   {
-    $this->db->where('memoid', $memid);
+    $this->db->where('reportid', $reportid);
     return $this->db->update('tbl_gem_memocard', $data);
   }
 
   /****/
-  public function update_repo($data, $repid)
+  public function update_repo($data, $reportid)
   {
-    $this->db->where('gsrid', $repid);
+    $this->db->where('reportid', $reportid);
     return $this->db->update('tbl_gemstone_report', $data);
+  }
+
+  /****/
+  public function update_verbal($data, $reportid)
+  {
+    $this->db->where('reportid', $reportid);
+    return $this->db->update('tbl_gem_verbal', $data);
+  }
+
+  public function update_image($data, $labrepoid)
+  {
+    $this->db->where('reportid', $labrepoid);
+    return $this->db->update('tbl_gem_image', $data);
   }
 }
 ?>
