@@ -47,8 +47,7 @@ class Add extends GCL_Report
 
     if(!$this->form_verification())
     {
-      $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
-      return false;
+      return $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
     }
 
     $lab_data = $this->lab_data();
@@ -56,19 +55,16 @@ class Add extends GCL_Report
 
     if(is_null($this->_labreport_id))
     {
-      $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting, Please try again...');
-      return false;
+      return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting, Please try again...');
     }
 
     $this->create_main_directory();
+    $this->create_sub_directory($this->_labreport_id);
+
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
     {
-      $this->set_image_path();
+      $this->set_imagename($this->_id);
 
-
-
-      //$this->_file_name = $_FILES['imagegem']['name'];
-      $this->_renamed_image = $this->set_imagename();
       $upload = $this->upload_image('imagegem');
       if($upload != null) return $this->set_message($upload);
     }

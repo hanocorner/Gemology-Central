@@ -24,5 +24,8 @@ $config['verbal_prefix'] = 'VEB';
 |
 */
 $config['img_basepath'] = './assets/images/';
+$config['img_folder_a'] = 'Memocard';
+$config['img_folder_b'] = 'Certificate';
+$config['img_folder_c'] = 'Verbal';
 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 ?>

@@ -24,6 +24,9 @@ class GCL_Report extends CI_Controller
   /****/
   public $_json_reponse = array();
 
+  /******/
+  private $_renamed_image = '';
+
   /****/
   public function __construct(){
     parent::__construct();
@@ -194,21 +197,26 @@ class GCL_Report extends CI_Controller
    */
   public function create_main_directory()
   {
-    if (file_exists($this->config->item('img_basepath')) || file_exists($this->config->item('img_basepath').'Certificate' || file_exists($this->config->item('img_basepath').'Verbal')
-    if($this->_report_type == 'memo')
-    {
-      $file_path = $this->config->item('img_basepath').'Memocard';
-    }
-    elseif ($this->_report_type == 'repo')
-    {
-      $file_path = $this->config->item('img_basepath').'Certificate';
-    }
-    elseif ($this->_report_type == 'verb')
-    {
-      $file_path = $this->config->item('img_basepath').'Verbal';
-    }
+    $folder_a = $this->config->item('img_basepath').$this->config->item('img_folder_a');
+    $folder_b = $this->config->item('img_basepath').$this->config->item('img_folder_b');
+    $folder_c = $this->config->item('img_basepath').$this->config->item('img_folder_c');
 
-    mkdir($file_path, 0777, true)
+    if (!file_exists($folder_a))
+    {
+      mkdir($folder_a, 0777, true);
+    }
+    elseif (!file_exists($folder_b))
+    {
+      mkdir($folder_b, 0777, true);
+    }
+    elseif (!file_exists($folder_c))
+    {
+      mkdir($folder_c, 0777, true);
+    }
+    else
+    {
+      return;
+    }
   }
 
   /**
@@ -218,15 +226,23 @@ class GCL_Report extends CI_Controller
    * @param null
    * @return mixed bool | null
    */
-  public function create_sub_directory()
+  public function create_sub_directory($dir_name)
   {
-    if (!file_exists($this->get_image_path()))
-    {
-      if(!mkdir($this->get_image_path(), 0777, true)) return false;
+    if(!is_int($dir_name)) return false;
 
-      return true;
+    if ($this->_report_type == 'memo')
+    {
+      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_a').'/'.$dir_name;
     }
-    return;
+    elseif ($this->_report_type == 'repo')
+    {
+      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_b').'/'.$dir_name;
+    }
+    elseif ($this->_report_type == 'verb')
+    {
+      $directory = $this->config->item('img_basepath').$this->config->item('img_folder_c').'/'.$dir_name;
+    }
+    mkdir($directory, 0777, true);
   }
 
   /*****/
