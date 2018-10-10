@@ -31,7 +31,7 @@
       <div class="col-md-3">
         <div class="card text-white bg-dark">
           <div class="card-body">
-            <h5 class="card-title"><?php echo $cname; ?></h5>
+            <h5 class="card-title"><?php echo $name; ?></h5>
             <p class="card-text">Customer ID #<?php echo $cid; ?></p>
           </div>
         </div>
@@ -39,7 +39,8 @@
 
     </div><!-- End of card Row  -->
 
-    <?php echo form_open_multipart('admin/report/insert-todb'); ?>
+    <?php echo form_open_multipart('admin/report/edit/update-todb'); ?>
+    <input type="hidden" name="labrepid" id="labRepid" value="<?php echo $id; ?>">
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
@@ -82,9 +83,24 @@
     </div>
 
     <div class="form-group row">
-      <label for="repo-type" class="col-sm-2 col-form-label">Report No.<sup>*</sup></label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control form-control-sm" id="rmid" name="rmid" value="<?php echo set_value('rmid'); ?>" readonly>
+      <label for="repo-type" class="col-sm-2 col-form-label">Report</label>
+      <div class="col-sm-2">
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">No.</div>
+          </div>
+          <input type="text" class="form-control form-control-sm" id="rmid" name="rmid" value="<?php echo set_value('rmid'); ?>" readonly>
+        </div>
+
+      </div>
+      <div class="col-sm-2">
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">Type.</div>
+          </div>
+          <input type="text" class="form-control form-control-sm" id="reportType" name="report_type" value="<?php echo set_value('report_type'); ?>" readonly>
+        </div>
+
       </div>
     </div>
 

@@ -28,7 +28,7 @@ class Idmaker extends CI_Controller
 
     $this->load->library(array('id', 'session'));
 
-    $this->load->model('Id_model');
+    $this->load->model('report/Id_model');
 
     if (!$this->session->has_userdata('logged_in'))
     {
@@ -56,7 +56,7 @@ class Idmaker extends CI_Controller
     {
       $this->Id_model->set_table('tbl_gemstone_report');
       $this->_id = $this->Id_model->get_id('gsrid');
-      $this->_format = array('identifier'=>date('Y'), 'separator'=>'-', 'month'=>date('m'))
+      $this->_format = array('identifier'=>date('Y'), 'separator'=>'-', 'month'=>date('m'));
     }
     elseif ($report_type === 'verb')
     {

@@ -39,7 +39,7 @@
 
     </div><!-- End of card Row  -->
 
-    <?php echo form_open_multipart('admin/report/insert-todb'); ?>
+    <?php echo form_open_multipart('admin/report/add/insert-todb'); ?>
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
@@ -282,17 +282,17 @@
         amount.removeAttr('disabled');
       }
       if (this.selectedIndex == 1) {
-        ajax('memoid');
+        ajax('memo');
         pstatus.removeAttr('disabled');
         amount.removeAttr('disabled');
       }
       if (this.selectedIndex == 2) {
-        ajax('certificateid');
+        ajax('repo');
         pstatus.removeAttr('disabled');
         amount.removeAttr('disabled');
       }
       if (this.selectedIndex == 3) {
-        ajax('verbalid');
+        ajax('verb');
         pstatus.attr('disabled', 'disabled');
         amount.attr('disabled', 'disabled');
       }

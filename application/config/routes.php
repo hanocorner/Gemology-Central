@@ -58,6 +58,8 @@ $route['translate_uri_dashes'] = TRUE;
 $route['admin'] = 'admin/home';
 $route['developer'] = 'developer/base';
 
+//$route['admin/report/edit/(:any)'] = 'admin/report/edit/index/$1';
+
 // Public routes
 $route['blog/(:any)']  = 'blog/article/$1';
 

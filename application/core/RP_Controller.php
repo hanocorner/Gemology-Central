@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class GCL_Report extends CI_Controller
+class RP_Controller extends CI_Controller
 {
   /**
    * System generated ID
@@ -32,11 +32,15 @@ class GCL_Report extends CI_Controller
   private $_renamed_image = '';
 
   /****/
+  protected $_img_path = '';
+
+  /****/
   public function __construct(){
     parent::__construct();
 
     $this->load->library('layout', array('layoutManager'=>'admin'));
     $this->load->helper(array('form'));
+    $this->load->library('encrypt');
     $this->load->model(array('Customer_model'));
     $this->config->load('report');
   }
@@ -46,11 +50,14 @@ class GCL_Report extends CI_Controller
   {
     if($this->session->has_userdata('customerid'))
     {
-      $this->_result = $this->Customer_model->get_customer_by_id($this->session->customerid);
+      $this->_db_result = $this->Customer_model->get_customer_by_id($this->session->customerid);
       $this->_data['name'] = ucwords($this->_db_result[0]->cus_firstname)." ".$this->_db_result[0]->cus_lastname;
       $this->_data['cid'] = $this->_db_result[0]->custid;
     }
-    redirect('admin/report');
+    else
+    {
+      redirect('admin/report');
+    }
   }
 
 
@@ -63,8 +70,8 @@ class GCL_Report extends CI_Controller
     }*/
 
     $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
-    $this->form_validation->set_rules('object','Object','trim|required|callback_alpha_dash_space');
-    $this->form_validation->set_rules('variety','Variety','trim|required|callback_alpha_dash_space');
+    $this->form_validation->set_rules('object','Object','trim|required');
+    $this->form_validation->set_rules('variety','Variety','trim|required');
     $this->form_validation->set_rules('weight','Weight','trim|required|decimal');
     $this->form_validation->set_rules('spgroup','Species/Group','trim');
     $this->form_validation->set_rules('gemWidth','Width','trim|decimal');
@@ -84,9 +91,9 @@ class GCL_Report extends CI_Controller
   public function lab_data()
   {
     $this->_data = array(
-      'rep_customerID'=>$this->encrypt->decode($this->session->customerid),
+      'rep_customerID'=>$this->session->customerid,
       'rep_date'=>date('Y-m-d'),
-      'rep_type'=>$this->get_report_type(),
+      'rep_type'=>$this->_report_type,
       'rep_object'=>$this->input->post('object'),
       'rep_variety'=>$this->input->post('variety'),
       'rep_weight'=>$this->input->post('weight'),
@@ -123,11 +130,10 @@ class GCL_Report extends CI_Controller
     $this->_data = array(
       'gsrid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'gsr_date'=>date($this->_date_format),
+      'gsr_date'=>date('Y-m-d'),
       'gsr_paymentStatus'=>$this->input->post('pstatus'),
       'gsr_amount'=>$this->input->post('amount')
     );
-
     return $this->_data;
   }
 
@@ -136,9 +142,8 @@ class GCL_Report extends CI_Controller
     $this->_data = array(
       'verbid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'veb_date'=>date($this->_date_format),
+      'veb_date'=>date('Y-m-d'),
     );
-
     return $this->_data;
   }
 
@@ -148,7 +153,8 @@ class GCL_Report extends CI_Controller
     $this->_data = array(
       'reportid'=>$this->_labreport_id,
       'img_gemstone'=>$this->get_imagename(),
-      'img_date'=>date('Y-m-d')
+      'img_date'=>date('Y-m-d'),
+      'img_path'=>$this->_img_path
     );
     return $this->_data;
   }
@@ -156,16 +162,17 @@ class GCL_Report extends CI_Controller
   /****/
   public function set_imagename($image_name)
   {
-    if(file_exists($this->_img_path.'/'.$image_name))
+    $ext = pathinfo($image_name, PATHINFO_EXTENSION);
+    $image = $this->_id.".".$ext;
+    if(file_exists($this->_img_path.'/'.$image))
     {
-      $file_parts = pathinfo($image_name);
+      $file_parts = pathinfo($image);
       $extension = $file_parts['extension'];
       $filename = $file_parts['filename'];
       $this->_renamed_image = $filename.'-'.rand(1, 10).'.'.$extension;
     }
     else {
-      $ext = pathinfo($image_name, PATHINFO_EXTENSION);
-      $this->_renamed_image = $this->_id.".".$ext;
+      $this->_renamed_image = $image;
     }
   }
 
@@ -175,7 +182,7 @@ class GCL_Report extends CI_Controller
     return $this->_renamed_image;
   }
 
-  public function upload_image()
+  public function upload_image($file_input)
   {
     $config = array();
 

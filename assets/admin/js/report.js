@@ -1,14 +1,26 @@
 // Fetch ID Based on user select
 function ajax(reportType) {
-  $.get(baseurl + 'admin/report/' + reportType, function(data) {
-    $('#id').val(data);
+  $.ajax({
+    url: baseurl + 'admin/idmaker/id',
+    type: 'GET',
+    dataType: 'html',
+    data: {
+      type: reportType
+    },
+    success:function(data) {
+      $('#id').val(data);
+    },
+    fail:function(){
+      console.log('Error');
+    }
   });
+
 }
 
 // Appending Gem to dropdown list
 function gemstone() {
   $.ajax({
-    url: baseurl + 'admin/gemstone/gem-list',
+    url: baseurl + 'admin/report/gemstone/gem-list',
     type: 'GET',
     dataType: 'json',
     success: function(data) {
@@ -29,7 +41,7 @@ function addGemstone() {
   $(document).on('click', '#saveGem', function(event) {
     event.preventDefault();
     $.ajax({
-      url: baseurl + 'admin/gemstone/add',
+      url: baseurl + 'admin/report/gemstone/add',
       type: 'POST',
       data: {
         'gemName': $('#gemName').val(),
@@ -62,9 +74,12 @@ function addGemstone() {
 
 function append_toedit() {
   $.ajax({
-    url: baseurl +'admin/report/append-data-toedit',
+    url: baseurl +'admin/report/edit/append-toedit',
     type: 'GET',
     dataType: 'json',
+    data: {
+      labrepid: $('#labRepid').val()
+    },
     success: function (data) {
       // ID according to Report Type
       if(typeof(data.gsrid) == "undefined") {
@@ -90,8 +105,9 @@ function append_toedit() {
         $('#pstatus').val(data.gsr_paymentStatus);
       }
 
+      $('#reportType').val(data.rep_type);
       $('#newGem').val(data.rep_gemID);
-      $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.img_gemstone);
+      $('#imgGem').attr('src', baseurl + data.img_path+'/'+data.img_gemstone);
       $('#object').val(data.rep_object);
       $('#variety').val(data.rep_variety);
       $('#weight').val(data.rep_weight);

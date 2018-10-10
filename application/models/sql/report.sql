@@ -28,6 +28,10 @@ CREATE TABLE IF NOT EXISTS `tbl_lab_report` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Let reportid starts with 100 
+--
+ALTER TABLE tbl_lab_report AUTO_INCREMENT = 100;
+
 -- Table structure for `Memo Card`
 --
 CREATE TABLE IF NOT EXISTS `tbl_gem_memocard` (

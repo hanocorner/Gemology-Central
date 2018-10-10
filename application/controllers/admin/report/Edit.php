@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Edit extends GCL_Report
+class Edit extends RP_Controller
 {
   /**
    * Constructor initializing  all the the required classes
@@ -26,22 +26,23 @@ class Edit extends GCL_Report
   }
 
   /****/
-  public function index()
+  public function news()
   {
     $this->customer();
-
+    $this->_data['id'] = $this->uri->segment(5);
     $this->layout->set_title('Edit Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    $this->layout->view('admin/lab/report/edit_report', $this->_data, 'admin/layouts/admin');
+    $this->layout->view('admin/lab/report/edit', $this->_data, 'admin/layouts/admin');
   }
 
   /****/
   public function append_toedit()
   {
-    $this->_json_reponse = $this->Report_model->get_data_by_mrid($this->encrypt->decode($this->session->reportid));
+    $id = $this->input->get('labrepid');
+    $this->_json_reponse = $this->Report_model->get_data_by_mrid($id);
     echo json_encode($this->_json_reponse);
   }
 
@@ -49,8 +50,8 @@ class Edit extends GCL_Report
   public function update_todb()
   {
     $this->_id = $this->input->post('rmid');
-    $this->_labreport_id = $this->input->post('editid');
-    $this->_report_type = $this->input->post('repo-type');
+    $this->_labreport_id = $this->input->post('labrepid');
+    $this->_report_type = $this->input->post('report_type');
 
     if(!$this->form_verification())
     {
@@ -77,6 +78,7 @@ class Edit extends GCL_Report
 
     if($this->_report_type == 'memo')
     {
+      echo 'hello';
       $this->set_reportid($this->_id);
       $this->Report_model->update_memo($this->memo_data(), $this->_labreport_id);
     }

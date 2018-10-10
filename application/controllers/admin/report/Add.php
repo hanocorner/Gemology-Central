@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Add extends GCL_Report
+class Add extends RP_Controller
 {
   /**
    * Constructor initializing  all the the required classes
@@ -16,7 +16,7 @@ class Add extends GCL_Report
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
 
-    $this->load->helper(array('form', 'encrypt'));
+    //$this->load->helper(array('form', 'encrypt'));
     $this->load->model(array('Lab_model', 'Report_model'));
 
     if (!$this->session->has_userdata('logged_in'))
@@ -35,7 +35,7 @@ class Add extends GCL_Report
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
 
-    $this->layout->view('admin/lab/report/add_report', $this->_data, 'admin/layouts/admin');
+    $this->layout->view('admin/lab/report/add', $this->_data, 'admin/layouts/admin');
   }
 
   /*****/
@@ -46,6 +46,7 @@ class Add extends GCL_Report
 
     if(!$this->form_verification())
     {
+      echo validation_errors();
       return $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
     }
 
