@@ -73,13 +73,12 @@ function addGemstone() {
 }
 
 function append_toedit() {
+  var id = $('#labRepid').val();
+
   $.ajax({
-    url: baseurl +'admin/report/edit/append-toedit',
+    url: baseurl +'admin/report/edit/populate/'+id,
     type: 'GET',
     dataType: 'json',
-    data: {
-      labrepid: $('#labRepid').val()
-    },
     success: function (data) {
       // ID according to Report Type
       if(typeof(data.gsrid) == "undefined") {
@@ -104,8 +103,22 @@ function append_toedit() {
       if (typeof(data.mem_paymentStatus) == "undefined" ) {
         $('#pstatus').val(data.gsr_paymentStatus);
       }
+      // Customer Data
+      $('#custName').html(data.cus_firstname + ' ' + data.cus_lastname);
+      $('#custId').val(data.custid);
 
-      $('#reportType').val(data.rep_type);
+      // Lab data
+      if (data.rep_type == "memo" ) {
+        $('#reportType').val('Memocard');
+      }
+      if (data.rep_type == "repo" ) {
+        $('#reportType').val('Certificate');
+      }
+      if (data.rep_type == "verb" ) {
+        $('#reportType').val('Verbal');
+      }
+
+      $('#reptype').val(data.rep_type);
       $('#newGem').val(data.rep_gemID);
       $('#imgGem').attr('src', baseurl + data.img_path+'/'+data.img_gemstone);
       $('#object').val(data.rep_object);
@@ -126,4 +139,46 @@ function append_toedit() {
     }
   });
 
+}
+
+function update() {
+  var formData = new FormData(this);
+  var alertbox = $('#alertMsg');
+
+  $("form").on('submit', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      url: baseurl + 'admin/report/edit/update-todb',
+      type: 'POST',
+      dataType: 'json',
+      data: new FormData(this),
+      success:function (response){
+        if(response.isvalid){
+          window.location.href = baseurl +'admin/report';
+        }
+        if (!response.isvalid) {
+          alertbox.html('<div class="alert alert-danger" role="alert">'+
+                        '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
+                        response.message+'</div>');
+          create_csrf();
+        }
+        //alert(response.message);
+
+      },
+      cache: false,
+      contentType: false,
+      processData: false,
+      fail:function () {
+        console.log('error');
+      }
+    });
+
+  });
+}
+
+function create_csrf() {
+  $.getJSON(baseurl + 'public/report/set-csrf', function(data) {
+    $("#csrfToken").attr('name', data.name).attr('value', data.hash);
+  });
 }

@@ -31,31 +31,23 @@
       <div class="col-md-3">
         <div class="card text-white bg-dark">
           <div class="card-body">
-            <h5 class="card-title"><?php echo $name; ?></h5>
-            <p class="card-text">Customer ID #<?php echo $cid; ?></p>
+            <h5 class="card-title" id="custName"></h5>
+            <p class="card-text">Customer ID #<span id="custId"></span></p>
           </div>
         </div>
       </div>
 
     </div><!-- End of card Row  -->
 
-    <?php echo form_open_multipart('admin/report/edit/update-todb'); ?>
+    <form action="#" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <input type="hidden" name="" value=""  id="csrfToken">
     <input type="hidden" name="labrepid" id="labRepid" value="<?php echo $id; ?>">
+    <input type="hidden" name="report_type" id="reptype" value="">
+
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
-        <?php if(validation_errors() !=''): ?>
-          <div class="alert alert-danger" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo validation_errors();  ?>
-          </div>
-        <?php endif; ?>
-        <?php if(isset($_SESSION['status'])): ?>
-          <div class="alert alert-danger mt-2" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo $_SESSION['status']; ?>
-          </div>
-        <?php endif; ?>
+        <div id="alertMsg"></div>
       </div>
     </div>
     <!-- /. Alert Box -->
@@ -89,7 +81,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">No.</div>
           </div>
-          <input type="text" class="form-control form-control-sm" id="rmid" name="rmid" value="<?php echo set_value('rmid'); ?>" readonly>
+          <input type="text" class="form-control form-control-sm" id="rmid" name="rmid" value="" readonly>
         </div>
 
       </div>
@@ -98,7 +90,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">Type.</div>
           </div>
-          <input type="text" class="form-control form-control-sm" id="reportType" name="report_type" value="<?php echo set_value('report_type'); ?>" readonly>
+          <input type="text" class="form-control form-control-sm" id="reportType" value="" readonly>
         </div>
 
       </div>
@@ -232,7 +224,7 @@
     <div class="form-group row mb-4">
       <div class="col-2"></div>
       <div class="col-4">
-        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Update</button>&nbsp;&nbsp;
       </div>
     </div>
     <?php echo form_close(); ?><!-- End of form  -->
@@ -281,5 +273,7 @@
     gemstone();
     addGemstone();
     append_toedit();
+    create_csrf();
+    update();
   });
 </script>

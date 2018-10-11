@@ -64,11 +64,7 @@ class RP_Controller extends CI_Controller
   /****/
   protected function form_verification()
   {
-    /*if($this->_reptype != 'verb')
-    {
-      $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
-    }*/
-
+    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
     $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
     $this->form_validation->set_rules('object','Object','trim|required');
     $this->form_validation->set_rules('variety','Variety','trim|required');
@@ -80,7 +76,7 @@ class RP_Controller extends CI_Controller
     $this->form_validation->set_rules('color','Color','trim');
     $this->form_validation->set_rules('shapecut','Shape','trim|alpha');
     $this->form_validation->set_rules('other','Other','trim');
-    $this->form_validation->set_rules('comment','Comment','trim');
+    $this->form_validation->set_rules('comment','Comment','trim|required');
 
     if($this->form_validation->run() == FALSE) return false;
 
@@ -92,7 +88,6 @@ class RP_Controller extends CI_Controller
   {
     $this->_data = array(
       'rep_customerID'=>$this->session->customerid,
-      'rep_date'=>date('Y-m-d'),
       'rep_type'=>$this->_report_type,
       'rep_object'=>$this->input->post('object'),
       'rep_variety'=>$this->input->post('variety'),

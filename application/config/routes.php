@@ -57,13 +57,11 @@ $route['translate_uri_dashes'] = TRUE;
 // Admin routes
 $route['admin'] = 'admin/home';
 $route['developer'] = 'developer/base';
-
-//$route['admin/report/edit/(:any)'] = 'admin/report/edit/index/$1';
+$route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
+$route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
 
 // Public routes
 $route['blog/(:any)']  = 'blog/article/$1';
-
 $route['about'] = 'base/about';
 $route['report'] = 'public/report/index';
-
 $route['report/(:any)']  = 'public/report/display/$1';

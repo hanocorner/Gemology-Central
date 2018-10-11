@@ -17,7 +17,7 @@ class Edit extends RP_Controller
     $this->load->library(array('session'));
 
     $this->load->helper(array('form'));
-    $this->load->model(array('Lab_model', 'Report_model'));
+    $this->load->model(array('Lab_model', 'report/Edit_model'));
 
     if (!$this->session->has_userdata('logged_in'))
     {
@@ -26,10 +26,9 @@ class Edit extends RP_Controller
   }
 
   /****/
-  public function news()
+  public function index()
   {
-    $this->customer();
-    $this->_data['id'] = $this->uri->segment(5);
+    $this->_data['id'] = $this->uri->segment(4);
     $this->layout->set_title('Edit Report');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
     $this->layout->add_include('assets/admin/js/report.js');
@@ -39,10 +38,10 @@ class Edit extends RP_Controller
   }
 
   /****/
-  public function append_toedit()
+  public function populate()
   {
-    $id = $this->input->get('labrepid');
-    $this->_json_reponse = $this->Report_model->get_data_by_mrid($id);
+    $id = $this->uri->segment(5);
+    $this->_json_reponse = $this->Edit_model->get_data($id);
     echo json_encode($this->_json_reponse);
   }
 
@@ -55,10 +54,11 @@ class Edit extends RP_Controller
 
     if(!$this->form_verification())
     {
-      return $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
+      echo json_encode(array('isvalid'=>false, 'message'=>validation_errors()));
+      return false;
     }
 
-    $this->Report_model->update_lab_report($this->lab_data(), $this->session->customerid, $this->_labreport_id);
+    $this->Edit_model->update_lab_report($this->lab_data(), $this->session->customerid, $this->_labreport_id);
 
     $this->create_directory();
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
@@ -67,32 +67,32 @@ class Edit extends RP_Controller
       $upload_status = $this->upload_image('imagegem');
       if($upload_status != null)
       {
-        return $this->_json_reponse = array('authentication'=>false, 'message'=>$upload_status);
+        echo json_encode(array('isvalid'=>false, 'message'=>$upload_status));
+        return false;
       }
 
-      if ($this->Report_model->update_image($this->image_data(), $this->_labreport_id) < 0 )
+      if ($this->Edit_model->update_image($this->image_data(), $this->_labreport_id) < 0)
       {
-        return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when updating image, Please try again...');
+        echo json_encode(array('isvalid'=>false, 'message'=>'Error when updating image, Please try again...'));
+        return false;
       }
     }
 
     if($this->_report_type == 'memo')
     {
-      echo 'hello';
       $this->set_reportid($this->_id);
-      $this->Report_model->update_memo($this->memo_data(), $this->_labreport_id);
+      $this->Edit_model->update_memo($this->memo_data(), $this->_labreport_id);
     }
     elseif ($this->_report_type == 'repo')
     {
       $this->set_reportid($this->_id);
-      $this->Report_model->update_repo($this->certificate_data(), $this->_labreport_id);
+      $this->Edit_model->update_repo($this->certificate_data(), $this->_labreport_id);
     }
     elseif ($this->_report_type == 'verb')
     {
-      $this->Report_model->update_verbal($this->verbal_data(), $this->_labreport_id);
+      $this->Edit_model->update_verbal($this->verbal_data(), $this->_labreport_id);
     }
-
-    return $this->_json_reponse = array('authentication'=>true, 'message'=>'Data Updated successfully, Redirecting...');
+    echo json_encode(array('isvalid'=>true, 'message'=>'Data Updated successfully, Redirecting...'));
   }
 
 }
