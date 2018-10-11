@@ -112,7 +112,7 @@ class RP_Controller extends CI_Controller
     $this->_data = array(
       'memoid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'mem_date'=>date('Y-m-d'),
+      'mem_created_date'=>date($this->config->item('date_format')),
       'mem_paymentStatus'=>$this->input->post('pstatus'),
       'mem_amount'=>$this->input->post('amount')
     );
@@ -125,7 +125,7 @@ class RP_Controller extends CI_Controller
     $this->_data = array(
       'gsrid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'gsr_date'=>date('Y-m-d'),
+      'gsr_created_date'=>date($this->config->item('date_format')),
       'gsr_paymentStatus'=>$this->input->post('pstatus'),
       'gsr_amount'=>$this->input->post('amount')
     );
@@ -137,7 +137,7 @@ class RP_Controller extends CI_Controller
     $this->_data = array(
       'verbid'=>$this->_id,
       'reportid'=>$this->_labreport_id,
-      'veb_date'=>date('Y-m-d'),
+      'veb_created_date'=>date($this->config->item('date_format')),
     );
     return $this->_data;
   }
@@ -148,7 +148,7 @@ class RP_Controller extends CI_Controller
     $this->_data = array(
       'reportid'=>$this->_labreport_id,
       'img_gemstone'=>$this->get_imagename(),
-      'img_date'=>date('Y-m-d'),
+      'img_created_date'=>date($this->config->item('date_format')),
       'img_path'=>$this->_img_path
     );
     return $this->_data;

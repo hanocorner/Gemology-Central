@@ -153,6 +153,9 @@ function update() {
       type: 'POST',
       dataType: 'json',
       data: new FormData(this),
+      cache: false,
+      contentType: false,
+      processData: false,
       success:function (response){
         if(response.isvalid){
           window.location.href = baseurl +'admin/report';
@@ -163,12 +166,8 @@ function update() {
                         response.message+'</div>');
           create_csrf();
         }
-        //alert(response.message);
 
       },
-      cache: false,
-      contentType: false,
-      processData: false,
       fail:function () {
         console.log('error');
       }
