@@ -161,10 +161,13 @@ function update() {
           window.location.href = response.url;
         }
         if (!response.isvalid) {
+
+
           alertbox.html('<div class="alert alert-danger" role="alert">'+
                         '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
-                        response.message+'</div>');
+                       response.message +'</div>');
           create_csrf();
+
         }
 
       },

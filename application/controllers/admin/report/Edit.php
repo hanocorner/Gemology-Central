@@ -54,7 +54,7 @@ class Edit extends RP_Controller
 
     if(!$this->form_verification())
     {
-      echo json_encode(array('isvalid'=>false, 'message'=>validation_errors()));
+      echo json_encode(array('isvalid'=>false, 'message'=>json_encode($this->form_validation->error_array(), JSON_FORCE_OBJECT)));
       return false;
     }
 
