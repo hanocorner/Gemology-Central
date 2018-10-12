@@ -15,7 +15,7 @@ class Edit extends RP_Controller
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
-
+    $this->lang->load('message_lang');
     $this->load->helper(array('form'));
     $this->load->model(array('Lab_model', 'report/Edit_model'));
 
@@ -60,6 +60,19 @@ class Edit extends RP_Controller
 
     $this->Edit_model->update_lab_report($this->lab_data(), $this->session->customerid, $this->_labreport_id);
 
+    if($this->_report_type == 'memo')
+    {
+      $this->Edit_model->update_memo($this->memo_data(), $this->_labreport_id);
+    }
+    elseif ($this->_report_type == 'repo')
+    {
+      $this->Edit_model->update_repo($this->certificate_data(), $this->_labreport_id);
+    }
+    elseif ($this->_report_type == 'verb')
+    {
+      $this->Edit_model->update_verbal($this->verbal_data(), $this->_labreport_id);
+    }
+
     $this->create_directory();
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
     {
@@ -78,21 +91,7 @@ class Edit extends RP_Controller
       }
     }
 
-    if($this->_report_type == 'memo')
-    {
-      $this->set_reportid($this->_id);
-      $this->Edit_model->update_memo($this->memo_data(), $this->_labreport_id);
-    }
-    elseif ($this->_report_type == 'repo')
-    {
-      $this->set_reportid($this->_id);
-      $this->Edit_model->update_repo($this->certificate_data(), $this->_labreport_id);
-    }
-    elseif ($this->_report_type == 'verb')
-    {
-      $this->Edit_model->update_verbal($this->verbal_data(), $this->_labreport_id);
-    }
-    echo json_encode(array('isvalid'=>true, 'message'=>'Data Updated successfully, Redirecting...'));
+    echo json_encode(array('isvalid'=>true, 'url'=>base_url().'admin/customer', 'message'=>'Data Updated successfully, Redirecting...'));
   }
 
 }

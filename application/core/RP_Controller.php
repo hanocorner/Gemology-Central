@@ -60,10 +60,18 @@ class RP_Controller extends CI_Controller
     }
   }
 
+  /****/
+  public function check_default($post_string)
+  {
+    return $post_string == 'default' ? FALSE : TRUE;
+  }
 
   /****/
   protected function form_verification()
   {
+    $this->form_validation->set_rules('gemid','Gemstone','required|callback_check_default', array('check_default'=>'Please select a gemstone from the list'));
+    $this->form_validation->set_message('check_gemstone', 'Please select a gemstone from the list');
+    $this->form_validation->set_rules('pstatus','PaymentStatus','required|callback_check_default', array('check_default'=>'Please select your payment status'));
     $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
     $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
     $this->form_validation->set_rules('object','Object','trim|required');

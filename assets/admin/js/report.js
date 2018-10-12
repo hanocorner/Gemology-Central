@@ -105,7 +105,7 @@ function append_toedit() {
       }
       // Customer Data
       $('#custName').html(data.cus_firstname + ' ' + data.cus_lastname);
-      $('#custId').val(data.custid);
+      $('#custId').html(data.custid);
 
       // Lab data
       if (data.rep_type == "memo" ) {
@@ -158,7 +158,7 @@ function update() {
       processData: false,
       success:function (response){
         if(response.isvalid){
-          window.location.href = baseurl +'admin/report';
+          window.location.href = response.url;
         }
         if (!response.isvalid) {
           alertbox.html('<div class="alert alert-danger" role="alert">'+

@@ -98,15 +98,13 @@
 
     <div class="form-group row">
       <label for="Gem" class="col-sm-2 col-form-label">Gemstone<sup>*</sup></label>
-      <div class="col-sm-4">
-        <div class="input-group input-group-sm mb-3">
-          <select class="form-control form-control-sm" id="newGem" name="gemid">
-            <option value="0" selected>Choose...</option>
-          </select>
-          <div class="input-group-append">
-            <button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; New Gem</button>
-          </div>
-        </div>
+      <div class="col-sm-3">
+        <select class="form-control form-control-sm" id="newGem" name="gemid">
+          <option value="default" selected>Choose...</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add gem</button>
       </div>
     </div>
 
@@ -124,10 +122,11 @@
           <div class="input-group-prepend">
             <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
           </div>
-          <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
+          <input type="text" class="form-control" name="amount" id="validationTooltip01" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
         </div>
         <small class="form-text text-muted">Amount field is decimal (i.e. 650.00)</small>
       </div>
+      
     </div>
 
     <div class="form-group row">
