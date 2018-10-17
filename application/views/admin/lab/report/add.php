@@ -39,26 +39,26 @@
 
     </div><!-- End of card Row  -->
 
-    <?php echo form_open_multipart('admin/report/add/insert-todb'); ?>
+    <form action="#" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <input type="hidden" name="" value=""  id="csrfToken">
+
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
-        <?php if(validation_errors() !=''): ?>
-          <div class="alert alert-danger" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo validation_errors();  ?>
-          </div>
-        <?php endif; ?>
-        <?php if(isset($_SESSION['status'])): ?>
-          <div class="alert alert-danger mt-2" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo $_SESSION['status']; ?>
-          </div>
-        <?php endif; ?>
+        <div id="alertMsg"></div>
       </div>
-    </div>
-    <!-- /. Alert Box -->
+    </div><!-- /. Alert Box -->
 
+    <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="">Select Customer</label>
+      <input type="text" class="form-control form-control-sm" id="customer">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="">Password</label>
+      <input type="password" class="form-control form-control-sm" id="">
+    </div>
+  </div>
     <div class="form-group row">
       <label for="repo-type" class="col-sm-2 col-form-label">Report type<sup>*</sup></label>
       <div class="col-sm-2">
@@ -274,6 +274,8 @@
   $(document).ready(function() {
     gemstone();
     addGemstone();
+    create_csrf();
+    add();
 
     reptype.change(function () {
       if (this.selectedIndex == 0) {

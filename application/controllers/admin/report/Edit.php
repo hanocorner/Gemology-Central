@@ -15,7 +15,6 @@ class Edit extends RP_Controller
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
-    $this->lang->load('message_lang');
     $this->load->helper(array('form'));
     $this->load->model(array('Lab_model', 'report/Edit_model'));
 

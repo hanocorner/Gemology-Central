@@ -77,7 +77,7 @@
                 <a class="dropdown-item" href="#">Delete</a>
               </div>
             </div> -->
-            <a href="<?php echo base_url(); ?>admin/report/edit/memo/<?php echo $memo->memoid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
+            <a href="<?php echo base_url(); ?>admin/report/edit/<?php echo $memo->reportid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
             &nbsp;<a href="#" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>
@@ -135,7 +135,7 @@
               </div>
 
             </div> -->
-            <a href="<?php echo base_url(); ?>admin/report/edit/repo/<?php echo $cert->gsrid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
+            <a href="<?php echo base_url(); ?>admin/report/edit/<?php echo $cert->reportid; ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; Edit</a>
             &nbsp;<a href="#" class="btn btn-dark btn-sm"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</a>
           </div>
         </td>

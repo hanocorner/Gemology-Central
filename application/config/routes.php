@@ -59,6 +59,7 @@ $route['admin'] = 'admin/home';
 $route['developer'] = 'developer/base';
 $route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
 $route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
+$route['admin/report/download/(:num)'] = 'admin/report/download/index/$1';
 
 // Public routes
 $route['blog/(:any)']  = 'blog/article/$1';

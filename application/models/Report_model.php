@@ -123,38 +123,13 @@ class Report_model extends CI_Model
   }
 
   /****/
-  public function update_lab_report($data, $customerid, $labrepoid)
+  public function get_imagepath($labrepoid)
   {
-    $this->db->where('rep_customerID', $customerid);
+    $this->db->select('t1.reportid, t1.img_path, t1.img_qrcode');
+    $this->db->from('tbl_gem_image AS t1');
     $this->db->where('reportid', $labrepoid);
-    return $this->db->update('tbl_lab_report', $data);
-  }
-
-  /****/
-  public function update_memo($data, $reportid)
-  {
-    $this->db->where('reportid', $reportid);
-    return $this->db->update('tbl_gem_memocard', $data);
-  }
-
-  /****/
-  public function update_repo($data, $reportid)
-  {
-    $this->db->where('reportid', $reportid);
-    return $this->db->update('tbl_gemstone_report', $data);
-  }
-
-  /****/
-  public function update_verbal($data, $reportid)
-  {
-    $this->db->where('reportid', $reportid);
-    return $this->db->update('tbl_gem_verbal', $data);
-  }
-
-  public function update_image($data, $labrepoid)
-  {
-    $this->db->where('reportid', $labrepoid);
-    return $this->db->update('tbl_gem_image', $data);
+    $query = $this->db->get();
+    if($query->num_rows() > 0) return $query->result();
   }
 }
 ?>

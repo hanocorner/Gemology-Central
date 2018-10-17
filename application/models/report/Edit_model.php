@@ -40,7 +40,7 @@ class Edit_model extends CI_Model
 
     switch ($this->_result[0]->rep_type) {
       case 'memo':
-        $this->_columns = 't1.*, t2.memoid, t2.reportid, t2.mem_paymentStatus, t2.mem_amount, t3.reportid, t3.img_gemstone, t3.img_path';
+        $this->_columns = 't1.*, t2.memoid AS repid, t2.reportid, t2.mem_paymentStatus AS pstatus, t2.mem_amount AS amount, t3.reportid, t3.img_gemstone, t3.img_path';
         $this->db->select($this->_columns);
         $this->db->from('tbl_lab_report AS t1');
         $this->db->join('tbl_gem_memocard AS t2', 't1.reportid = t2.reportid', 'left');
@@ -52,7 +52,7 @@ class Edit_model extends CI_Model
         break;
 
       case 'repo':
-        $this->_columns = 't1.*, t2.gsrid, t2.reportid, t2.gsr_paymentStatus, t2.gsr_amount, t3.reportid, t3.img_gemstone, t3.img_path';
+        $this->_columns = 't1.*, t2.gsrid AS repid, t2.reportid, t2.gsr_paymentStatus AS pstatus, t2.gsr_amount AS amount, t3.reportid, t3.img_gemstone, t3.img_path';
         $this->db->select($this->_columns);
         $this->db->from('tbl_lab_report AS t1');
         $this->db->join('tbl_gemstone_report AS t2', 't1.reportid = t2.reportid', 'left');
@@ -64,7 +64,7 @@ class Edit_model extends CI_Model
         break;
 
       case 'verb':
-        $this->_columns = 't1.*, t2.verbid, t2.reportid, t3.reportid, t3.img_gemstone, t3.img_path';
+        $this->_columns = 't1.*, t2.verbid AS repid, t2.reportid, t3.reportid, t3.img_gemstone, t3.img_path';
         $this->db->select($this->_columns);
         $this->db->from('tbl_lab_report AS t1');
         $this->db->join('tbl_gem_verbal AS t2', 't1.reportid = t2.reportid', 'left');
@@ -75,46 +75,6 @@ class Edit_model extends CI_Model
         return $this->_result = $query->row();
         break;
     }
-  }
-
-  /**
-   * Ftech data by custom id and append to edit
-   *
-   * @param $id memoid | srid | string
-   * @return result
-   */
-  public function get_data_by_mrid($id)
-  {
-    $this->db->select('memoid AS `repid`');
-    $this->db->from('tbl_gem_memocard');
-    $this->db->where('memoid', $id);
-    $query1 = $this->db->get_compiled_select();
-
-    $this->db->select('gsrid AS `repid`');
-    $this->db->from('tbl_gemstone_report');
-    $this->db->where('gsrid', $id);
-    $query2 = $this->db->get_compiled_select();
-
-    $query = $this->db->query($query1 . ' UNION ' . $query2);
-    $row = $query->result();
-
-    $this->db->select('*');
-    $this->db->from('tbl_lab_report');
-    $this->db->join('tbl_gem_memocard', 'tbl_lab_report.reportid = tbl_gem_memocard.reportid', 'left');
-    $this->db->join('tbl_gem_image', 'tbl_lab_report.reportid = tbl_gem_image.reportid', 'left');
-    $this->db->where('memoid', $row[0]->repid);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return $query->row();
-
-    $this->db->select('*');
-    $this->db->from('tbl_lab_report');
-    $this->db->join('tbl_gemstone_report', 'tbl_lab_report.reportid = tbl_gemstone_report.reportid', 'left');
-    $this->db->join('tbl_gem_image', 'tbl_lab_report.reportid = tbl_gem_image.reportid', 'left');
-    $this->db->where('gsrid', $row[0]->repid);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return $query->row();
   }
 
   /****/

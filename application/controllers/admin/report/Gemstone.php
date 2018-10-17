@@ -78,9 +78,9 @@ class Gemstone extends CI_Controller
         $values->rep_color,
         $values->rep_shapecut,
         $values->rep_comment,
-        '#',
+        $values->rep_other,
         '<button type="button" class="btn btn-sm btn-primary" data-id="'.$values->repid.'" data-action="preview" ><i class="fa fa-eye" aria-hidden="true"></i></button>&nbsp;&nbsp;
-        <a href="'.base_url().'admin/report/edit/memo/'.$values->repid.'" class="btn btn-sm btn-warning" target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;
+        <a href="'.base_url().'admin/report/edit/'.$values->reportid.'" class="btn btn-sm btn-warning" target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;
         <button type="button" class="btn btn-sm btn-danger" data-id="'.$values->repid.'" data-action="delete" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash-o" aria-hidden="true"></i></button>&nbsp;&nbsp;
         <input type="hidden" id="repid" value="'.$values->repid.'">
         '
@@ -94,8 +94,8 @@ class Gemstone extends CI_Controller
   public function add()
   {
     $data = array(
-      "gem_name"=>$this->input->post('gemName'),
-      "gem_description"=>$this->input->post('gemDesc')
+      "gem_name"=>$this->input->get('gemName'),
+      "gem_description"=>$this->input->get('gemDesc')
     );
 
     $rows = $this->Gem_model->insert_gem($data);

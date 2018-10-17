@@ -42,7 +42,7 @@ function addGemstone() {
     event.preventDefault();
     $.ajax({
       url: baseurl + 'admin/report/gemstone/add',
-      type: 'POST',
+      type: 'GET',
       data: {
         'gemName': $('#gemName').val(),
         'gemDesc': $('#gemDesc').val()
@@ -80,29 +80,6 @@ function append_toedit() {
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      // ID according to Report Type
-      if(typeof(data.gsrid) == "undefined") {
-        $('#rmid').val(data.memoid);
-      }
-      if(typeof(data.memoid) == "undefined") {
-        $('#rmid').val(data.gsrid);
-      }
-
-      // Amount value according to Report Type
-      if (typeof(data.mem_amount) == "undefined" ) {
-        $('#amount').val(data.gsr_amount);
-      }
-      if (typeof(data.gsr_amount) == "undefined" ) {
-        $('#amount').val(data.mem_amount);
-      }
-
-      // Payment Status according to Report Type
-      if (typeof(data.gsr_paymentStatus) == "undefined" ) {
-        $('#pstatus').val(data.mem_paymentStatus);
-      }
-      if (typeof(data.mem_paymentStatus) == "undefined" ) {
-        $('#pstatus').val(data.gsr_paymentStatus);
-      }
       // Customer Data
       $('#custName').html(data.cus_firstname + ' ' + data.cus_lastname);
       $('#custId').html(data.custid);
@@ -118,6 +95,9 @@ function append_toedit() {
         $('#reportType').val('Verbal');
       }
 
+      $('#rmid').val(data.repid);
+      $('#pstatus').val(data.pstatus);
+      $('#amount').val(data.amount);
       $('#reptype').val(data.rep_type);
       $('#newGem').val(data.rep_gemID);
       $('#imgGem').attr('src', baseurl + data.img_path+'/'+data.img_gemstone);
@@ -141,6 +121,42 @@ function append_toedit() {
 
 }
 
+function add() {
+  var formData = new FormData(this);
+  var alertbox = $('#alertMsg');
+
+  $("form").on('submit', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      url: baseurl + 'admin/report/add/insert-todb',
+      type: 'POST',
+      dataType: 'json',
+      data: new FormData(this),
+      cache: false,
+      contentType: false,
+      processData: false,
+      success:function (response){
+        if(response.isvalid){
+          window.location.href = response.url;
+        }
+        if (!response.isvalid) {
+          alertbox.html('<div class="alert alert-danger" role="alert">'+
+                        '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
+                        response.message+'</div>');
+          create_csrf();
+        }
+
+      },
+      fail:function () {
+        console.log('error');
+      }
+    });
+
+  });
+}
+
+// Function Update
 function update() {
   var formData = new FormData(this);
   var alertbox = $('#alertMsg');

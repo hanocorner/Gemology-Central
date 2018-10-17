@@ -23,8 +23,8 @@ function report() {
           $('#repno').html(data.gsrid);
         }
 
-        $('#date').html(data.rep_date);
-        $('#imgGem').attr('src', baseurl + 'assets/admin/images/gem/'+data.img_gemstone).attr('alt', 'Image not available');
+        $('#date').html(data.img_created_date);
+        $('#imgGem').attr('src', baseurl + data.img_path +'/'+ data.img_gemstone).attr('alt', 'Image not available');
         $('#object').html(data.rep_object);
         $('#variety').html(data.rep_variety);
         $('#spgroup').html(data.rep_spgroup);

@@ -16,7 +16,6 @@ class Add extends RP_Controller
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
 
-    //$this->load->helper(array('form', 'encrypt'));
     $this->load->model(array('Lab_model', 'Report_model'));
 
     if (!$this->session->has_userdata('logged_in'))
@@ -46,8 +45,8 @@ class Add extends RP_Controller
 
     if(!$this->form_verification())
     {
-      echo validation_errors();
-      return $this->_json_reponse = array('authentication'=>false, 'message'=>validation_errors());
+      echo json_encode(array('authentication'=>false, 'message'=>validation_errors()));
+      return false;
     }
 
     $this->_labreport_id = $this->Report_model->insert_lab_report($this->lab_data());
@@ -57,6 +56,24 @@ class Add extends RP_Controller
       return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting, Please try again...');
     }
 
+    if($this->_report_type == 'memo')
+    {
+      $this->set_reportid($this->_id);
+      $this->Report_model->insert_memocard($this->memo_data());
+      $this->_json_reponse = array('isvalid'=>true, 'url'=>base_url().'admin/report/download/'.$this->_labreport_id, 'message'=>'Data Updated successfully, Redirecting...');
+    }
+    elseif ($this->_report_type == 'repo')
+    {
+      $this->set_reportid($this->_id);
+      $this->Report_model->insert_certificate($this->certificate_data());
+      $this->_json_reponse = array('isvalid'=>true, 'url'=>base_url().'admin/report/download/'.$this->_labreport_id, 'message'=>'Data Updated successfully, Redirecting...');
+    }
+    elseif ($this->_report_type == 'verb')
+    {
+      $this->Report_model->insert_verbal($this->verbal_data());
+      $this->_json_reponse = array('isvalid'=>true, 'url'=>base_url().'admin/customer', 'message'=>'Data Updated successfully, Redirecting...');
+    }
+
     $this->create_directory();
     if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
     {
@@ -64,31 +81,18 @@ class Add extends RP_Controller
       $upload_status = $this->upload_image('imagegem');
       if($upload_status != null)
       {
-        return $this->_json_reponse = array('authentication'=>false, 'message'=>$upload_status);
+        echo json_encode(array('authentication'=>false, 'message'=>$upload_status));
+        return false;
       }
 
       if ($this->Report_model->insert_image($this->image_data()) < 0 )
       {
-        return $this->_json_reponse = array('authentication'=>false, 'message'=>'Error when inserting image, Please try again...');
+        echo json_encode(array('authentication'=>false, 'message'=>'Error when inserting image, Please try again...'));
+        return false;
       }
     }
 
-    if($this->_report_type == 'memo')
-    {
-      $this->set_reportid($this->_id);
-      $this->Report_model->insert_memocard($this->memo_data());
-    }
-    elseif ($this->_report_type == 'repo')
-    {
-      $this->set_reportid($this->_id);
-      $this->Report_model->insert_certificate($this->certificate_data());
-    }
-    elseif ($this->_report_type == 'verb')
-    {
-      $this->Report_model->insert_verbal($this->verbal_data());
-    }
-
-    return $this->_json_reponse = array('authentication'=>true, 'message'=>'Data added successfully, Redirecting...');
+    echo json_encode($this->_json_reponse);
   }
 }
 ?>

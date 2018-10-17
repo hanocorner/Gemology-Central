@@ -49,12 +49,12 @@ function fetchSearchData() {
   var reportType = $('#reportType').val();
 
   if(reportType == "default" || reportType == null) {
-    alert('Please select report type');
+    //alert('Please select report type');
     return false;
   }
 
   $.ajax({
-    url: baseurl +'admin/gemstone/search-data',
+    url: baseurl +'admin/report/gemstone/search-data',
     type: 'GET',
     dataType: 'HTML',
     data: {
@@ -77,7 +77,7 @@ function fetchSearchData() {
 function deleteReport(id, reportType)
 {
   $.ajax({
-    url: baseurl+'admin/gemstone/delete',
+    url: baseurl+'admin/report/gemstone/delete',
     type: 'POST',
     data: {
       'repid': id,
@@ -101,7 +101,7 @@ function previewReport(id, repoType)
   $('#previewModal').modal({backdrop: 'static', keyboard: false});
 
   $.ajax({
-    url: baseurl+'admin/gemstone/preview',
+    url: baseurl+'admin/report/gemstone/preview',
     type: 'GET',
     dataType: 'JSON',
     data: {
@@ -112,7 +112,7 @@ function previewReport(id, repoType)
       tbody.html(null);
     },
     success :function (data) {
-      tbody.append('<tr><td><img src="'+baseurl+'assets/admin/images/gem/'+data.img_gemstone+'" alt="'+ data.repid+'" width="80px" height="80px"></td></tr>');
+      tbody.append('<tr><td><img src="'+baseurl+data.img_path+'/'+data.img_gemstone+'" alt="'+ data.repid+'" width="80px" height="80px"></td></tr>');
       tbody.append('<tr><td width="120"><strong>Number:</strong></td> <td>'+ data.repid+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Date:</strong></td> <td>'+data.rep_date+'</td></tr>');
       tbody.append('<tr><td width="120"><strong>Object:</strong></td> <td>'+data.rep_object+'</td></tr>');

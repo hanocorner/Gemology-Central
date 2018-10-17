@@ -39,7 +39,7 @@ class RP_Controller extends CI_Controller
     parent::__construct();
 
     $this->load->library('layout', array('layoutManager'=>'admin'));
-    $this->load->helper(array('form'));
+    $this->load->helper(array('form', 'qr'));
     $this->load->library('encrypt');
     $this->load->model(array('Customer_model'));
     $this->config->load('report');
@@ -56,7 +56,7 @@ class RP_Controller extends CI_Controller
     }
     else
     {
-      redirect('admin/report');
+      redirect('admin/customer');
     }
   }
 
@@ -69,10 +69,13 @@ class RP_Controller extends CI_Controller
   /****/
   protected function form_verification()
   {
+    if($this->_report_type != 'verb')
+    {
+      $this->form_validation->set_rules('pstatus','PaymentStatus','required|callback_check_default', array('check_default'=>'Please select your payment status'));
+      $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
+    }
     $this->form_validation->set_rules('gemid','Gemstone','required|callback_check_default', array('check_default'=>'Please select a gemstone from the list'));
     $this->form_validation->set_message('check_gemstone', 'Please select a gemstone from the list');
-    $this->form_validation->set_rules('pstatus','PaymentStatus','required|callback_check_default', array('check_default'=>'Please select your payment status'));
-    $this->form_validation->set_rules('amount','Amount','trim|required|decimal');
     $this->form_validation->set_rules('rmid','ID','trim|required|alpha_dash');
     $this->form_validation->set_rules('object','Object','trim|required');
     $this->form_validation->set_rules('variety','Variety','trim|required');
@@ -82,9 +85,9 @@ class RP_Controller extends CI_Controller
     $this->form_validation->set_rules('gemHeight','Height','trim|decimal');
     $this->form_validation->set_rules('gemLength','Length','trim|decimal');
     $this->form_validation->set_rules('color','Color','trim');
-    $this->form_validation->set_rules('shapecut','Shape','trim|alpha');
+    $this->form_validation->set_rules('shapecut','Shape','trim');
     $this->form_validation->set_rules('other','Other','trim');
-    $this->form_validation->set_rules('comment','Comment','trim|required');
+    $this->form_validation->set_rules('comment','Comment','trim');
 
     if($this->form_validation->run() == FALSE) return false;
 
@@ -157,6 +160,7 @@ class RP_Controller extends CI_Controller
       'reportid'=>$this->_labreport_id,
       'img_gemstone'=>$this->get_imagename(),
       'img_created_date'=>date($this->config->item('date_format')),
+      'img_qrcode'=>qrcode($this->_id, $this->_img_path),
       'img_path'=>$this->_img_path
     );
     return $this->_data;
@@ -264,7 +268,8 @@ class RP_Controller extends CI_Controller
   {
     if(!$this->session->has_userdata('reportid'))
     {
-      $this->session->set_userdata('reportid', $this->encrypt->encode($reportid));
+      $items = array('reportid'=>$this->encrypt->encode($reportid));
+      $this->session->set_userdata($items);
     }
   }
 

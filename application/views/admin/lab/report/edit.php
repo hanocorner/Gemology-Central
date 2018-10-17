@@ -122,11 +122,11 @@
           <div class="input-group-prepend">
             <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
           </div>
-          <input type="text" class="form-control" name="amount" id="validationTooltip01" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
+          <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
         </div>
         <small class="form-text text-muted">Amount field is decimal (i.e. 650.00)</small>
       </div>
-      
+
     </div>
 
     <div class="form-group row">

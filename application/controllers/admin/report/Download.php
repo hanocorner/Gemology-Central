@@ -3,32 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Download extends CI_Controller
 {
   /**
-   * Report id parsed as qr data
-   *
-   * @var string
-   */
-  private $_id = '';
-
-  /**
    * Qr Image with data
    *
    * @var string
    */
   private $_qrcode = '';
 
-  /**
-   * Qr image extension
-   *
-   * @var string
-   */
-  private $_extension = 'png';
-
-  /**
-   * Qr Library parameters
-   *
-   * @var array
-   */
-  private $_params = array();
+  /****/
+  private $_img_path = '';
 
   /**
    * Constructor initializing  all the the required classes
@@ -43,15 +25,20 @@ class Download extends CI_Controller
     $this->load->library('layout', array('layoutManager'=>'admin'));
     $this->load->library(array('session', 'encrypt', 'ciqrcode'));
     $this->load->helper('download');
+    $this->load->model('Report_model');
 
     if (!$this->session->has_userdata('logged_in'))
     {
       redirect('admin/home');
     }
-
-
+    $this->set_path();
   }
 
+  /****/
+  public function set_path()
+  {
+
+  }
   /**
    * Setting admin view so that user can download QR
    *
@@ -60,7 +47,11 @@ class Download extends CI_Controller
    */
   public function index()
   {
-    $data['qr'] = $this->qr();
+    $result = $this->Report_model->get_imagepath($this->uri->segment(4));
+    $this->_qrcode = $result[0]->img_qrcode;
+    $this->_img_path = $result[0]->img_path;
+    $data['qrwithpath'] = $this->_img_path.'/'.$this->_qrcode;
+    $data['qrwithoutpath'] = $this->uri->segment(4);
 
     $this->layout->set_title('Download QR');
     $this->layout->add_include('assets/admin/js/download.js');
@@ -73,32 +64,14 @@ class Download extends CI_Controller
    * @param null
    * @return void
    */
-  public function download()
+  public function get()
   {
-    $data = file_get_contents(base_url().'assets/admin/images/qr/'.$this->_qrcode);
+    $result = $this->Report_model->get_imagepath($this->uri->segment(5));
+    $this->_qrcode = $result[0]->img_qrcode;
+    $this->_img_path = $result[0]->img_path;
+    $data = file_get_contents(base_url().$this->_img_path.'/'.$this->_qrcode);
     force_download($this->_qrcode, $data);
   }
 
-  /**
-   * QR Code generator
-   *
-   * @param $gemid
-   * @return qr image url
-   */
-  private function qr()
-  {
-    if(!$this->session->has_userdata('reportid')) redirect('admin/report');
-
-    $this->_id = $this->encrypt->decode($this->session->reportid);
-    $this->_qrcode = $this->_id.'.'.$this->_extension;
-    $this->_params['data'] = base_url()."report/".$this->_id;
-    $this->_params['level'] = 'H';
-    $this->_params['size'] = 8;
-    $this->_params['savename'] = "assets/admin/images/qr/".$this->_qrcode;
-
-    if($this->ciqrcode->generate($this->_params)) return $this->_qrcode;
-
-    return null;
-  }
 }
 ?>
