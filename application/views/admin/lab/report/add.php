@@ -6,6 +6,7 @@
   .help-block {
     color: red;
   }
+  .alert-danger-alt { border-color: #B63E5A;background: #E26868;color: #fff; }
 </style>
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -39,29 +40,41 @@
 
     </div><!-- End of card Row  -->
 
-    <form action="#" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-    <input type="hidden" name="" value=""  id="csrfToken">
+    <form class="" action="#" method="post">
 
     <!-- Alert Box -->
     <div class="form-group row">
       <div class="col-sm-6">
-        <div id="alertMsg"></div>
+        <?php if(validation_errors() !=''): ?>
+          <div class="alert alert-danger" role="alert">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
+            <?php echo validation_errors();  ?>
+          </div>
+        <?php endif; ?>
+        <?php if(isset($_SESSION['status'])): ?>
+          <div class="alert alert-danger mt-2" role="alert">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
+            <?php echo $_SESSION['status']; ?>
+          </div>
+        <?php endif; ?>
       </div>
-    </div><!-- /. Alert Box -->
+    </div>
+    <!-- /. Alert Box -->
 
-    <div class="form-row">
-    <div class="form-group col-md-3">
-      <label for="">Select Customer</label>
-      <input type="text" class="form-control form-control-sm" id="customer">
+    <div class="form-row"> <!-- Customer data  -->
+      <div class="form-group col-3">
+        <label for="customer">Select Customer</label>
+        <input type="text" class="form-control form-control-sm" id="">
+      </div>
+      <div class="form-group col-1">
+        <label for="customer"></label>
+        <button type="button" class="btn btn-sm btn-warning mt-2"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add Customer</button>
+      </div>
     </div>
-    <div class="form-group col-md-6">
-      <label for="">Password</label>
-      <input type="password" class="form-control form-control-sm" id="">
-    </div>
-  </div>
-    <div class="form-group row">
-      <label for="repo-type" class="col-sm-2 col-form-label">Report type<sup>*</sup></label>
-      <div class="col-sm-2">
+
+    <div class="form-row"> <!-- Report Type  -->
+      <div class="form-group col-2">
+        <label for="customer">Select your report</label>
         <select class="form-control form-control-sm" id="repType" name="repo-type">
           <option value="0" selected>Choose...</option>
           <option value="memo">Memo Card</option>
@@ -69,69 +82,72 @@
           <option value="verb">Verbal</option>
         </select>
       </div>
-      <div class="col-sm-2">
+      <div class="form-group col-2">
+        <label for="customer">Report ID#</label>
         <input type="text" class="form-control form-control-sm" id="id" name="rmid" value="<?php echo set_value('rmid'); ?>" readonly>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="Gem" class="col-sm-2 col-form-label">Gemstone<sup>*</sup></label>
-      <div class="col-sm-4">
-        <div class="input-group input-group-sm mb-3">
-          <select class="form-control form-control-sm" id="newGem" name="gemid">
-            <option value="0" selected>Choose...</option>
-          </select>
-          <div class="input-group-append">
-            <button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; New Gem</button>
-          </div>
-        </div>
+    <div class="form-row"> <!-- Gemstone type  -->
+      <div class="form-group col-3">
+        <label for="Gem">Gemstone<sup>*</sup></label>
+        <select class="form-control form-control-sm" id="newGem" name="gemid">
+          <option value="0" selected>Choose...</option>
+        </select>
+      </div>
+      <div class="form-group col-1">
+        <label for="customer"></label>
+        <button type="button" class="btn btn-sm btn-secondary mt-2" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add Gemstone</button>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="paymentstatus" class="col-sm-2 col-form-label">Payment<sup>*</sup></label>
-      <div class="col-sm-2">
+    <div class="form-row"> <!-- Payment  -->
+      <div class="form-group col-2">
+        <label for="paymentstatus">Payment<sup>*</sup></label>
         <select class="form-control form-control-sm" name="pstatus" id="pStatus">
           <option value="default" <?php echo  set_select('pstatus', 'default', TRUE); ?> selected>Choose...</option>
           <option value="1" <?php echo  set_select('pstatus', '1'); ?>>Paid</option>
           <option value="0" <?php echo  set_select('pstatus', '0'); ?>>Unpaid</option>
         </select>
       </div>
-      <div class="col-sm-2">
+      <div class="col-2">
+        <label for="paymentstatus">Payment<sup>*</sup></label>
         <div class="input-group input-group-sm mb-3">
           <div class="input-group-prepend">
             <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
           </div>
           <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
         </div>
-        <small class="form-text text-muted">Amount field is decimal (i.e. 650.00)</small>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="object" class="col-sm-2 col-form-label">Object<sup>*</sup></label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Object  -->
+      <div class="form-group col-4">
+        <label for="object">Object<sup>*</sup></label>
         <input type="text" class="form-control form-control-sm" name="object" value="<?php echo set_value('object'); ?>" autocomplete="off" required>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="variety" class="col-sm-2 col-form-label">Variety<sup>*</sup></label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control form-control-sm" name="variety" value="<?php echo set_value('variety'); ?>" autocomplete="off" required>
+    <div class="form-row align-items-center"> <!-- Variety  -->
+      <div class="form-group col-4">
+        <label for="variety">Variety<sup>*</sup></label>
+        <input type="text" class="form-control form-control-sm" name="variety" value="<?php echo set_value('variety'); ?>" autocomplete="off" style="border: 1px solid #dc3545">
+      </div>
+      <div class="col-4">
+        <small id="passwordHelp" class="text-danger">Must be 8-20 characters long.</small>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="species/group" class="col-sm-2 col-form-label">Species/Group<sup>*</sup></label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Species/Group  -->
+      <div class="form-group col-4">
+        <label for="species/group">Species/Group<sup>*</sup></label>
         <input type="text" class="form-control form-control-sm" name="spgroup" value="<?php echo set_value('spgroup'); ?>" autocomplete="off" required>
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="Weight" class="col-sm-2 col-form-label">Weight<sup>*</sup></label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Weight  -->
+      <div class="col-1">
+        <label for="Weight" >Weight<sup>*</sup></label>
         <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control form-control-sm" name="weight" value="<?php echo set_value('weight'); ?>" autocomplete="off">
           <div class="input-group-append">
@@ -139,11 +155,8 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="form-group row">
-      <label for="dimensions" class="col-sm-2 col-form-label">Dimensions (W x H  x L):</label>
-      <div class="col-2">
+      <div class="col-1"> <!-- Width  -->
+        <label for="dimensions" >Width:</label>
         <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control form-control-sm" name="gemWidth" value="<?php echo set_value('gemWidth'); ?>" autocomplete="off">
           <div class="input-group-append">
@@ -151,7 +164,9 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-1">
+
+      <div class="col-1"> <!-- Height  -->
+        <label for="dimensions">Height:</label>
         <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control form-control-sm" name="gemHeight" value="<?php echo set_value('gemHeight'); ?>" autocomplete="off">
           <div class="input-group-append">
@@ -159,7 +174,9 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-1">
+
+      <div class="col-1"> <!-- Length  -->
+        <label for="dimensions" >Length:</label>
         <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control form-control-sm" name="gemLength" value="<?php echo set_value('gemLength'); ?>" autocomplete="off">
           <div class="input-group-append">
@@ -169,37 +186,38 @@
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="shape&cut" class="col-sm-2 col-form-label">Shape & Cut:</label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Shape & Cut  -->
+      <div class="form-group col-4">
+        <label for="shape&cut">Shape & Cut:</label>
         <input type="text" class="form-control form-control-sm" name="shapecut" value="<?php echo set_value('shapecut'); ?>" autocomplete="off">
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="color" class="col-sm-2 col-form-label">Color: </label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Color  -->
+      <div class="form-group col-4">
+        <label for="color">Color: </label>
         <input type="text" class="form-control form-control-sm" name="color" value="<?php echo set_value('color'); ?>" autocomplete="off">
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="comment" class="col-sm-2 col-form-label">Comment:</label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Comment  -->
+      <div class="form-group col-4">
+        <label for="comment">Comment:</label>
         <input type="text" class="form-control form-control-sm" name="comment" value="<?php echo set_value('comment'); ?>" autocomplete="off">
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="other" class="col-sm-2 col-form-label">Other</label>
-      <div class="col-sm-4">
+    <div class="form-row"> <!-- Other  -->
+      <div class="form-group col-4">
+        <label for="other">Other</label>
         <input type="text" class="form-control form-control-sm" name="other" value="<?php echo set_value('other'); ?>" autocomplete="off">
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for="image" class="col-sm-2 col-form-label">Upload Image:</label>
-      <div class="col-sm-4">
+    <div class="form-row">
+
+      <div class="col-4">
+        <label for="image">Upload Image:</label>
         <div class="custom-file-container" data-upload-id="myUploader">
           <label>
             <a href="javascript:void(0)" class="custom-file-container__image-clear btn btn-outline-danger btn-sm" title="Clear Image">
@@ -219,11 +237,12 @@
     </div>
 
     <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
+    <button type="submit" name="submit" class="btn btn-sm btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
 
     <div class="form-group row mb-4">
       <div class="col-2"></div>
       <div class="col-4">
-        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
+
       </div>
     </div>
     <?php echo form_close(); ?><!-- End of form  -->
@@ -274,8 +293,6 @@
   $(document).ready(function() {
     gemstone();
     addGemstone();
-    create_csrf();
-    add();
 
     reptype.change(function () {
       if (this.selectedIndex == 0) {
