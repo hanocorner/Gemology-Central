@@ -18,13 +18,14 @@
   .alert-success-alt { border-color: #19B99A;background: #20A286;color: #fff; }
   .alert-info-alt { border-color: #B4E1E4;background: #81c7e1;color: #fff; }
   .glyphicon { margin-right:10px; }
+  .card-login { box-shadow: 1px 0px 11px 5px #eaeaea; }
   </style>
 </head>
 
-<body class="bg-dark">
+<body class="">
   <div class="container">
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header text-center">Gemology Central Laboratory </div>
+      <div class="card-header text-center bg-dark text-white">Gemology Central Laboratory </div>
       <div class="card-body">
         <!-- Alert box -->
         <div id="messageBox"></div>
@@ -42,7 +43,7 @@
           </div>
           <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $hash; ?>" />
 
-          <button type="submit" class="btn btn-primary" id='login'>Login</button>
+          <button type="submit" class="btn btn-primary mt-3" id='login'>Login</button>
         </form>
 
       </div>
@@ -79,7 +80,7 @@
             password: $('#password').val()
           },
           beforeSend: function () {
-            msgBox.html('<div class="alert alert-info-alt" role="alert"><i class="fa fa-spinner fa-spin fa-fw"></i><span class="sr-only">Loading...</span>&nbsp; Authenticating</div>');
+            msgBox.html('<div class="alert alert-info-alt" role="alert"><i class="fa fa-spinner fa-spin fa-fw"></i><span class="sr-only"></span>&nbsp; Authenticating, Please Wait...</div>');
           },
           success: function (response) {
             csrfToken.val(response.csrf);
@@ -89,12 +90,12 @@
               }
               if(response.auth){
                 msgBox.html('<div class="alert alert-success-alt" role="alert"><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp; '+response.message+'</div>');
-                window.location.href = response.url;
+                window.location.href = '<?php echo base_url(); ?>'+ response.url;
               }
             }, 1000);
           },
           fail:function() {
-            console.log("error");
+            <?php log_message('error', 'Login: xmlHTTPRequest failed to load'); ?>
           }
         });
       });

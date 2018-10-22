@@ -40,7 +40,7 @@
             <label for="basic-url">Article URL<sup>&nbsp;*</sup> (Public Url)</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3"><?php echo base_url(); ?>/blog</span>
+                <span class="input-group-text" id="basic-addon3"><?php echo base_url(); ?>blog/</span>
               </div>
               <input type="text" class="form-control" id="basic-url" name="url" aria-describedby="basic-addon3">
             </div>

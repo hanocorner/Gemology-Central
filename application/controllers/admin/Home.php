@@ -54,12 +54,12 @@ class Home extends Admin_Controller
       return false;
     }
 
-    $this->form_validation->set_rules('username', 'Username', 'trim|required|alpha|min_length[3]|max_length[5]');
-    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]|max_length[5]');
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]|max_length[8]|alpha');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]|max_length[8]|alpha_numeric');
 
     if ($this->form_validation->run() == FALSE)
     {
-      echo json_encode(array('auth'=>false,'message'=>validation_errors(),'csrf'=>$this->regenerate_csrf()));
+      echo json_encode(array('auth'=>false,'message'=>'Invalid credentials, Please try again...','csrf'=>$this->regenerate_csrf()));
       return false;
     }
     else
@@ -131,27 +131,8 @@ class Home extends Admin_Controller
 
     delete_cookie('_gcl');
 
-    $this->set_message('You have successfully logged out', 'success');
-
     redirect('admin');
     exit;
   }
-
-  /**
-   * Function to set user message after form completion
-   *
-   * @param none
-   * @return void
-   */
-  public function set_message($msg, $status)
-  {
-    $data = array(
-      'message'=> $msg,
-      'status'=> $status,
-    );
-    $this->session->set_flashdata($data);
-
-  }
-
 }
 ?>

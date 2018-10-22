@@ -15,6 +15,21 @@
             </a>
           </li>
 
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Report">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsereport" data-parent="#exampleAccordion">
+              <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;
+              <span class="nav-link-text">Report</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapsereport">
+              <li>
+                <a href="<?php echo base_url();?>admin/report">All Reports</a>
+              </li>
+              <li>
+                <a href="<?php echo base_url();?>admin/report/add">Add Report</a>
+              </li>
+            </ul>
+          </li>
+
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Customer">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsecustomer" data-parent="#exampleAccordion">
               <i class="fa fa-address-book" aria-hidden="true"></i>&nbsp;&nbsp;
@@ -30,7 +45,7 @@
             </ul>
           </li>
 
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gemstone">
+          <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gemstone">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsegemstone" data-parent="#exampleAccordion">
               <i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;
               <span class="nav-link-text">Gemstone</span>
@@ -41,11 +56,11 @@
               </li>
 
             </ul>
-          </li>
+          </li> -->
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Blog">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseblog" data-parent="#exampleAccordion">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;&nbsp;
               <span class="nav-link-text">Blog</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapseblog">
@@ -100,9 +115,13 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+         <li class="nav-item">
+          <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp; User</a>
+         </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
-              <i class="fa fa-fw fa-power-off"></i>&nbsp; Logout</a>
+              <i class="fa fa-fw fa-power-off"></i>&nbsp;</a>
           </li>
         </ul>
       </div>

@@ -1,35 +1,27 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Add extends RP_Controller
+class Add extends Admin_Controller
 {
   /**
    * Constructor initializing  all the the required classes
    *
-   * @param none
+   * @param null
    * @return void
    */
   public function __construct()
   {
     parent::__construct();
+    $this->check_login_status();
     
-    $config = array('layoutManager'=>'admin');
-    $this->load->library('layout', $config);
-    $this->load->library(array('session'));
-
+    $this->load->helper('directory');
     $this->load->model(array('Lab_model', 'Report_model'));
-
-    if (!$this->session->has_userdata('logged_in'))
-    {
-      redirect('admin/home');
-    }
   }
 
   /*****/
   public function index()
   {
-    $this->customer();
-
     $this->layout->set_title('Add Report');
+
     $this->layout->add_include('assets/admin/css/bootstrap-select.min.css');
     $this->layout->add_include('assets/admin/css/easy-autocomplete.min.css');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Customer extends CI_Controller
+class Customer extends Admin_Controller
 {
   /**
    * Constructor (loading the important classes)
@@ -11,28 +11,17 @@ class Customer extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
-    $this->load->library(array('session', 'pagination', 'table'));
-
-    $config = array('layoutManager'=>'admin');
-    $this->load->library('layout', $config);
-
-    $this->load->helper(array('url', 'form'));
+    $this->check_login_status();
+    
+    $this->load->library(array('pagination', 'table'));
     $this->load->model(array('Customer_model', 'Lab_model'));
-
-    if (!$this->session->has_userdata('logged_in'))
-    {
-      redirect('admin/home');
-    }
   }
 
   public function index()
   {
-    //$this->load->helper('');
     $this->layout->set_title('My Customer List');
 
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/loglevel.min.js');
     $this->layout->add_include('assets/admin/js/customer.js');
 
     $data['form'] = array('class'=>'form-inline');

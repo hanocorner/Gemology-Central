@@ -2,9 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin_Controller extends LB_Controller
 {
-  /****/
-  protected $_json_reponse = array();
-
   /**
    * Default Controller
    *
@@ -17,7 +14,12 @@ class Admin_Controller extends LB_Controller
     $this->load->library(array('session'));
   }
 
-  /*****/
+  /**
+   * User login status and set layout as admin
+   *
+   * @param null
+   * @return void
+   */
   protected function check_login_status()
   {
     if (!$this->session->has_userdata('logged_in') && $this->session->logged_in != true)
@@ -29,14 +31,24 @@ class Admin_Controller extends LB_Controller
     }
   }
 
-  /****/
+  /**
+   * User login check via ajax
+   *
+   * @param null
+   * @return bool
+   */
   protected function ajax_login_status()
   {
     if (!$this->session->has_userdata('logged_in') && $this->session->logged_in != true) return false;
     return true;
   }
 
-  /****/
+  /**
+   * Regenerate CSRF token
+   *
+   * @param null
+   * @return string
+   */
   protected function regenerate_csrf()
   {
     return $this->security->get_csrf_hash();

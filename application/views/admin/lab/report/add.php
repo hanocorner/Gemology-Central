@@ -33,36 +33,12 @@
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card text-white bg-dark">
-          <div class="card-body">
-            <h5 class="card-title"><?php echo $name; ?></h5>
-            <p class="card-text">Customer-id #<?php echo $cid; ?></p>
-          </div>
-        </div>
-      </div>
-
     </div><!-- End of card Row  -->
 
-    <form class="" action="#" method="post">
+    <form action="#" method="post">
 
     <!-- Alert Box -->
-    <div class="form-group row">
-      <div class="col-sm-6">
-        <?php if(validation_errors() !=''): ?>
-          <div class="alert alert-danger" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo validation_errors();  ?>
-          </div>
-        <?php endif; ?>
-        <?php if(isset($_SESSION['status'])): ?>
-          <div class="alert alert-danger mt-2" role="alert">
-            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; Error(s) Found</strong><br/>
-            <?php echo $_SESSION['status']; ?>
-          </div>
-        <?php endif; ?>
-      </div>
-    </div>
+    <div id=""></div>
     <!-- /. Alert Box -->
 
     <div class="form-row"> <!-- Customer data  -->
@@ -72,7 +48,7 @@
       </div>
       <div class="form-group col-1">
         <label for="customer"></label>
-        <button type="button" class="btn btn-sm btn-warning mt-2"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add Customer</button>
+        <button type="button" class="btn btn-sm btn-warning mt-2" data-toggle="modal" data-target="#customerModal"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add Customer</button>
       </div>
     </div>
 
@@ -101,7 +77,7 @@
       </div>
       <div class="form-group col-1">
         <label for="customer"></label>
-        <button type="button" class="btn btn-sm btn-secondary mt-2" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add Gemstone</button>
+        <button type="button" class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add Gemstone</button>
       </div>
     </div>
 
@@ -241,14 +217,8 @@
     </div>
 
     <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
-    <button type="submit" name="submit" class="btn btn-sm btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>&nbsp;&nbsp;
+    <button type="submit" name="submit" class="btn btn-sm btn-success mb-3"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>
 
-    <div class="form-group row mb-4">
-      <div class="col-2"></div>
-      <div class="col-4">
-
-      </div>
-    </div>
     <?php echo form_close(); ?><!-- End of form  -->
 
   </div><!-- End of Container fluid -->
@@ -258,7 +228,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="gemModalLabel">New Gemstone</h5>
+        <h5 class="modal-title" id="gemModalLabel"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; New Gemstone</h5>
       </div>
       <div class="modal-body">
         <div id="message"></div>
@@ -277,8 +247,50 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeGem">Close</button>
-        <button type="button" class="btn btn-primary" id="saveGem">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeGem"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Close</button>
+        <button type="button" class="btn btn-primary" id="saveGem"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save Gemstone</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerModalLabel"><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp; New Customer</h5>
+      </div>
+      <div class="modal-body">
+        <div id="message"></div>
+        <form method="post" action="#">
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="first-Name">First Name<sup>*</sup></label>
+              <input type="text" class="form-control" id="fName" >
+            </div>
+            <div class="form-group col-6">
+              <label for="last-Name">Lirst Name<sup>*</sup></label>
+              <input type="text" class="form-control" id="lName">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-12">
+              <label for="number">Number<sup>*</sup></label>
+              <input type="text" class="form-control" id="number" >
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-12">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email">
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeGem"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Close</button>
+        <button type="button" class="btn btn-primary" id="saveGem"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save Customer</button>
       </div>
     </div>
   </div>
