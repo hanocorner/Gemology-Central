@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Home extends CI_Controller
+class Home extends Admin_Controller
 {
   /**
    * Constructor (loading the important the class)
@@ -10,9 +9,10 @@ class Home extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->library(array('encryption','session'));
+    $this->load->library(array('encryption'));
 
     $this->load->helper(array('cookie', 'date'));
+    $this->encryption->initialize(array('driver' => 'mcrypt'));
   }
 
   /**
@@ -48,14 +48,18 @@ class Home extends CI_Controller
    */
   public function login()
   {
-    $this->encryption->initialize(array('driver' => 'mcrypt'));
+    if(!$this->input->is_ajax_request())
+    {
+      echo json_encode(array('auth'=>false,'message'=>'Not a valid request'));
+      return false;
+    }
 
-    $this->form_validation->set_rules('username', 'Username', 'trim|required|alpha');
-    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_rules('username', 'Username', 'trim|required|alpha|min_length[3]|max_length[5]');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]|max_length[5]');
 
     if ($this->form_validation->run() == FALSE)
     {
-      $this->form_view();
+      echo json_encode(array('auth'=>false,'message'=>validation_errors(),'csrf'=>$this->regenerate_csrf()));
       return false;
     }
     else
@@ -67,8 +71,7 @@ class Home extends CI_Controller
 
       if ($admin_id == false)
       {
-        $this->set_message('Username you entered is incorrect...', 'danger');
-        $this->form_view();
+        echo json_encode(array('auth'=>false,'message'=>'Username is incorrect, Please try again...', 'csrf'=>$this->regenerate_csrf()));
         return false;
       }
 
@@ -91,19 +94,18 @@ class Home extends CI_Controller
 
         $log = array(
           'log_timestamp'=>$date,
-          'log_userBrowser'=>'chrome'
+          'log_userBrowser'=>$this->input->user_agent()
         );
+
         $this->Login_model->update_admin_data('tbl_administrator_log', 'admID', $admin_id, $log);
 
         $this->session->set_userdata($session_data);
 
-        $this->set_message('Login Successfull...', 'success');
-        redirect('admin/profile');
+        echo json_encode(array('auth'=>true,'message'=>'Login successfull, Redirecting...', 'url'=>'admin/profile'));
       }
       else
       {
-        $this->set_message('Password you entered is incorrect...', 'danger');
-        $this->form_view();
+        echo json_encode(array('auth'=>false,'message'=>'Password is incorrect, Please try again...', 'csrf'=>$this->regenerate_csrf()));
         return false;
       }
 

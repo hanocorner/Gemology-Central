@@ -7,6 +7,10 @@
     color: red;
   }
   .alert-danger-alt { border-color: #B63E5A;background: #E26868;color: #fff; }
+  .filter-option{
+    border: 1px solid #cecece;
+    border-radius: .25em;
+  }
 </style>
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -64,7 +68,7 @@
     <div class="form-row"> <!-- Customer data  -->
       <div class="form-group col-3">
         <label for="customer">Select Customer</label>
-        <input type="text" class="form-control form-control-sm" id="">
+        <input id="plate" class="form-control form-control-sm"/>
       </div>
       <div class="form-group col-1">
         <label for="customer"></label>
@@ -91,7 +95,7 @@
     <div class="form-row"> <!-- Gemstone type  -->
       <div class="form-group col-3">
         <label for="Gem">Gemstone<sup>*</sup></label>
-        <select class="form-control form-control-sm" id="newGem" name="gemid">
+        <select class="selectpicker form-control form-control-sm" id="newGem" name="gemid" data-live-search="true">
           <option value="0" selected>Choose...</option>
         </select>
       </div>
@@ -285,7 +289,7 @@
   var myUpload = new FileUploadWithPreview('myUploader');
 
   var baseurl = '<?php echo base_url(); ?>';
-  var gemtype = $('#newGem');
+  var gemtype = $('.selectpicker');
   var reptype = $('#repType');
   var pstatus = $('#pStatus');
   var amount = $("#amount");
@@ -293,6 +297,21 @@
   $(document).ready(function() {
     gemstone();
     addGemstone();
+    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+
+    var options = {
+    	url: baseurl + "assets/countries.json",
+    	getValue: "name",
+    	list: {
+    		match: {
+    			enabled: true
+    		},
+    		maxNumberOfElements: 8
+    	},
+    	theme: "plate-dark"
+    };
+
+    $("#plate").easyAutocomplete(options);
 
     reptype.change(function () {
       if (this.selectedIndex == 0) {

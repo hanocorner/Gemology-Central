@@ -11,7 +11,7 @@ class Add extends RP_Controller
   public function __construct()
   {
     parent::__construct();
-
+    
     $config = array('layoutManager'=>'admin');
     $this->load->library('layout', $config);
     $this->load->library(array('session'));
@@ -30,9 +30,13 @@ class Add extends RP_Controller
     $this->customer();
 
     $this->layout->set_title('Add Report');
+    $this->layout->add_include('assets/admin/css/bootstrap-select.min.css');
+    $this->layout->add_include('assets/admin/css/easy-autocomplete.min.css');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
     $this->layout->add_include('assets/admin/js/report.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
+    $this->layout->add_include('assets/admin/js/jquery.easy-autocomplete.min.js');
+    $this->layout->add_include('assets/admin/js/bootstrap-select.min.js');
 
     $this->layout->view('admin/lab/report/add', $this->_data, 'admin/layouts/admin');
   }
