@@ -15,7 +15,7 @@ class Admin_Controller extends LB_Controller
   }
 
   /**
-   * User login status and set layout as admin
+   * User logged in status and set layout as admin
    *
    * @param null
    * @return void
@@ -32,7 +32,7 @@ class Admin_Controller extends LB_Controller
   }
 
   /**
-   * User login check via ajax
+   * User logged in status check via ajax
    *
    * @param null
    * @return bool
@@ -52,6 +52,12 @@ class Admin_Controller extends LB_Controller
   protected function regenerate_csrf()
   {
     return $this->security->get_csrf_hash();
+  }
+
+  /*****/
+  public function json_output($)
+  {
+    // code...
   }
 }
 ?>

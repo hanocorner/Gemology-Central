@@ -19,7 +19,7 @@ class Customer_model extends CI_Model
   public function insert_customer($data)
   {
     $this->db->insert('tbl_customer', $data);
-    return $this->db->insert_id();
+    return $this->db->affected_rows();
   }
 
   /**

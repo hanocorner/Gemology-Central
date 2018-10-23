@@ -102,7 +102,7 @@ class Id
   }
 
   /*****/
-  protected function increment_id()
+  private function increment_id()
   {
     if(is_null($this->_lastid))
     {
@@ -119,7 +119,7 @@ class Id
   }
 
   /*****/
-  protected function default_id()
+  private function default_id()
   {
     return $this->_prefix.$this->_suffix;
   }

@@ -22,33 +22,26 @@
       <li class="breadcrumb-item">Report</li>
       <li class="breadcrumb-item active">Add</li>
     </ol>
+    
+    <!-- Page Title  -->
+    <h2 class="card-title"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp; New Report</h2>
+    <p class="card-text">Important fields are mentioned in <strong style="color:red;">*</strong></p>
+    <!-- /. Page Title  -->
 
-    <div class="row my-4"><!-- Card Row  -->
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">New Report</h5>
-            <p class="card-text">Important fields are mentioned in <strong style="color:red;">*</strong></p>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- End of card Row  -->
-
-    <form action="#" method="post">
-
+    <div class="pt-2"></div>
     <!-- Alert Box -->
-    <div id=""></div>
+    <div id="message"></div>
     <!-- /. Alert Box -->
 
+    <form action="#" method="post">
     <div class="form-row"> <!-- Customer data  -->
       <div class="form-group col-3">
         <label for="customer">Select Customer</label>
         <input id="plate" class="form-control form-control-sm"/>
       </div>
       <div class="form-group col-1">
-        <label for="customer"></label>
-        <button type="button" class="btn btn-sm btn-warning mt-2" data-toggle="modal" data-target="#customerModal"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add Customer</button>
+        <div class="pt-4"></div>
+        <button type="button" class="btn btn-sm btn-warning mt-2" data-toggle="modal" data-target="#customerModal"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add a Customer</button>
       </div>
     </div>
 
@@ -76,7 +69,7 @@
         </select>
       </div>
       <div class="form-group col-1">
-        <label for="customer"></label>
+        <div class="pt-4"></div>
         <button type="button" class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add Gemstone</button>
       </div>
     </div>
@@ -217,13 +210,14 @@
     </div>
 
     <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
-    <button type="submit" name="submit" class="btn btn-sm btn-success mb-3"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save & Download QR</button>
+    <button type="submit" name="submit" class="btn btn-primary mb-3"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save Report</button>
 
     <?php echo form_close(); ?><!-- End of form  -->
 
   </div><!-- End of Container fluid -->
 </div><!-- End of Content wrapper -->
 
+<!-- Gemstone Modal -->
 <div class="modal fade" id="gemModal" tabindex="-1" role="dialog" aria-labelledby="gemModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -244,7 +238,6 @@
             </div>
           <?php echo form_close(); ?><!-- End of form  -->
         </div>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeGem"><i class="fa fa-times" aria-hidden="true"></i>&nbsp; Close</button>
@@ -253,7 +246,9 @@
     </div>
   </div>
 </div>
+<!-- /. Gemstone Modal -->
 
+<!-- Customer Modal -->
 <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -266,23 +261,23 @@
           <div class="form-row">
             <div class="form-group col-6">
               <label for="first-Name">First Name<sup>*</sup></label>
-              <input type="text" class="form-control" id="fName" >
+              <input type="text" class="form-control form-control-sm" id="fName" >
             </div>
             <div class="form-group col-6">
               <label for="last-Name">Lirst Name<sup>*</sup></label>
-              <input type="text" class="form-control" id="lName">
+              <input type="text" class="form-control form-control-sm" id="lName">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-12">
-              <label for="number">Number<sup>*</sup></label>
-              <input type="text" class="form-control" id="number" >
+              <label for="number">Phone Number<sup>*</sup></label>
+              <input type="text" class="form-control form-control-sm" id="number" >
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-12">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email">
+              <input type="email" class="form-control form-control-sm" id="email">
             </div>
           </div>
         </form>
@@ -295,6 +290,7 @@
     </div>
   </div>
 </div>
+<!-- /. Customer Modal -->
 
 <!-- Custom Script  -->
 <script type="text/javascript">

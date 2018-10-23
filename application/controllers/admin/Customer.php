@@ -12,9 +12,9 @@ class Customer extends Admin_Controller
   {
     parent::__construct();
     $this->check_login_status();
-    
-    $this->load->library(array('pagination', 'table'));
-    $this->load->model(array('Customer_model', 'Lab_model'));
+
+    $this->load->library(array('pagination', 'table', 'id'));
+    $this->load->model(array('admin/Customer_model', 'Lab_model'));
   }
 
   public function index()
@@ -44,15 +44,24 @@ class Customer extends Admin_Controller
   }
 
   /**
-   * Function to insert new customer to DB
+   * This will insert a new customer to DB
    *
-   * @param none
-   * @return void
+   * @param null
+   * @return bool
    */
-  public function insert_customer()
+  public function insert()
   {
-    $data = array(
-      'custid'=>$this->set_customer_id(),
+    if(!$this->ajax_login_status())
+    {
+      echo json_encode(array('auth'=>false, 'url'=>base_url().'admin/home'));
+      return false;
+    }
+
+    $this->id->set_lastid($this->Customer_model->get_customer_id());
+    $this->id->set_format(array('identifier'=>'C', 'separator'=>'-'));
+
+    $this->_data = array(
+      'custid'=>$this->id->create_id(),
       'cus_firstname'=>$this->input->post('fname'),
       'cus_lastname'=>$this->input->post('lname'),
       'cus_number'=>$this->input->post('number'),
@@ -64,20 +73,19 @@ class Customer extends Admin_Controller
     $this->form_validation->set_rules('number','Number','trim|required|regex_match[/^[0-9]{10}$/]');
     $this->form_validation->set_rules('email','Email','trim|valid_email');
 
-    if($this->form_validation->run()==FALSE) return $this->add();
+    if($this->form_validation->run()==FALSE)
+    {
+      echo json_encode(array('auth'=>false, 'message'=>validation_errors()));
+      return false;
+    }
 
-    $customer_id = $this->Customer_model->insert_customer($data);
-
-      if($this->Customer_model->get_affected_rows() > 0)
-      {
-        redirect('admin/customer');
-      }
-      else
-      {
-        $this->set_flashdata("status", "Problem When adding this customer");
-        return $this->add();
-      }
-
+    if($this->Customer_model->insert_customer($this->_data) < 0)
+    {
+      log_message('error', 'Error when inserting customer');
+      echo json_encode(array('auth'=>false, 'message'=>'Problem when adding this customer to database, Please try again'));
+      return false;
+    }
+    echo json_encode(array('auth'=>true, 'url'=>base_url().'admin/customer'));
   }
 
   /**
@@ -223,31 +231,5 @@ class Customer extends Admin_Controller
     }
   }
 
-  /**
-   * Creating Customer ID for unique identification
-   *
-   * @param null
-   * @return id string
-   */
-  private function set_customer_id()
-  {
-    $prefix = "GCLC";
-    $number = 1000;
-
-    $customerid = $this->Customer_model->get_customer_id();
-
-    if(is_null($customerid))
-    {
-      $number += 1;
-      $number = str_pad($number, 4, '0', STR_PAD_LEFT);
-      return $prefix."-".$number;
-    }
-    else
-    {
-      $customerid = preg_replace('/[^0-9]/', '', $customerid);
-      $customerid += 1;
-      return $prefix."-".$customerid;
-    }
-  }
 }
 ?>
