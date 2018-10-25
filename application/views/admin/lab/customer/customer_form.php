@@ -1,17 +1,3 @@
-<style media="screen">
-  sup {
-    color: red;
-    font-size: 18px;
-  }
-  .help-block {
-    color: red;
-  }
-  .alert-danger-alt { border-color: #B63E5A;background: #E26868;color: #fff; }
-  .alert-warning-alt { border-color: #F3F3EB;background: #E9CEAC;color: #fff; }
-  .alert-success-alt { border-color: #19B99A;background: #20A286;color: #fff; }
-  .alert-info-alt { border-color: #B4E1E4;background: #81c7e1;color: #fff; }
-  .glyphicon { margin-right:10px; }
-</style>
 <div class="content-wrapper">
   <div class="container-fluid">
     <ol class="breadcrumb">

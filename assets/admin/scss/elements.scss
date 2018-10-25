@@ -1,6 +1,6 @@
 $white-color: #fff;
 $primary-color: #007bff;
-
+$color-dnager:#B63E5A;
 .wrapper {
   max-width: calc(1600px + 10%);
   margin: 0 auto;
@@ -92,8 +92,42 @@ $primary-color: #007bff;
   cursor: pointer;
 }
 
-.alert-danger-alt { border-color: #B63E5A;background: #E26868;color: #fff; }
-.alert-warning-alt { border-color: #F3F3EB;background: #E9CEAC;color: #fff; }
-.alert-success-alt { border-color: #19B99A;background: #20A286;color: #fff; }
-.alert-info-alt { border-color: #B4E1E4;background: #81c7e1;color: #fff; }
-.glyphicon { margin-right:10px; }
+.alert-danger-alt {
+  color: $white-color;
+  border-color: $color-dnager;
+  background: #E26868;
+}
+.alert-warning-alt {
+  color: $white-color;
+  border-color: #F3F3EB;
+  background: #E9CEAC;
+}
+.alert-success-alt {
+  color: $white-color;
+  border-color: #19B99A;
+  background: #20A286;
+}
+.alert-info-alt {
+  color: $white-color;
+  border-color: #B4E1E4;
+  background: #81c7e1;
+}
+.fa {
+  margin-right:10px;
+}
+sup {
+  color: $color-dnager;
+  font-size: 18px;
+}
+.help-block {
+  color: $color-dnager;
+}
+.badge-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}

@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-            <a class="nav-link" href="<?php echo base_url();?>admin/profile">
+            <a class="nav-link" href="<?php echo base_url();?>admin/dashboard">
               <i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;
               <span class="nav-link-text">Dashboard</span>
             </a>
@@ -116,7 +116,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
          <li class="nav-item">
-          <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
+          <a class="nav-link" href="<?php echo base_url();?>admin/dashboard/profile">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp; User</a>
          </li>
           <li class="nav-item">

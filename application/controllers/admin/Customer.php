@@ -5,7 +5,7 @@ class Customer extends Admin_Controller
   /**
    * Constructor (loading the important classes)
    *
-   * @param none
+   * @param null
    * @return void
    */
   public function __construct()
@@ -15,8 +15,6 @@ class Customer extends Admin_Controller
 
     $this->load->library(array('pagination', 'table', 'id'));
     $this->load->model(array('admin/Customer_model', 'Lab_model'));
-
-    
   }
 
   public function index()

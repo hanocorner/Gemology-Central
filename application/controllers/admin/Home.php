@@ -101,7 +101,7 @@ class Home extends Admin_Controller
 
         $this->session->set_userdata($session_data);
 
-        echo json_encode(array('auth'=>true,'message'=>'Login successfull, Redirecting...', 'url'=>'admin/profile'));
+        echo json_encode(array('auth'=>true,'message'=>'Login successfull, Redirecting...', 'url'=>'admin/dashboard'));
       }
       else
       {
