@@ -15,6 +15,8 @@ class Customer extends Admin_Controller
 
     $this->load->library(array('pagination', 'table', 'id'));
     $this->load->model(array('admin/Customer_model', 'Lab_model'));
+
+    
   }
 
   public function index()
@@ -47,14 +49,13 @@ class Customer extends Admin_Controller
    * This will insert a new customer to DB
    *
    * @param null
-   * @return bool
+   * @return mixed
    */
   public function insert()
   {
     if(!$this->ajax_login_status())
     {
-      echo json_encode(array('auth'=>false, 'url'=>base_url().'admin/home'));
-      return false;
+      return $this->json_output(true,'','admin/home');
     }
 
     $this->id->set_lastid($this->Customer_model->get_customer_id());
@@ -68,24 +69,24 @@ class Customer extends Admin_Controller
       'cus_email'=>$this->input->post('email')
     );
 
-    $this->form_validation->set_rules('fname','FirstName','trim|required|alpha');
-    $this->form_validation->set_rules('lname','LastName','trim|required|alpha');
-    $this->form_validation->set_rules('number','Number','trim|required|regex_match[/^[0-9]{10}$/]');
+    $this->form_validation->set_rules('fname','First name','trim|required|alpha');
+    $this->form_validation->set_rules('lname','Last name','trim|required|alpha');
+    $this->form_validation->set_rules('number','Phone number','trim|required|regex_match[/^[0-9]{10}$/]');
+    $this->form_validation->set_message('regex_match', 'Please enter a valid phone number');
     $this->form_validation->set_rules('email','Email','trim|valid_email');
 
     if($this->form_validation->run()==FALSE)
     {
-      echo json_encode(array('auth'=>false, 'message'=>validation_errors()));
-      return false;
+      return $this->json_output(false, validation_errors());
     }
 
     if($this->Customer_model->insert_customer($this->_data) < 0)
     {
       log_message('error', 'Error when inserting customer');
-      echo json_encode(array('auth'=>false, 'message'=>'Problem when adding this customer to database, Please try again'));
-      return false;
+      return $this->json_output(false, 'Problem when adding this customer to database, Please try again');
     }
-    echo json_encode(array('auth'=>true, 'url'=>base_url().'admin/customer'));
+
+    return $this->json_output(true, 'Customer added successfully','admin/customer');
   }
 
   /**
@@ -190,7 +191,7 @@ class Customer extends Admin_Controller
   /**
    * Public view for admin to edit existing customer
    *
-   * @param none
+   * @param null
    * @return void
    */
   public function edit()
@@ -207,7 +208,7 @@ class Customer extends Admin_Controller
   /**
    * Function to update customer record to db
    *
-   * @param none
+   * @param null
    * @return void
    */
   public function update_customer()

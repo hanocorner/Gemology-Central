@@ -8,19 +8,7 @@
       <li class="breadcrumb-item">New Report</li>
       <li class="breadcrumb-item active">Edit Customer</li>
     </ol>
-
-    <?php
-    if (isset($_SESSION['message']))
-    {
-    ?>
-    <div class="alert alert-<?php echo $_SESSION['status']; ?>">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong><?php echo $_SESSION['status']; ?></strong> <?php echo $_SESSION['message']; ?>
-    </div>
-    <?php
-    }
-    ?>
-
+    
     <div class="row">
       <div class="col-md-4">
         <div class="padding-1"></div>
