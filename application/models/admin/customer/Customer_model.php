@@ -23,11 +23,26 @@ class Customer_model extends CI_Model
   }
 
   /**
+   * Updating a new customer
+   *
+   * @param string $id
+   * @param array $data post values
+   *
+   * @return int affected rows
+   */
+  public function update_customer($id, $data)
+  {
+    $this->db->where('custid', $id);
+    $this->db->update('tbl_customer', $data);
+    return $this->db->affected_rows();
+  }
+
+  /**
    * This will return no.of affected rows after
    * insert/update/delete/select
    *
-   * @param none
-   * @return value | int
+   * @param null
+   * @return int affected rows
    */
   public function get_affected_rows()
   {
@@ -39,7 +54,8 @@ class Customer_model extends CI_Model
    *
    * @param $limit | int
    * @param $start | int
-   * @return results
+   *
+   * @return object
    */
   public function get_alldata($limit, $start)
   {
@@ -55,8 +71,8 @@ class Customer_model extends CI_Model
   /**
    * Total number of rows in customer table
    *
-   * @param none
-   * @return no.of rows | int
+   * @param null
+   * @return int
    */
   public function count_all()
   {
@@ -67,7 +83,7 @@ class Customer_model extends CI_Model
    * Query to search customers by first name and last name
    *
    * @param $keywords | array
-   * @return Results
+   * @return object
    */
   public function search_query($keywords)
   {
@@ -121,7 +137,7 @@ class Customer_model extends CI_Model
     $this->db->where("custid", $customerid);
 
     $query = $this->db->get();
-    return $query->result();
+    return $query->row();
   }
 
 }

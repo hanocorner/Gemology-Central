@@ -12,7 +12,7 @@ class Admin_Controller extends LB_Controller
   {
     parent::__construct();
     $this->load->library(array('session'));
-    
+
     $this->form_validation->set_error_delimiters('<span>', '</span>');
   }
 
@@ -93,7 +93,6 @@ class Admin_Controller extends LB_Controller
       $json_response['message'] = $message;
       $json_response['url'] = base_url().$url;
     }
-
     echo json_encode($json_response);
   }
 }

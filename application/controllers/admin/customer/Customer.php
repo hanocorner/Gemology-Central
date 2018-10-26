@@ -14,7 +14,7 @@ class Customer extends Admin_Controller
     $this->check_login_status();
 
     $this->load->library(array('pagination', 'table', 'id'));
-    $this->load->model(array('admin/Customer_model', 'Lab_model'));
+    $this->load->model(array('admin/customer/Customer_model', 'Lab_model'));
   }
 
   public function index()
@@ -24,8 +24,8 @@ class Customer extends Admin_Controller
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
     $this->layout->add_include('assets/admin/js/customer.js');
 
-    $data['form'] = array('class'=>'form-inline');
-    $this->layout->view('admin/lab/customer/index', $data, 'admin/layouts/admin');
+    $this->_data['form'] = array('class'=>'form-inline');
+    $this->layout->view('admin/lab/customer/index', $this->_data, 'admin/layouts/admin');
   }
 
   /**
@@ -99,13 +99,13 @@ class Customer extends Admin_Controller
     $rows_per_page = 3;
 
     $total_rows = $this->Customer_model->count_all('tbl_customer');
-    $data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
+    $this->_data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
 
     if ($page == 0) $page = 1;
     $start = ($page - 1) * $rows_per_page;
 
-    $data['results'] = $this->Customer_model->get_alldata($rows_per_page, $start);
-    $this->load->view('admin/lab/customer/customer_list', $data);
+    $this->_data['results'] = $this->Customer_model->get_alldata($rows_per_page, $start);
+    $this->load->view('admin/lab/customer/customer_list', $this->_data);
   }
 
   /**
@@ -120,9 +120,9 @@ class Customer extends Admin_Controller
     $string = urlencode($string);
     $keywords = explode('+', $string);
 
-    $data['results'] = $this->Customer_model->search_query($keywords);
-    $data['links'] = null;
-    return $this->load->view('admin/lab/customer/customer_list',$data);
+    $this->_data['results'] = $this->Customer_model->search_query($keywords);
+    $this->_data['links'] = null;
+    return $this->load->view('admin/lab/customer/customer_list',$this->_data);
   }
 
   /**
@@ -141,15 +141,15 @@ class Customer extends Admin_Controller
 
     if (is_null($labreportid))
     {
-      $data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
-      return $this->load->view('admin/lab/customer/specific_data', $data);
+      $this->_data['empty'] = "<strong>".$customer_id."</strong>"." "."This Customer owns <strong>zero</strong> memo cards / certificates.";
+      return $this->load->view('admin/lab/customer/specific_data', $this->_data);
     }
 
-    $data['customers'] = $this->Customer_model->get_customer_by_id($customer_id);
-    $data['mdata'] = $this->Lab_model->memo_data($customer_id);
-    $data['cdata'] = $this->Lab_model->certificate_data($customer_id);
+    $this->_data['customers'] = $this->Customer_model->get_customer_by_id($customer_id);
+    $this->_data['mdata'] = $this->Lab_model->memo_data($customer_id);
+    $this->_data['cdata'] = $this->Lab_model->certificate_data($customer_id);
 
-    return $this->load->view('admin/lab/customer/specific_data', $data);
+    return $this->load->view('admin/lab/customer/specific_data', $this->_data);
   }
 
   /**
@@ -194,13 +194,22 @@ class Customer extends Admin_Controller
    */
   public function edit()
   {
-    $id = $this->uri->segment(4);
     $this->layout->set_title('Edit Customer');
-    $data['data'] = $this->Customer_model->get_specific_data($id, 'tbl_customer', 'custid');
-    $data['name'] = $this->security->get_csrf_token_name();
-    $data['hash'] = $this->security->get_csrf_hash();
+    $this->_data['custid'] = $this->uri->segment(4);
+    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
+    $this->layout->view('admin/lab/customer/edit', $this->_data, 'admin/layouts/admin');
+  }
 
-    $this->layout->view('admin/lab/customer/edit', $data, 'admin/layouts/admin');
+  /**
+   * Public view for admin to edit existing customer
+   *
+   * @param null
+   * @return void
+   */
+  public function append_toedit()
+  {
+    $this->_data = $this->Customer_model->get_customer_by_id($this->input->get('custid'));
+    echo json_encode($this->_data);
   }
 
   /**
@@ -209,25 +218,33 @@ class Customer extends Admin_Controller
    * @param null
    * @return void
    */
-  public function update_customer()
+  public function update()
   {
-    $data = array(
-      'custid'=>$this->input->post('custid'),
+    $this->_data = array(
       'cus_firstname'=>$this->input->post('fname'),
       'cus_lastname'=>$this->input->post('lname'),
       'cus_email'=>$this->input->post('email'),
       'cus_number'=>$this->input->post('number')
     );
 
-    if($this->Customer_model->update('tbl_customer','custid', $data['custid'], $data))
+    $this->form_validation->set_rules('fname','First name','trim|required|alpha');
+    $this->form_validation->set_rules('lname','Last name','trim|required|alpha');
+    $this->form_validation->set_rules('number','Phone number','trim|required|regex_match[/^[0-9]{10}$/]');
+    $this->form_validation->set_message('regex_match', 'Please enter a valid phone number');
+    $this->form_validation->set_rules('email','Email','trim|valid_email');
+
+    if($this->form_validation->run()==FALSE)
     {
-      $this->set_message('Customer updated successfully','success');
-      redirect('admin/customer');
-    }else
-    {
-      $this->set_message('customer update failed','danger');
-      redirect('admin/customer/edit');
+      return $this->json_output(false, validation_errors());
     }
+
+    if($this->Customer_model->update_customer($this->input->post('custid'), $this->_data) < 1)
+    {
+      return $this->json_output(false, "Problem when updating data");
+    }
+
+    return $this->json_output(true, "Customer updated successfully");
+
   }
 
 }

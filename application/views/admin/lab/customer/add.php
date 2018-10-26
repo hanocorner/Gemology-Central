@@ -20,7 +20,7 @@
 
     <!-- Form Start -->
     <div class="padding-1"></div>
-    <h2><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp;New Customer</h2>
+    <h2><i class="fa fa-user-circle-o" aria-hidden="true"></i>New Customer</h2>
     <p>Important fields are mentioned in <strong style="color:red;font-size: 18px;">*</strong></p>
     <div class="padding-1"></div>
 
@@ -56,9 +56,7 @@
             <input type="email" class="form-control form-control-sm" name="email" autocomplete="off">
           </div>
         </div>
-
-
-      <button type="submit" name="button" class="btn btn-primary mt-3" id="btnSumbit"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save Customer</button>
+      <button type="submit" name="button" class="btn btn-primary mt-3" id="btnSumbit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save Customer</button>
     <?php echo form_close(); ?>
 
 

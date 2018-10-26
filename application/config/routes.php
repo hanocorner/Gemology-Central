@@ -55,10 +55,15 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;
 
 // Admin routes
+$route['developer'] = 'developer/base';
 $route['admin'] = 'admin/home';
 $route['admin/dashboard'] = 'admin/system/dashboard';
 $route['admin/dashboard/profile'] = 'admin/system/dashboard/profile';
-$route['developer'] = 'developer/base';
+$route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
+$route['admin/customer'] = 'admin/customer/customer';
+$route['admin/customer/add'] = 'admin/customer/customer/add';
+$route['admin/customer/edit/(:any)'] = 'admin/customer/customer/edit/$1';
+
 $route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
 $route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
 $route['admin/report/download/(:num)'] = 'admin/report/download/index/$1';
