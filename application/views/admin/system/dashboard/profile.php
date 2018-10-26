@@ -23,14 +23,9 @@
           <table class="table ">
             <tbody>
               <tr>
-                <th style="border:none;">Current user</th>
+                <th style="border:none;">Last Login</th>
                 <th class="text-center" style="border:none;">:</th>
-                <td style="border:none;" id="cuser"></td>
-              </tr>
-              <tr>
-                <th>Last Login</th>
-                <th class="text-center">:</th>
-                <td id="lLoginDate"></td>
+                <td style="border:none;" id="lLoginDate"></td>
               </tr>
               <tr>
                 <th>User Agent</th>
@@ -74,7 +69,6 @@
         dataType: 'JSON',
         success: function (data) {
           $('#username').html(data.username);
-          $('#cuser').html(data.username);
           $('#lLoginDate').html(data.timestamp);
           $('#userAgent').html(data.useragent);
           $('#ipAddress').html(data.ipaddress);
