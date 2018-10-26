@@ -2,13 +2,12 @@
   <div class="container-fluid">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="#">Dashboard</a>
+        <a href="<?php echo base_url(); ?>admin/dashboard">Dashboard</a>
       </li>
       <li class="breadcrumb-item">Report</li>
       <li class="breadcrumb-item active">New Customer</li>
     </ol>
 
-    <!-- Form Start -->
     <div class="padding-1"></div>
     <h2><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp;New Customer</h2>
     <p>Important fields are mentioned in <strong style="color:red;font-size: 18px;">*</strong></p>
@@ -18,6 +17,7 @@
     <div style="max-width:33.3333%;" id="messageBox"></div>
     <!-- /. Alert box -->
 
+    <!-- Form Start -->
     <div class="pt-1"></div>
     <?php echo form_open(); ?>
         <div class="form-row">

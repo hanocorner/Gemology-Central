@@ -9,7 +9,7 @@ class Home extends Admin_Controller
   {
     parent::__construct();
 
-    $this->load->library(array('encryption'));
+    $this->load->library(array('encryption', 'user_agent'));
 
     $this->load->helper(array('cookie', 'date'));
     $this->encryption->initialize(array('driver' => 'mcrypt'));
@@ -94,7 +94,9 @@ class Home extends Admin_Controller
 
         $log = array(
           'log_timestamp'=>$date,
-          'log_userBrowser'=>$this->input->user_agent()
+          'log_ipAddress'=>$this->input->ip_address(),
+          'log_platform'=>$this->agent->platform(),
+          'log_userBrowser'=>$this->agent->browser()
         );
 
         $this->Login_model->update_admin_data('tbl_administrator_log', 'admID', $admin_id, $log);

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Setting extends CI_Controller
+class Setting extends Admin_Controller
 {
   /**
    * Constructor (loading the important class)
@@ -9,21 +9,11 @@ class Setting extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
-    $this->load->library('session');
+    $this->check_login_status();
 
     $this->load->library('encryption');
 
-    $config = array('layoutManager'=>'admin');
-    $this->load->library('layout', $config);
-
     $this->load->helper(array('html', 'cookie'));
-
-    if (!isset($_SESSION['logged_in']))
-    {
-      redirect('admin/home','location');
-    }
-
   }
 
   /****/
@@ -37,7 +27,7 @@ class Setting extends CI_Controller
   public function change_password()
   {
     $this->layout->set_title('Change Password');
-    $this->layout->view('admin/settings/change_password', '', 'admin/layouts/admin');
+    $this->layout->view('admin/system/settings/change_password', '', 'admin/layouts/admin');
   }
 
   private function preview_username()

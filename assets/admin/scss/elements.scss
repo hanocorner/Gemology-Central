@@ -1,6 +1,7 @@
 $white-color: #fff;
 $primary-color: #007bff;
-$color-dnager:#B63E5A;
+$color-danger:#B63E5A;
+
 .wrapper {
   max-width: calc(1600px + 10%);
   margin: 0 auto;
@@ -94,7 +95,7 @@ $color-dnager:#B63E5A;
 
 .alert-danger-alt {
   color: $white-color;
-  border-color: $color-dnager;
+  border-color: $color-danger;
   background: #E26868;
 }
 .alert-warning-alt {
@@ -116,11 +117,11 @@ $color-dnager:#B63E5A;
   margin-right:10px;
 }
 sup {
-  color: $color-dnager;
+  color: $color-danger;
   font-size: 18px;
 }
 .help-block {
-  color: $color-dnager;
+  color: $color-danger;
 }
 .badge-circle {
   width: 30px;

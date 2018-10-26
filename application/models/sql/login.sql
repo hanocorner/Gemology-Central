@@ -33,7 +33,9 @@ COMMIT;
 CREATE TABLE IF NOT EXISTS `tbl_administrator_log` (
   `logid` int(11) NOT NULL AUTO_INCREMENT,
   `log_timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
-  `log_userBrowser` varchar(30) NOT NULL,
+  `log_userBrowser` varchar(60) NOT NULL,
+  `log_ipAddress` varchar(60) NOT NULL,
+  `log_platform` varchar(60) NOT NULL,
   `log_userModified` datetime DEFAULT CURRENT_TIMESTAMP,
   `admID` int(11),
   PRIMARY KEY (`logid`),

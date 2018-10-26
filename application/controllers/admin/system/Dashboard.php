@@ -32,8 +32,19 @@ class Dashboard extends Admin_Controller
   public function profile()
   {
     $this->layout->set_title('Profile');
-    $this->data['username'] = $this->session->username;
-    $this->layout->view('admin/system/dashboard/profile', $this->data, 'admin/layouts/admin');
+    $this->layout->view('admin/system/dashboard/profile', '', 'admin/layouts/admin');
+  }
+
+  /*****/
+  public function profile_stats()
+  {
+    $result = $this->Dashboard_model->get_user_log($this->session->user_id);
+    $this->data['username'] = ucwords($this->session->username);
+    $this->data['timestamp'] = $result[0]->log_timestamp;
+    $this->data['useragent'] = $result[0]->log_userBrowser;
+    $this->data['ipaddress'] = $result[0]->log_ipAddress;
+    $this->data['platform'] = $result[0]->log_platform;
+    echo json_encode($this->data);
   }
 
   /***/

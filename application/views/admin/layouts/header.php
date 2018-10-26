@@ -93,7 +93,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Frontend">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsefrontend" data-parent="#exampleAccordion">
-              <i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;
               <span class="nav-link-text">Front end</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsefrontend">
@@ -117,7 +117,7 @@
         <ul class="navbar-nav ml-auto">
          <li class="nav-item">
           <a class="nav-link" href="<?php echo base_url();?>admin/dashboard/profile">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp; User</a>
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i><?php echo ucwords($this->session->username); ?></a>
          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
