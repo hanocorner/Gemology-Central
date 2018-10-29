@@ -108,7 +108,7 @@ if (isset($_SESSION['error']))
       "serverSide": true,
       "ordering": false,
       "ajax":{
-        url:"<?php echo base_url(); ?>admin/blog/all-articles", // json datasource
+        url:"<?php echo base_url(); ?>admin/blog/blog/all-articles", // json datasource
         type:"POST"
       },
       "columns": [

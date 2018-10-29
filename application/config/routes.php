@@ -60,13 +60,18 @@ $route['admin'] = 'admin/home';
 $route['admin/dashboard'] = 'admin/system/dashboard';
 $route['admin/dashboard/profile'] = 'admin/system/dashboard/profile';
 $route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
+
+// Customer Routes
 $route['admin/customer'] = 'admin/customer/customer';
 $route['admin/customer/add'] = 'admin/customer/customer/add';
-$route['admin/customer/edit/(:any)'] = 'admin/customer/customer/edit/$1';
 
+// Report Routes
 $route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
 $route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
 $route['admin/report/download/(:num)'] = 'admin/report/download/index/$1';
+
+// Blog Routes
+$route['admin/blog'] = 'admin/blog/blog/index';
 
 // Public routes
 $route['blog/(:any)']  = 'blog/article/$1';

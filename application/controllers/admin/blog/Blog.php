@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Blog extends CI_Controller
+class Blog extends Admin_Controller
 {
   /*****/
   public $submitted;
@@ -12,20 +11,11 @@ class Blog extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
-    $this->load->library('session');
+    $this->check_login_status();
 
     $this->load->helper(array('html', 'cookie'));
 
-    $this->load->model('Article_model');
-
-    $config = array('layoutManager'=>'admin');
-    $this->load->library('layout', $config);
-
-    if (!$this->session->has_userdata('logged_in'))
-    {
-      redirect('admin/home','location');
-    }
+    $this->load->model('admin/blog/Article_model');
    }
 
   /**

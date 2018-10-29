@@ -49,6 +49,29 @@ class Customer_model extends CI_Model
     return $this->db->affected_rows();
   }
 
+  /*****/
+  public function get_all($params)
+  {
+    $sql = '';
+    $start = $params['start'];
+    $length = $params['length'];
+    $search = $params['search']['value'];
+
+    $sql .= 'SELECT cus_firstname, cus_lastname, cus_number, cus_createdDate, cus_totalReports, custid FROM tbl_customer';
+
+    if ($search != '')
+    {
+      $sql .= " WHERE cus_firstname LIKE '%$search%' ";
+      $sql .= " OR cus_lastname LIKE '%$search%' ";
+      $sql .= " OR cus_number LIKE '%$search%' ";
+    }
+    else
+    {
+      $sql .= " ORDER BY custid DESC LIMIT $start, $length ";
+    }
+    $query = $this->db->query($sql);
+    return $query->result();
+  }
   /**
    * Fetcing all Customer data
    *
@@ -140,5 +163,12 @@ class Customer_model extends CI_Model
     return $query->row();
   }
 
+  /*****/
+  public function delete_customer($id)
+  {
+    $this->db->where('custid', $id);
+    $query = $this->db->delete('tbl_customer');
+    return $this->db->affected_rows();
+  }
 }
 ?>

@@ -12,9 +12,9 @@
   <div class="container-fluid">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="#">Dashboard</a>
+        <a href="<?php echo base_url('admin/dashboard');?>">Dashboard</a>
       </li>
-      <li class="breadcrumb-item">Report</li>
+      <li class="breadcrumb-item">Customer</li>
       <li class="breadcrumb-item active">New Customer</li>
     </ol>
 
@@ -30,32 +30,33 @@
 
     <div class="pt-1"></div>
     <?php echo form_open(); ?>
-        <div class="form-row">
-          <div class="form-group col-2">
-            <label for="first-name">First Name:<sup>*</sup> </label>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button"  name="fname" data-validation="required" autocomplete="off" >
-              </div>
-          </div>
-          <div class="form-group col-2">
-            <label for="last-name">Last Name:<sup>*</sup></label>
-            <input type="text" class="form-control form-control-sm" name="lname" data-validation="required" autocomplete="off">
-          </div>
+      <div class="form-row">
+        <div class="form-group col-2">
+          <label for="first-name">First Name:<sup>*</sup> </label>
+            <div class="form-group">
+              <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button"  name="fname" data-validation="required" autocomplete="off" >
+            </div>
+        </div>
+        <div class="form-group col-2">
+          <label for="last-name">Last Name:<sup>*</sup></label>
+          <input type="text" class="form-control form-control-sm" name="lname" data-validation="required" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-4">
+          <label for="Number">Number:<sup>*</sup></label>
+          <input type="tel" class="form-control form-control-sm" name="number" data-validation="length" data-validation-length="7-10" data-validation-error-msg="Not a valid phone number" autocomplete="off">
         </div>
 
-        <div class="form-row">
-          <div class="form-group col-4">
-            <label for="Number">Number:<sup>*</sup></label>
-            <input type="tel" class="form-control form-control-sm" name="number" data-validation="length" data-validation-length="7-10" data-validation-error-msg="Phone number has to contain Min 7 and Max 10" autocomplete="off">
-          </div>
-        </div>
+      </div>
 
-        <div class="form-row">
-          <div class="form-group col-4">
-            <label for="email">Email: </label>
-            <input type="email" class="form-control form-control-sm" name="email" autocomplete="off">
-          </div>
+      <div class="form-row">
+        <div class="form-group col-4">
+          <label for="email">Email: </label>
+          <input type="email" class="form-control form-control-sm" name="email" autocomplete="off">
         </div>
+      </div>
       <button type="submit" name="button" class="btn btn-primary mt-3" id="btnSumbit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save Customer</button>
     <?php echo form_close(); ?>
 
@@ -74,7 +75,7 @@ $(document).ready(function() {
   $(document).on('click', '#btnSumbit', function(event) {
     event.preventDefault();
     $.ajax({
-      url: '<?php echo base_url('admin/customer/insert'); ?>',
+      url: '<?php echo base_url('admin/customer/customer/insert'); ?>',
       type: 'POST',
       dataType: 'JSON',
       data: {

@@ -15,17 +15,45 @@ class Customer extends Admin_Controller
 
     $this->load->library(array('pagination', 'table', 'id'));
     $this->load->model(array('admin/customer/Customer_model', 'Lab_model'));
+    $this->load->helper('date');
+    $this->config->load('report');
   }
 
   public function index()
   {
     $this->layout->set_title('My Customer List');
 
+    $this->layout->add_include('assets/admin/css/jquery.dataTables.min.css');
+    $this->layout->add_include('assets/admin/js/jquery.dataTables.min.js');
     $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/customer.js');
 
-    $this->_data['form'] = array('class'=>'form-inline');
-    $this->layout->view('admin/lab/customer/index', $this->_data, 'admin/layouts/admin');
+    $this->layout->view('admin/lab/customer/index', '', 'admin/layouts/admin');
+  }
+
+  /**
+   *
+   *
+   */
+  public function populate()
+  {
+    $params = $_GET;
+    $results = $this->Customer_model->get_all($params);
+
+    $html = array();
+    foreach ($results as $result)
+    {
+      $html[] = $result;
+    }
+
+    $totalRecords = $this->Customer_model->count_all();
+
+    $this->_data = array(
+      "draw"            => $params['draw'],
+		  "recordsTotal"    => $totalRecords,
+		  "recordsFiltered" => $totalRecords,
+		  "data"            => $html
+    );
+    echo json_encode($this->_data);
   }
 
   /**
@@ -64,7 +92,8 @@ class Customer extends Admin_Controller
       'cus_firstname'=>$this->input->post('fname'),
       'cus_lastname'=>$this->input->post('lname'),
       'cus_number'=>$this->input->post('number'),
-      'cus_email'=>$this->input->post('email')
+      'cus_email'=>$this->input->post('email'),
+      'cus_createdDate'=>mdate($this->config->item('date_format'))
     );
 
     $this->form_validation->set_rules('fname','First name','trim|required|alpha');
@@ -108,22 +137,6 @@ class Customer extends Admin_Controller
     $this->load->view('admin/lab/customer/customer_list', $this->_data);
   }
 
-  /**
-   * Search Function to sort a customer
-   *
-   * @param none
-   * @return result
-   */
-  public function search()
-  {
-    $string = $this->input->get('q');
-    $string = urlencode($string);
-    $keywords = explode('+', $string);
-
-    $this->_data['results'] = $this->Customer_model->search_query($keywords);
-    $this->_data['links'] = null;
-    return $this->load->view('admin/lab/customer/customer_list',$this->_data);
-  }
 
   /**
    * Fetching customer relavant report
@@ -186,18 +199,14 @@ class Customer extends Admin_Controller
     return $this->pagination->create_links();
   }
 
-  /**
-   * Public view for admin to edit existing customer
-   *
-   * @param null
-   * @return void
-   */
-  public function edit()
+  /****/
+  public function delete()
   {
-    $this->layout->set_title('Edit Customer');
-    $this->_data['custid'] = $this->uri->segment(4);
-    $this->layout->add_include('assets/admin/js/jquery.form-validator.min.js');
-    $this->layout->view('admin/lab/customer/edit', $this->_data, 'admin/layouts/admin');
+    if($this->Customer_model->delete_customer($this->input->get('custid')) < 1)
+    {
+      return $this->json_output(false, "Couldn't delete your customer as requested, Please try again...");
+    }
+    return $this->json_output(true, "Your customer has been deleted");
   }
 
   /**
@@ -243,7 +252,7 @@ class Customer extends Admin_Controller
       return $this->json_output(false, "Problem when updating data");
     }
 
-    return $this->json_output(true, "Customer updated successfully");
+    return $this->json_output(true, "Customer updated successfully", "admin/customer");
 
   }
 
