@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Handler extends GCL_Report
+class Handler extends Admin_Controller
 {
 
   /**
@@ -12,24 +12,20 @@ class Handler extends GCL_Report
   public function __construct()
   {
     parent::__construct();
+    $this->check_login_status();
 
-    $config = array('layoutManager'=>'admin');
-    $this->load->library('layout', $config);
-    $this->load->library(array('session', 'pagination', 'table'));
-
-    $this->load->helper(array('form'));
-    $this->load->model(array('Customer_model', 'Lab_model', 'Report_model'));
-
-    if (!$this->session->has_userdata('logged_in'))
-    {
-      redirect('admin/home');
-    }
+    $this->load->helper('directory');
+    $this->load->model(array('Lab_model', 'Report_model'));
   }
 
-  /*****/
+  /**
+   *
+   *
+   */
   public function index()
   {
-    // code...
+    $this->layout->set_title('My Reports');
+    $this->layout->view('admin/lab/report/index', '', 'admin/layouts/admin');
   }
 
   /****/
