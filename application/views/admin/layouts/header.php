@@ -10,14 +10,14 @@
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
             <a class="nav-link" href="<?php echo base_url();?>admin/dashboard">
-              <i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Dashboard</span>
             </a>
           </li>
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Report">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsereport" data-parent="#exampleAccordion">
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Report</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsereport">
@@ -32,7 +32,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Customer">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsecustomer" data-parent="#exampleAccordion">
-              <i class="fa fa-address-book" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-address-book fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Customer</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsecustomer">
@@ -60,7 +60,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Blog">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseblog" data-parent="#exampleAccordion">
-              <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-rss fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Blog</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapseblog">
@@ -78,7 +78,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsesettings" data-parent="#exampleAccordion">
-              <i class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;
+              <i class="fa fa-cog fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Settings</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsesettings">
@@ -93,7 +93,7 @@
 
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Frontend">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsefrontend" data-parent="#exampleAccordion">
-              <i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;
+              <i class="fa fa-picture-o fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Front end</span>
             </a>
             <ul class="sidenav-second-level collapse" id="collapsefrontend">
@@ -110,18 +110,18 @@
         <ul class="navbar-nav sidenav-toggler">
           <li class="nav-item">
             <a class="nav-link text-center" id="sidenavToggler">
-              <i class="fa fa-fw fa-angle-left"></i>
+              <i class="fa fa-fw fa-angle-left fa-lg"></i>
             </a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
          <li class="nav-item">
           <a class="nav-link" href="<?php echo base_url();?>admin/dashboard/profile">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i><?php echo ucwords($this->session->username); ?></a>
+            <i class="fa fa-user-circle-o fa-fw fa-lg" aria-hidden="true"></i><?php echo ucwords($this->session->username); ?></a>
          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
-              <i class="fa fa-fw fa-power-off"></i>&nbsp;</a>
+              <i class="fa fa-fw fa-power-off fa-lg"></i></a>
           </li>
         </ul>
       </div>
