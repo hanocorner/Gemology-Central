@@ -130,7 +130,11 @@
         <td>@mdo</td>
         <td>@mdo</td>
         <td><span class="badge badge-warning">Pending</span></td>
-        <td>@mdo</td>
+        <td>
+          <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+        </td>
       </tr>
     </table>
 <!-- /. of grid  -->

@@ -22,10 +22,16 @@
       <li class="breadcrumb-item">Report</li>
       <li class="breadcrumb-item active">Add</li>
     </ol>
-    
+
     <!-- Page Title  -->
-    <h2 class="card-title"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp; New Report</h2>
+    <div class="d-flex align-items-center">
+      <h2 class="card-title"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>Add Report</h2>
+      <button type="submit" name="submit" class="btn btn-primary position-fixed" style="right:15px;">
+        <i class="fa fa-floppy-o fa-fw" aria-hidden="true"></i>Save Report
+      </button>
+    </div>
     <p class="card-text">Important fields are mentioned in <strong style="color:red;">*</strong></p>
+
     <!-- /. Page Title  -->
 
     <div class="pt-2"></div>
@@ -41,7 +47,7 @@
       </div>
       <div class="form-group col-1">
         <div class="pt-4"></div>
-        <button type="button" class="btn btn-sm btn-warning mt-2" data-toggle="modal" data-target="#customerModal"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Add a Customer</button>
+        <button type="button" class="btn btn-sm btn-dark " data-toggle="modal" data-target="#customerModal"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Add a Customer</button>
       </div>
     </div>
 
@@ -70,7 +76,9 @@
       </div>
       <div class="form-group col-1">
         <div class="pt-4"></div>
-        <button type="button" class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#gemModal"><i class="fa fa-diamond" aria-hidden="true"></i>&nbsp; Add Gemstone</button>
+        <button type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target="#gemModal">
+          <i class="fa fa-diamond fa-fw" aria-hidden="true"></i>Add Gemstone
+        </button>
       </div>
     </div>
 
