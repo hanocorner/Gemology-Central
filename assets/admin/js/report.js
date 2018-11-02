@@ -200,3 +200,7 @@ function create_csrf() {
     $("#csrfToken").attr('name', data.name).attr('value', data.hash);
   });
 }
+
+// ******* NEW *******
+
+ 
