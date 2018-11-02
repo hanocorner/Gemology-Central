@@ -12,6 +12,13 @@
     border-spacing: 0 8px;
     border-collapse: separate;
   }
+  .table tr {
+    cursor: pointer;
+  }
+  .hiddenRow {
+    padding: 10px !important;
+    font-size: 13px;
+  }
 </style>
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -100,16 +107,23 @@
         </tr>
       </thead>
       <tr class="grid-tr">
-        <th scope="row"><input type="checkbox" aria-label="Checkbox for following text input"></th>
-        <td>100</td>
-        <td><span class="text-primary"><i class="fa fa-circle" aria-hidden="true"></i></span>Verbal</td>
-        <td>Nimal Siripala</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td><span class="badge badge-warning">Pending</span></td>
-        <td>@mdo</td>
+        <th style="width:2%;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+        <td style="width:5%;">102</td>
+        <td style="width:10%;"><span class="text-warning"><i class="fa fa-circle" aria-hidden="true"></i></span>Certificate</td>
+        <td style="width:20%;">Nimal Siripala</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;"><span class="badge badge-warning">Pending</span></td>
+        <td style="width:10%;">
+          <div class="d-flex align-items-center justify-content-center">
+            <a href="#" class="mx-2"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" class="mx-2"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" class="mx-2"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
+          </div>
+        </td>
       </tr>
+<<<<<<< HEAD
       <tr class="grid-tr">
         <th scope="row"><input type="checkbox" aria-label="Checkbox for following text input"></th>
         <td>101</td>
@@ -134,10 +148,52 @@
           <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
           <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
           <a href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+=======
+      <tr class="grid-tr active"  data-toggle="collapse" data-target="#demo1">
+        <th style="width:2%;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+        <td style="width:5%;">102</td>
+        <td style="width:10%;"><span class="text-warning"><i class="fa fa-circle" aria-hidden="true"></i></span>Certificate</td>
+        <td style="width:20%;">Nimal Siripala</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;"><span class="badge badge-warning">Pending</span></td>
+        <td style="width:10%;">
+          <div class="d-flex align-items-center justify-content-center">
+            <a href="#" class="mx-2"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" class="mx-2"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" id="plus" class="mx-2" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
+          </div>
+>>>>>>> b8d3ef83649211fc69543bb3e04d8efc2f251966
         </td>
       </tr>
+      <tr class="grid-tr exRow" id="erow"></tr>
     </table>
 <!-- /. of grid  -->
 
   </div><!-- /. of container fluid -->
 </div><!-- /. of container wrapper -->
+<script>
+$(document).ready(function() {
+  // function change(param){
+  //   param.preventDefault();
+  //   $(param).find('.grid-tr').css('background-color', '#f7e3a7');
+  // }
+  $('table').on('click', '#plus', function(event) {
+    event.preventDefault();
+    
+    $('.active', 'table').css('background-color', '#f7e3a7');
+    $('#erow').html('<td colspan="6" class="hiddenRow"><div class="accordian-body collapse" id="demo1">Demo Content</div></td>').fadeIn('slow');
+  });
+ });
+// $(function() {
+//   $(".accordian-body").on("show.bs.collapse", function() {
+//   $(this)
+//     .closest("table")
+//     .find(".collapse.in")
+//     .not(this)
+//     .collapse("toggle");
+//   });
+//
+// });
+</script>
