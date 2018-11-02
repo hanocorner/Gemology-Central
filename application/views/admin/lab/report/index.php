@@ -95,7 +95,7 @@
       <col width="140">
       <thead class="thead-dark">
         <tr>
-          <th scope="col"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+          <th scope="col"><input type="checkbox" type="checkbox" onchange="checkAll(this)" name="chk[]" aria-label="Checkbox for following text input"></th>
           <th>#</th>
           <th scope="col">Report</th>
           <th scope="col">Customer</th>
@@ -103,7 +103,7 @@
           <th scope="col">Color</th>
           <th scope="col">Shape</th>
           <th scope="col">Status</th>
-          <th scope="col">Action</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tr class="grid-tr">
@@ -123,32 +123,6 @@
           </div>
         </td>
       </tr>
-<<<<<<< HEAD
-      <tr class="grid-tr">
-        <th scope="row"><input type="checkbox" aria-label="Checkbox for following text input"></th>
-        <td>101</td>
-        <td><span class="text-danger"><i class="fa fa-circle" aria-hidden="true"></i></span>Memocard</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td><span class="badge badge-success">Checked</span></td>
-        <td>@mdo</td>
-      </tr>
-      <tr class="grid-tr">
-        <th scope="row"><input type="checkbox" aria-label="Checkbox for following text input"></th>
-        <td>100</td>
-        <td><span class="text-warning"><i class="fa fa-circle" aria-hidden="true"></i></span>Certificate</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td><span class="badge badge-warning">Pending</span></td>
-        <td>
-          <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
-=======
       <tr class="grid-tr active"  data-toggle="collapse" data-target="#demo1">
         <th style="width:2%;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
         <td style="width:5%;">102</td>
@@ -164,10 +138,26 @@
             <a href="#" class="mx-2"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
             <a href="#" id="plus" class="mx-2" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
           </div>
->>>>>>> b8d3ef83649211fc69543bb3e04d8efc2f251966
         </td>
       </tr>
-      <tr class="grid-tr exRow" id="erow"></tr>
+      <!-- <tr class="grid-tr exRow" id="erow"></tr> -->
+      <tr class="grid-tr">
+        <th style="width:2%;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+        <td style="width:5%;">102</td>
+        <td style="width:10%;"><span class="text-warning"><i class="fa fa-circle" aria-hidden="true"></i></span>Certificate</td>
+        <td style="width:20%;">Nimal Siripala</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;">@mdo</td>
+        <td style="width:10%;"><span class="badge badge-success">Checked</span></td>
+        <td style="width:10%;">
+          <div class="d-flex align-items-center justify-content-center">
+            <a href="#" class="mx-2"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" class="mx-2"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+            <a href="#" id="plus" class="mx-2" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
+          </div>
+        </td>
+      </tr>
     </table>
 <!-- /. of grid  -->
 
@@ -181,7 +171,7 @@ $(document).ready(function() {
   // }
   $('table').on('click', '#plus', function(event) {
     event.preventDefault();
-    
+
     $('.active', 'table').css('background-color', '#f7e3a7');
     $('#erow').html('<td colspan="6" class="hiddenRow"><div class="accordian-body collapse" id="demo1">Demo Content</div></td>').fadeIn('slow');
   });
@@ -196,4 +186,23 @@ $(document).ready(function() {
 //   });
 //
 // });
+function checkAll(ele) {
+    var checkboxes = document.getElementsByTagName('input');
+    if (ele.checked) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox') {
+          checkboxes[i].checked = true;
+          $('.grid-tr', 'table').css('background-color', '#f7e3a7');
+        }
+      }
+    } else {
+        for (var i = 0; i < checkboxes.length; i++) {
+            console.log(i)
+            if (checkboxes[i].type == 'checkbox') {
+                checkboxes[i].checked = false;
+                $('.grid-tr', 'table').css('background-color', '#fff');
+            }
+        }
+    }
+}
 </script>
