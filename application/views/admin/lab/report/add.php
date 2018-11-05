@@ -15,22 +15,11 @@
 <div class="content-wrapper">
   <div class="container-fluid">
 
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="#">Dashboard</a>
-      </li>
-      <li class="breadcrumb-item">Report</li>
-      <li class="breadcrumb-item active">Add</li>
-    </ol>
-
+    <h2 class="card-title"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>Add Report</h2>
+    <hr/>
     <!-- Page Title  -->
-    <div class="d-flex align-items-center">
-      <h2 class="card-title"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>Add Report</h2>
-      <button type="submit" name="submit" class="btn btn-primary position-fixed" style="right:15px;">
-        <i class="fa fa-floppy-o fa-fw" aria-hidden="true"></i>Save Report
-      </button>
-    </div>
-    <p class="card-text">Important fields are mentioned in <strong style="color:red;">*</strong></p>
+
+    <!-- <p class="card-text">Important fields are mentioned in <strong style="color:red;">*</strong></p> -->
 
     <!-- /. Page Title  -->
 
@@ -39,7 +28,7 @@
     <div id="message"></div>
     <!-- /. Alert Box -->
 
-    <form action="#" method="post">
+    <?php echo form_open('admin/report/handler/insert', array('id'=>'formReport')); ?>
     <div class="form-row"> <!-- Customer data  -->
       <div class="form-group col-3">
         <label for="customer">Select Customer</label>
@@ -109,13 +98,10 @@
       </div>
     </div>
 
-    <div class="form-row align-items-center"> <!-- Variety  -->
+    <div class="form-row"> <!-- Variety  -->
       <div class="form-group col-4">
         <label for="variety">Variety<sup>*</sup></label>
-        <input type="text" class="form-control form-control-sm" name="variety" value="<?php echo set_value('variety'); ?>" autocomplete="off" style="border: 1px solid #dc3545">
-      </div>
-      <div class="col-4">
-        <small id="passwordHelp" class="text-danger">Must be 8-20 characters long.</small>
+        <input type="text" class="form-control form-control-sm" name="variety" value="" autocomplete="off">
       </div>
     </div>
 
@@ -218,9 +204,12 @@
     </div>
 
     <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
-    <button type="submit" name="submit" class="btn btn-primary mb-3"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp; Save Report</button>
-
-    <?php echo form_close(); ?><!-- End of form  -->
+    <button type="submit" class="btn btn-primary mb-3 addReport">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      Submit Report
+    </button>
+    <?php echo form_close(); ?>
+    <!-- End of form  -->
 
   </div><!-- End of Container fluid -->
 </div><!-- End of Content wrapper -->
@@ -300,34 +289,31 @@
 </div>
 <!-- /. Customer Modal -->
 
-<!-- Custom Script  -->
-<script type="text/javascript">
-  var myUpload = new FileUploadWithPreview('myUploader');
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
 
-  var baseurl = '<?php echo base_url(); ?>';
-  var gemtype = $('.selectpicker');
-  var reptype = $('#repType');
-  var pstatus = $('#pStatus');
-  var amount = $("#amount");
+<!-- Custom Script  -->
+<script>
+var baseurl = '<?php echo base_url(); ?>';
+/*
+
 
   $(document).ready(function() {
     gemstone();
     addGemstone();
-    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
-
-    var options = {
-    	url: baseurl + "assets/countries.json",
-    	getValue: "name",
-    	list: {
-    		match: {
-    			enabled: true
-    		},
-    		maxNumberOfElements: 8
-    	},
-    	theme: "plate-dark"
-    };
-
-    $("#plate").easyAutocomplete(options);
 
     reptype.change(function () {
       if (this.selectedIndex == 0) {
@@ -353,4 +339,5 @@
     });
 
   });
+*/
 </script>

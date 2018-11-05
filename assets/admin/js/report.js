@@ -202,5 +202,3 @@ function create_csrf() {
 }
 
 // ******* NEW *******
-
- 

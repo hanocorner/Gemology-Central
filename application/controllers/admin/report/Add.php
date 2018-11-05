@@ -12,7 +12,7 @@ class Add extends Admin_Controller
   {
     parent::__construct();
     $this->check_login_status();
-    
+
     $this->load->helper('directory');
     $this->load->model(array('Lab_model', 'Report_model'));
   }
@@ -26,6 +26,7 @@ class Add extends Admin_Controller
     $this->layout->add_include('assets/admin/css/easy-autocomplete.min.css');
     $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
     $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/report/add.js');
     $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
     $this->layout->add_include('assets/admin/js/jquery.easy-autocomplete.min.js');
     $this->layout->add_include('assets/admin/js/bootstrap-select.min.js');
@@ -41,7 +42,7 @@ class Add extends Admin_Controller
 
     if(!$this->form_verification())
     {
-      echo json_encode(array('authentication'=>false, 'message'=>validation_errors()));
+      echo json_encode(array('isValid'=>false, 'message'=>validation_errors()));
       return false;
     }
 
