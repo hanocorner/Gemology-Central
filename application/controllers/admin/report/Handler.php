@@ -21,6 +21,7 @@ class Handler extends Admin_Controller
     $this->check_login_status();
 
     $this->load->helper('directory');
+    $this->load->library('image');
     $this->load->model(array('Lab_model', 'Report_model'));
   }
 
@@ -42,10 +43,13 @@ class Handler extends Admin_Controller
     $this->form_report();
   }
 
-
-
-  /****/
-  protected function check_default($post_string)
+  /**
+   * This check the dropdown list default value
+   *
+   * @param string $post_string value from dropdown
+   * @return bool
+   */
+  public function check_default($post_string)
   {
     return $post_string == 'default' ? FALSE : TRUE;
   }
@@ -64,11 +68,11 @@ class Handler extends Admin_Controller
 
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
-    $img_name = $this->create_image_name();
+    $img_name = $this->image->img_name($_FILES['imagegem'], $this->_id);
 
     // CALL SP
 
-    $upload_status = $this->upload_image('imagegem', $img_name);
+    $upload_status = $this->image->img_upload('imagegem');
 
     if($upload_status != null) return $this->json_output(false, $upload_status);
 
@@ -83,7 +87,7 @@ class Handler extends Admin_Controller
 
 
 
-  
+
 
   /**
    * Creating Sub directory inside Main directory
