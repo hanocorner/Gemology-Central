@@ -21,9 +21,7 @@ $config['default_separator'] = '-';
 |
 */
 $config['img_basepath'] = './assets/images/';
-$config['img_folder_a'] = 'Memocard';
-$config['img_folder_b'] = 'Certificate';
-$config['img_folder_c'] = 'Verbal';
+$config['base_folder'] = array('memo'=>'Memocard', 'repo'=>'Certificate', 'verb'=>'Verbal');
 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
 /*

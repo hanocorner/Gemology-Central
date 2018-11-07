@@ -12,6 +12,12 @@ class Image
   /****/
   private $_image = '';
 
+  /****/
+  private $_image_path = '';
+
+  /*****/
+  public $errors = '';
+
   /**
    * Constructor for this class & module initialization
    *
@@ -26,24 +32,33 @@ class Image
   }
 
   /*****/
-  protected function img_path()
+  public function img_path($base_folder, $sub_folder = null, $param = false)
   {
-    return $this->CI->config->item('img_basepath').$current_year_folder.'/'.$current_month_folder;
+    foreach ($this->CI->config->item('base_folder') as $key => $value)
+    {
+      if($key == $base_folder)
+      {
+        $folder = $value;
+      }
+    }
+    if($sub_folder == null)
+    {
+      $this->_img_path = $this->CI->config->item('img_basepath').$folder.'/';
+    }
+    else {
+      $this->_img_path = $this->CI->config->item('img_basepath').$folder.'/'.$sub_folder.'/';
+    }
+
   }
 
   /****/
   public function img_name($image, $id)
   {
-    if(!isset($image['name']))
-    {
-      return $this->_image = '';
-    }
-
-    $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
+    $ext = pathinfo($image, PATHINFO_EXTENSION);
     $img = $id.".".$ext;
     if(file_exists($this->get_imgpath().'/'.$img))
     {
-      $file_parts = pathinfo($image['name']);
+      $file_parts = pathinfo($image);
       $extension = $file_parts['extension'];
       $filename = $file_parts['filename'];
       $this->_image = $filename.'-'.rand(1, 10).'.'.$extension;
@@ -60,7 +75,7 @@ class Image
     $config = array();
 
     $config['file_name'] = $this->_image;
-    $config['upload_path'] = $this->img_path();
+    $config['upload_path'] = $this->_img_path;
     $config['allowed_types'] = $this->config->item('img_types');
     $config['max_size'] = $this->CI->config->item('img_size');
     $config['max_width'] = $this->CI->config->item('img_width');
@@ -68,11 +83,14 @@ class Image
 
     $this->load->library('upload', $config);
 
-    if (!$this->upload->do_upload($field))
+    if ($this->upload->do_upload($field))
     {
-      return $this->upload->display_errors();
+      return $this->upload->data('file_name');
     }
-    return null;
+    else {
+      $this->errors = $this->upload->display_errors('<p>', '</p>');
+      return false;
+    }
   }
 }
 

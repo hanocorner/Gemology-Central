@@ -65,16 +65,23 @@ class Handler extends Admin_Controller
 
     $this->_id = $this->input->post('rmid');
     $this->_report = $this->input->post('repo-type');
+    $img_name = '';
 
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
-    $img_name = $this->image->img_name($_FILES['imagegem'], $this->_id);
+    if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
+    {
+      $img_name = $this->image->img_name($_FILES['imagegem']['name'], $this->_id);
+      $upload = $this->image->img_upload('imagegem');
+      if($upload == false) return $this->json_output(false, $this->image->errors);
+      $img_name = $upload;
+    }
+
+
 
     // CALL SP
 
-    $upload_status = $this->image->img_upload('imagegem');
 
-    if($upload_status != null) return $this->json_output(false, $upload_status);
 
     return $this->json_output(true, 'Your Report was successfully created', 'admin/report');
   }
