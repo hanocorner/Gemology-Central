@@ -27,28 +27,13 @@ class Image
   public function __construct()
   {
     $this->CI =& get_instance();
-
     $this->CI->config->load('report');
   }
 
   /*****/
-  public function img_path($base_folder, $sub_folder = null, $param = false)
+  public function img_path($filepath)
   {
-    foreach ($this->CI->config->item('base_folder') as $key => $value)
-    {
-      if($key == $base_folder)
-      {
-        $folder = $value;
-      }
-    }
-    if($sub_folder == null)
-    {
-      $this->_img_path = $this->CI->config->item('img_basepath').$folder.'/';
-    }
-    else {
-      $this->_img_path = $this->CI->config->item('img_basepath').$folder.'/'.$sub_folder.'/';
-    }
-
+    $this->_img_path = $filepath;
   }
 
   /****/
@@ -56,7 +41,7 @@ class Image
   {
     $ext = pathinfo($image, PATHINFO_EXTENSION);
     $img = $id.".".$ext;
-    if(file_exists($this->get_imgpath().'/'.$img))
+    if(file_exists($this->_img_path.'/'.$img))
     {
       $file_parts = pathinfo($image);
       $extension = $file_parts['extension'];
@@ -76,10 +61,10 @@ class Image
 
     $config['file_name'] = $this->_image;
     $config['upload_path'] = $this->_img_path;
-    $config['allowed_types'] = $this->config->item('img_types');
-    $config['max_size'] = $this->CI->config->item('img_size');
-    $config['max_width'] = $this->CI->config->item('img_width');
-    $config['max_height'] = $this->CI->config->item('img_height');
+    $config['allowed_types'] = $this->config->item('allowed_types');
+    $config['max_size'] = $this->CI->config->item('max_size');
+    $config['max_width'] = $this->CI->config->item('max_width');
+    $config['max_height'] = $this->CI->config->item('max_height');
 
     $this->load->library('upload', $config);
 

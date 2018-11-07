@@ -1,19 +1,65 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-function qrcode($id, $img_path)
+// ------------------------------------------------------------------------
+
+if ( ! function_exists('qrcode'))
 {
-  $CI =& get_instance();
-  $CI->load->library('ciqrcode');
+  /**
+   * Generating the qr code
+   *
+   * @param string qr url
+   * @return string qrcode
+   */
+  function qrcode($qrdata)
+  {
+    $CI =& get_instance();
 
-  $qrcode = 'QR-'.$id.'.'.'png';
-  $params['data'] = "https://gemologycentral.com/report/".$id;
-  $params['level'] = 'H';
-  $params['size'] = 8;
-  $params['savename'] = $img_path.'/'.$qrcode;
+    $CI->load->library('ciqrcode');
 
-  if($CI->ciqrcode->generate($params)) return $qrcode;
+    $CI->config->load('general');
 
-  return null;
+    $qrcode = 'tempQr'.'png';
+    $params['data'] = $qrdata;
+    $params['level'] = 'H';
+    $params['size'] = 8;
+    $params['savename'] = $CI->config->item('base_folder').'/'.'qr/'.$qrcode;
+
+    if($CI->ciqrcode->generate($params)) return $qrcode;
+
+    return null;
+  }
+
+}
+
+// ------------------------------------------------------------------------
+
+if ( ! function_exists('remove_qr'))
+{
+  /**
+   * Removing the qr image from server location
+   *
+   * @param null
+   * @return bool
+   */
+  function remove_qr()
+  {
+    $CI =& get_instance();
+
+    $CI->load->library('ciqrcode');
+
+    $CI->config->load('general');
+
+    $qrcode = 'tempQr'.'png';
+    $params['data'] = $qrdata;
+    $params['level'] = 'H';
+    $params['size'] = 8;
+    $params['savename'] = $CI->config->item('base_folder').'/'.'qr/'.$qrcode;
+
+    if($CI->ciqrcode->generate($params)) return $qrcode;
+
+    return null;
+  }
+
 }
 ?>
