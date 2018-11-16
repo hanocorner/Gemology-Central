@@ -10,6 +10,12 @@ $config = array(
                         'check_default' => 'Please select a gemstone from the list'
                         ),
                 ),
+                // Report Type
+                array(
+                        'field' => 'repotype',
+                        'label' => 'Report Type',
+                        'rules' => 'required'
+                ),
                 // Report #ID
                 array(
                         'field' => 'rmid',
@@ -86,7 +92,7 @@ $config = array(
                 array(
                         'field' => 'amount',
                         'label' => 'Amount',
-                        'rules' => 'trim|alpha_dash|alpha_numeric_spaces'
+                        'rules' => 'trim|required|decimal'
                 ),
         )
 );

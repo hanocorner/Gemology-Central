@@ -1,12 +1,48 @@
 DELIMITER //
-CREATE PROCEDURE insertReport (memoid  VARCHAR(20),  reportid int(11), type VARCHAR(5) )
-    BEGIN
-    	DECLARE sub Varchar(10);
+CREATE PROCEDURE insertReport(
+  IN id  varchar(20),
+  IN customerid varchar(20),
+  IN gemid int(11),
+  IN cdate date,
+  IN type varchar(5),
+  IN object varchar(100),
+  IN variety varchar(100),
+  IN weight decimal(4,2),
+  IN gemWidth decimal(4,2),
+  IN gemHeight decimal(4,2),
+  IN gemLength decimal(4,2),
+  IN spgroup varchar(100),
+  IN shapecut varchar(30),
+  IN color varchar(30),
+  IN comment varchar(200),
+  IN other varchar(200),
+  IN imgname text,
+  IN qrcode text,
+  IN amount decimal(8,2),
+  OUT result int
+  )
 
-    IF     type = "memo" THEN
-    	INSERT INTO tbl_gem_memocard(memoid, reportid, mem_created_date, mem_paymentStatus, mem_amount) VALUES('GCL-100001', 101, '', '', '');
-    ELSEIF type = "repo" THEN
-    	INSERT INTO tbl_gemstone_report(gsrid, reportid, gsr_created_date, gsr_paymentStatus, gsr_amount) VALUES('GCL201-110001', 102, '', '', '');
+  BEGIN
+    DECLARE last_insert_id int;
+
+    INSERT INTO tbl_lab_report(customerid, gemid, created_date, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other) VALUES(
+      customerid, gemid, cdate, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other);
+      SET last_insert_id = LAST_INSERT_ID();
+    IF
+      type = "memo"
+    THEN
+    	INSERT INTO tbl_gem_memocard(id, reportid, amount) VALUES(id, last_insert_id, amount);
+    ELSEIF
+      type = "repo"
+    THEN
+    	INSERT INTO tbl_gemstone_report(id, reportid, amount) VALUES(id, last_insert_id, amount);
+    ELSEIF
+      type = "verb"
+    THEN
+      INSERT INTO tbl_gem_verbal(id, reportid) VALUES(id, last_insert_id);
     END IF;
-	END // 
+    INSERT INTO tbl_gem_image(reportid, gemstone, qrcode) VALUES(last_insert_id, imgname, qrcode);
+
+    SELECT ROW_COUNT() INTO result;
+	END //
 DELIMITER ;

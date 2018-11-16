@@ -12,9 +12,30 @@ class Data_model extends CI_Model
 
   public function insert_report($data)
   {
-    $this->db->query('CALL insertReport()');
-    $result = $this->db->get();
-    $result->result();
+    $this->db->query('CALL insertReport(
+      "'.$data['rmid'].'",
+      "'.$data['custid'].'",
+      "'.$data['gemid'].'",
+      "'.$data['cdate'].'",
+      "'.$data['repotype'].'",
+      "'.$data['object'].'",
+      "'.$data['variety'].'",
+      "'.$data['weight'].'",
+      "'.$data['gemWidth'].'",
+      "'.$data['gemHeight'].'",
+      "'.$data['gemLength'].'",
+      "'.$data['spgroup'].'",
+      "'.$data['shapecut'].'",
+      "'.$data['color'].'",
+      "'.$data['comment'].'",
+      "'.$data['other'].'",
+      "'.$data['img_gem'].'",
+      "'.$data['qrcode'].'",
+      "'.$data['amount'].'",
+      @result
+       )');
+
+    return $this->db->affected_rows();
   }
 }
 ?>

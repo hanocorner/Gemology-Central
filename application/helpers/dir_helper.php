@@ -17,14 +17,17 @@ if ( ! function_exists('create_directory'))
    */
   function create_directory($base_folder, $sub_folder = null)
   {
+    $basedir = '';
+
     $CI = get_instance();
 
     $CI->config->load('general');
 
     foreach ($CI->config->item('base_folder') as $key => $value)
     {
-      if($key == $base_folder)
+      if($key == 'memo')
       {
+        echo $value;
         $basedir = $value;
       }
       else {

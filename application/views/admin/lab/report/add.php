@@ -28,11 +28,12 @@
     <div id="message"></div>
     <!-- /. Alert Box -->
 
-    <?php echo form_open('admin/report/handler/insert', array('id'=>'formReport')); ?>
+    <?php echo form_open_multipart('admin/report/handler/insert', array('id'=>'formReport')); ?>
+
     <div class="form-row"> <!-- Customer data  -->
       <div class="form-group col-3">
-        <label for="customer">Select Customer</label>
-        <input id="plate" class="form-control form-control-sm"/>
+        <label for="customer">Select Customer<sup>*</sup></label>
+        <input id="plate" class="form-control form-control-sm" name="custid" value="GCLC-10001"/>
       </div>
       <div class="form-group col-1">
         <div class="pt-4"></div>
@@ -40,19 +41,35 @@
       </div>
     </div>
 
-    <div class="form-row"> <!-- Report Type  -->
-      <div class="form-group col-2">
-        <label for="customer">Select your report</label>
-        <select class="form-control form-control-sm" id="repType" name="repo-type">
-          <option value="0" selected>Choose...</option>
-          <option value="memo">Memo Card</option>
-          <option value="repo">Certificate</option>
-          <option value="verb">Verbal</option>
-        </select>
+    <div class="form-row my-3"> <!-- Report Type  -->
+      <label class="ml-1 mr-2" for="customRadioInline1">Report Type:<sup>*</sup></label>
+      <div class="custom-control custom-radio custom-control-inline ml-2">
+        <input type="radio" id="customRadioInline1" name="repotype" class="custom-control-input" value="memo">
+        <label class="custom-control-label" for="customRadioInline1">Memocard</label>
       </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="customRadioInline2" name="repotype" class="custom-control-input" value="repo">
+        <label class="custom-control-label" for="customRadioInline2">Certificate</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="customRadioInline3" name="repotype" class="custom-control-input" value="verb">
+        <label class="custom-control-label" for="customRadioInline3">Verbal</label>
+      </div>
+    </div>
+
+    <div class="form-row"> <!-- ID & Payment -->
       <div class="form-group col-2">
         <label for="customer">Report ID#</label>
-        <input type="text" class="form-control form-control-sm" id="id" name="rmid" value="<?php echo set_value('rmid'); ?>" readonly>
+        <input type="text" class="form-control form-control-sm" id="id" name="rmid" readonly>
+      </div>
+      <div class="col-2">
+        <label for="paymentstatus">Amount<sup>*</sup></label>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>LKR</div>
+          </div>
+          <input type="text" class="form-control" name="amount" id="amount" placeholder="Amount in figure" required autocomplete="off">
+        </div>
       </div>
     </div>
 
@@ -71,26 +88,6 @@
       </div>
     </div>
 
-    <div class="form-row"> <!-- Payment  -->
-      <div class="form-group col-2">
-        <label for="paymentstatus">Payment<sup>*</sup></label>
-        <select class="form-control form-control-sm" name="pstatus" id="pStatus">
-          <option value="default" <?php echo  set_select('pstatus', 'default', TRUE); ?> selected>Choose...</option>
-          <option value="1" <?php echo  set_select('pstatus', '1'); ?>>Paid</option>
-          <option value="0" <?php echo  set_select('pstatus', '0'); ?>>Unpaid</option>
-        </select>
-      </div>
-      <div class="col-2">
-        <label for="paymentstatus">Payment<sup>*</sup></label>
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <div class="input-group-text"><i class="fa fa-money" aria-hidden="true"></i>&nbsp; LKR</div>
-          </div>
-          <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>" placeholder="Amount in figure" required autocomplete="off">
-        </div>
-      </div>
-    </div>
-
     <div class="form-row"> <!-- Object  -->
       <div class="form-group col-4">
         <label for="object">Object<sup>*</sup></label>
@@ -101,7 +98,7 @@
     <div class="form-row"> <!-- Variety  -->
       <div class="form-group col-4">
         <label for="variety">Variety<sup>*</sup></label>
-        <input type="text" class="form-control form-control-sm" name="variety" value="" autocomplete="off">
+        <input type="text" class="form-control form-control-sm" name="variety" readonly>
       </div>
     </div>
 
@@ -181,8 +178,7 @@
       </div>
     </div>
 
-    <div class="form-row">
-
+    <div class="form-row"> <!-- Gem Image -->
       <div class="col-4">
         <label for="image">Upload Image:</label>
         <div class="custom-file-container" data-upload-id="myUploader">
@@ -203,11 +199,11 @@
       </div>
     </div>
 
-    <!-- <button type="submit" name="print" class="btn btn-danger"><i class="fa fa-print" aria-hidden="true"></i>&nbsp; Print</button> -->
-    <button type="submit" class="btn btn-primary mb-3 addReport">
+    <button type="submit" class="btn btn-primary mb-3 addReport"> <!-- Submit Button  -->
       <i class="fa fa-floppy-o" aria-hidden="true"></i>
       Submit Report
     </button>
+
     <?php echo form_close(); ?>
     <!-- End of form  -->
 
@@ -308,36 +304,4 @@
 <!-- Custom Script  -->
 <script>
 var baseurl = '<?php echo base_url(); ?>';
-/*
-
-
-  $(document).ready(function() {
-    gemstone();
-    addGemstone();
-
-    reptype.change(function () {
-      if (this.selectedIndex == 0) {
-        $('#id').val('');
-        pstatus.removeAttr('disabled');
-        amount.removeAttr('disabled');
-      }
-      if (this.selectedIndex == 1) {
-        ajax('memo');
-        pstatus.removeAttr('disabled');
-        amount.removeAttr('disabled');
-      }
-      if (this.selectedIndex == 2) {
-        ajax('repo');
-        pstatus.removeAttr('disabled');
-        amount.removeAttr('disabled');
-      }
-      if (this.selectedIndex == 3) {
-        ajax('verb');
-        pstatus.attr('disabled', 'disabled');
-        amount.attr('disabled', 'disabled');
-      }
-    });
-
-  });
-*/
 </script>

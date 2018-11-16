@@ -5,7 +5,7 @@ function ajax(reportType) {
     type: 'GET',
     dataType: 'html',
     data: {
-      type: reportType
+      repotype: $('input[name=repotype]:checked').val() 
     },
     success:function(data) {
       $('#id').val(data);

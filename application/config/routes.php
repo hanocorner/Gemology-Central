@@ -69,6 +69,7 @@ $route['admin/customer/add'] = 'admin/customer/customer/add';
 $route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
 $route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
 $route['admin/report/download/(:num)'] = 'admin/report/download/index/$1';
+$route['admin/report/add'] = 'admin/report/handler/add';
 $route['admin/report'] = 'admin/report/handler/index';
 
 // Blog Routes

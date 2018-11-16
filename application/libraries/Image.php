@@ -61,19 +61,19 @@ class Image
 
     $config['file_name'] = $this->_image;
     $config['upload_path'] = $this->_img_path;
-    $config['allowed_types'] = $this->config->item('allowed_types');
+    $config['allowed_types'] = $this->CI->config->item('allowed_types');
     $config['max_size'] = $this->CI->config->item('max_size');
     $config['max_width'] = $this->CI->config->item('max_width');
     $config['max_height'] = $this->CI->config->item('max_height');
 
-    $this->load->library('upload', $config);
+    $this->CI->load->library('upload', $config);
 
-    if ($this->upload->do_upload($field))
+    if ($this->CI->upload->do_upload($field))
     {
-      return $this->upload->data('file_name');
+      return $this->CI->upload->data('file_name');
     }
     else {
-      $this->errors = $this->upload->display_errors('<p>', '</p>');
+      $this->errors = $this->CI->upload->display_errors('<p>', '</p>');
       return false;
     }
   }
