@@ -256,5 +256,12 @@ class Customer extends Admin_Controller
 
   }
 
+  public function append_customer()
+  {
+    $customer = $this->input->get('q');
+    $this->_data = $this->Customer_model->get_customer_by_name($customer);
+    echo json_encode($this->_data);
+  }
+
 }
 ?>

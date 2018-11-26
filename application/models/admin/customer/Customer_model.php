@@ -170,5 +170,11 @@ class Customer_model extends CI_Model
     $query = $this->db->delete('tbl_customer');
     return $this->db->affected_rows();
   }
+
+  public function get_customer_by_name($name)
+  {
+    $query = $this->db->query("SELECT custid, cus_firstname, cus_lastname FROM tbl_customer WHERE cus_firstname LIKE '%$name%' OR cus_lastname LIKE '%$name%' ");
+    return $query->result_array();
+  }
 }
 ?>

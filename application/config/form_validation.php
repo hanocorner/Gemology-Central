@@ -5,14 +5,12 @@ $config = array(
                 array(
                         'field' => 'gemid',
                         'label' => 'Gemstone',
-                        'rules' => 'required|callback_check_default',
-                        'errors' => array(
-                        'check_default' => 'Please select a gemstone from the list'
-                        ),
+                        'rules' => 'trim|required',
+                        'errors' => array('required' => 'Variety Field is empty'),
                 ),
                 // Report Type
                 array(
-                        'field' => 'repotype',
+                        'field' => 'radio-1',
                         'label' => 'Report Type',
                         'rules' => 'required'
                 ),
@@ -20,19 +18,14 @@ $config = array(
                 array(
                         'field' => 'rmid',
                         'label' => 'ID',
-                        'rules' => 'trim|required|alpha_dash'
+                        'rules' => 'trim|alpha_dash'
                 ),
                 // Object
                 array(
                         'field' => 'object',
                         'label' => 'Object',
-                        'rules' => 'trim|required'
-                ),
-                // Variety
-                array(
-                        'field' => 'variety',
-                        'label' => 'Variety',
-                        'rules' => 'trim|required'
+                        'rules' => 'trim|callback_check_default',
+                        'errors' => array('check_default' => 'Please select an option for object field'),
                 ),
                 // Weight
                 array(
@@ -44,13 +37,17 @@ $config = array(
                 array(
                         'field' => 'spgroup',
                         'label' => 'Species/Group',
-                        'rules' => 'trim'
+                        'rules' => 'trim|required|callback_special_chars',
+                        'errors' => array(
+                          'required' => '%s field is empty',
+                          'special_chars'=>'Invalid characters in %s field'
+                        ),
                 ),
                 // Gem Width
                 array(
                         'field' => 'gemWidth',
                         'label' => 'Width',
-                        'rules' => 'trim|decimal'
+                        'rules' => 'trim'
                 ),
                 // Gem Height
                 array(
@@ -68,31 +65,48 @@ $config = array(
                 array(
                         'field' => 'color',
                         'label' => 'Color',
-                        'rules' => 'trim|alpha_dash|alpha_numeric_spaces'
+                        'rules' => 'trim|callback_special_chars',
+                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
                 ),
                 // Shape & Cut
                 array(
                         'field' => 'shapecut',
-                        'label' => 'Shape',
-                        'rules' => 'trim|alpha_dash|alpha_numeric_spaces'
+                        'label' => 'Shape & Cut',
+                        'rules' => 'trim|callback_special_chars',
+                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
                 ),
                 // Comment
                 array(
                         'field' => 'comment',
                         'label' => 'Comment',
-                        'rules' => 'trim|alpha_dash|alpha_numeric_spaces'
+                        'rules' => 'trim|callback_special_chars',
+                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
                 ),
                 // Other
                 array(
                         'field' => 'other',
                         'label' => 'Other',
-                        'rules' => 'trim|alpha_dash|alpha_numeric_spaces'
+                        'rules' => 'trim|callback_special_chars',
+                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
                 ),
                 // Amount
                 array(
                         'field' => 'amount',
                         'label' => 'Amount',
                         'rules' => 'trim|required|decimal'
+                ),
+        ),
+        'gemstone' => array(
+                array(
+                        'field'=> 'gemName',
+                        'label' => 'Gemstone Name',
+                        'rules' => 'trim|required|alpha_numeric_spaces'
+                ),
+                array(
+                        'field'=> 'gemDesc',
+                        'label' => 'Gemstone Description',
+                        'rules' => 'trim|required|callback_special_chars',
+                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
                 ),
         )
 );

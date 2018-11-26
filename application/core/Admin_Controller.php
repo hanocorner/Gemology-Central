@@ -13,7 +13,7 @@ class Admin_Controller extends LB_Controller
     parent::__construct();
     $this->load->library(array('session'));
 
-    $this->form_validation->set_error_delimiters('<span>', '</span>');
+    $this->form_validation->set_error_delimiters('<li>', '</li>');
   }
 
   /**

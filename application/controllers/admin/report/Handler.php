@@ -58,14 +58,13 @@ class Handler extends Admin_Controller
   public function add()
   {
     $this->layout->set_title('Add Report');
-    $this->layout->add_include('assets/admin/css/bootstrap-select.min.css');
-    $this->layout->add_include('assets/admin/css/easy-autocomplete.min.css');
-    $this->layout->add_include('assets/admin/css/file-upload-with-preview.min.css');
+    $this->layout->add_include('assets/admin/css/jqueryui/jquery-ui.css');
+    $this->layout->add_include('assets/admin/css/jqueryui/jquery-ui.structure.css');
+    $this->layout->add_include('assets/admin/css/jqueryui/jquery-ui.theme.css');
     $this->layout->add_include('assets/admin/js/report.js');
+    $this->layout->add_include('assets/admin/js/ckeditor/ckeditor.js');
     $this->layout->add_include('assets/admin/js/report/add.js');
-    $this->layout->add_include('assets/admin/js/file-upload-with-preview.min.js');
-    $this->layout->add_include('assets/admin/js/jquery.easy-autocomplete.min.js');
-    $this->layout->add_include('assets/admin/js/bootstrap-select.min.js');
+    $this->layout->add_include('assets/admin/js/jquery-ui.min.js');
 
     $this->layout->view('admin/lab/report/add', '', 'admin/layouts/admin');
   }
@@ -78,14 +77,14 @@ class Handler extends Admin_Controller
       return $this->json_output(true,'','admin/home');
     }
 
-    $this->load->helper('dir');
+    $this->load->helper(array('dir', 'qr'));
 
     $this->next_id = $this->input->post('rmid');
     $this->report_type = $this->input->post('repotype');
 
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
-    if(isset($_FILES['imagegem']['tmp_name']))
+    if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
     {
       $this->image->img_path(create_directory($this->report_type, $this->config->item('img_subdir')));
       $img_name = $this->image->img_name($_FILES['imagegem']['name'], $this->next_id);
@@ -94,20 +93,47 @@ class Handler extends Admin_Controller
       if($upload == false) return $this->json_output(false, $this->image->errors);
       $this->_img_name = $upload;
     }
-
+    
     $this->_data = $_POST;
     $this->_data['img_gem'] = $this->_img_name;
     $this->_data['cdate'] = date('Y-m-d');
-    $this->_data['qrcode'] = base_url()."report/GCL-1000001";
+    $this->_data['qrcode'] = $this->qr_data();
+    $this->_data['reportStatus'] = 0;
 
     $result = $this->Data_model->insert_report($this->_data);
 
     if($result < 1 )
     {
+      log_message('error', 'Error Encountered when adding a new report');
       return $this->json_output(false, 'Insertion unsuccessful');
     }
 
-    return $this->json_output(true, 'Insertion successfull', 'admin/report');
+    return $this->json_output(true, 'Report Created successfully', 'admin/report/handler/qr/'.$this->qr_data());
+    $response = array();
+    echo json_encode($response);
+  }
+
+  /**
+   * AJAX Request to download Qr
+   *
+   * @param null
+   * @return void
+   */
+  public function download_qr()
+  {
+    $this->load->helper('download');
+    $qrcode = $this->uri->segment(5);
+    $qrcode = $qrcode.'.png';
+    $data = file_get_contents(base_url().'assets/images/qr/'.$qrcode);
+    force_download($qrcode, $data);
+  }
+
+  /****/
+  public function qr_data()
+  {
+    //$this->encryption->encrypt($this->next_id)
+    qrcode($this->next_id);
+    return $this->next_id;
   }
 
   /*****/
@@ -125,7 +151,7 @@ class Handler extends Admin_Controller
     }
 
     $this->next_id = $this->input->post('rmid');
-    $this->report_type = $this->input->post('repo-type');
+    $this->report_type = $this->input->post('repotype');
 
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
@@ -151,12 +177,7 @@ class Handler extends Admin_Controller
     return $this->json_output(true, 'Your Report was successfully created', 'admin/report');
   }
 
-  /****/
-  public function qr_data()
-  {
-    //$this->encryption->encrypt($this->next_id)
-    return base_url().'report/'.$this->next_id;
-  }
+
 
   /**
    * This check the dropdown list default value
@@ -168,6 +189,24 @@ class Handler extends Admin_Controller
   {
     return $post_string == 'default' ? FALSE : TRUE;
   }
+
+  /**
+   * This check the dropdown list default value
+   *
+   * @param string $post_string value from dropdown
+   * @return bool
+   */
+  public function special_chars($post_string)
+  {
+    if($post_string != null || $post_string != '')
+    {
+      if(!preg_match('/^[a-z0-9 .\-]+$/i', $post_string)) return false;
+      return true;
+    }
+
+    return;
+  }
+
 
 
   /**
@@ -210,6 +249,25 @@ class Handler extends Admin_Controller
     echo $this->id->create_id();
   }
 
+  public function populate_spgroup()
+  {
+    $string = $this->input->get('q');
+    $this->_data = $this->Data_model->get_species_group($string);
+    echo json_encode($this->_data);
+  }
 
+  public function populate_shapecut()
+  {
+    $string = $this->input->get('q');
+    $this->_data = $this->Data_model->get_shapecut($string);
+    echo json_encode($this->_data);
+  }
+
+  public function populate_color()
+  {
+    $string = $this->input->get('q');
+    $this->_data = $this->Data_model->get_color($string);
+    echo json_encode($this->_data);
+  }
 }
 ?>

@@ -462,7 +462,7 @@ $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/comment/all',
-                             'base/report-data', 'admin/gemstone/add', 'admin/customer/customer-report', 'public/report/form-authentication');
+                             'base/report-data', 'admin/gemstone/add', 'admin/customer/customer/append-customer', 'public/report/form-authentication');
 
 /*
 |--------------------------------------------------------------------------

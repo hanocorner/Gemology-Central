@@ -1,77 +1,3 @@
-// Fetch ID Based on user select
-function ajax(reportType) {
-  $.ajax({
-    url: baseurl + 'admin/idmaker/id',
-    type: 'GET',
-    dataType: 'html',
-    data: {
-      repotype: $('input[name=repotype]:checked').val() 
-    },
-    success:function(data) {
-      $('#id').val(data);
-    },
-    fail:function(){
-      console.log('Error');
-    }
-  });
-
-}
-
-// Appending Gem to dropdown list
-function gemstone() {
-  $.ajax({
-    url: baseurl + 'admin/report/gemstone/gem-list',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      $.each(data, function(key, value) {
-        var toAppend = "";
-        toAppend += '<option value="' + value.gemid + '">' + value.gem_name + '</option>';
-        gemtype.append(toAppend);
-      });
-    },
-    fail: function() {
-      console.log("error");
-    }
-  });
-}
-
-//Adding a new Gemstone
-function addGemstone() {
-  $(document).on('click', '#saveGem', function(event) {
-    event.preventDefault();
-    $.ajax({
-      url: baseurl + 'admin/report/gemstone/add',
-      type: 'GET',
-      data: {
-        'gemName': $('#gemName').val(),
-        'gemDesc': $('#gemDesc').val()
-      },
-      beforeSend: function() {
-        $('#message').html('<div class="alert alert-info" role="alert">Sending...</div>');
-      },
-      success: function(response) {
-        if (response == "success") {
-          $('#gemForm').css('display', 'none');
-          $('#message').html('<div class="alert alert-success" role="alert">Gemstone added successully</div>');
-          location.reload();
-        }
-        if (response == "fail") {
-          $('#message').html('<div class="alert alert-danger" role="alert">Problem when adding gemstone</div>');
-        }
-      },
-      fail: function() {
-        console.log("error");
-      }
-    });
-  });
-  $(document).on('click', '#closeGem', function() {
-    $('#message').html(null);
-    $('#gemForm').css('display', 'block');
-  });
-
-}
-
 function append_toedit() {
   var id = $('#labRepid').val();
 
@@ -121,40 +47,7 @@ function append_toedit() {
 
 }
 
-function add() {
-  var formData = new FormData(this);
-  var alertbox = $('#alertMsg');
 
-  $("form").on('submit', function(event) {
-    event.preventDefault();
-
-    $.ajax({
-      url: baseurl + 'admin/report/add/insert-todb',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData(this),
-      cache: false,
-      contentType: false,
-      processData: false,
-      success:function (response){
-        if(response.isvalid){
-          window.location.href = response.url;
-        }
-        if (!response.isvalid) {
-          alertbox.html('<div class="alert alert-danger" role="alert">'+
-                        '<strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp; Found Error(s) </strong>'+
-                        response.message+'</div>');
-          create_csrf();
-        }
-
-      },
-      fail:function () {
-        console.log('error');
-      }
-    });
-
-  });
-}
 
 // Function Update
 function update() {
@@ -195,10 +88,5 @@ function update() {
   });
 }
 
-function create_csrf() {
-  $.getJSON(baseurl + 'public/report/set-csrf', function(data) {
-    $("#csrfToken").attr('name', data.name).attr('value', data.hash);
-  });
-}
 
 // ******* NEW *******

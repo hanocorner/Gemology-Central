@@ -50,6 +50,7 @@ ALTER TABLE tbl_lab_report CHANGE `rep_color` TO `color` varchar(30) CHARACTER S
 ALTER TABLE tbl_lab_report CHANGE `rep_comment` TO `comment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `tbl_lab_report` CHANGE `rep_other` `other` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `tbl_lab_report` ADD `created_date` DATE NOT NULL AFTER `gemid`;
+ALTER TABLE `tbl_lab_report` ADD `reportStatus` tinyint(1) NOT NULL AFTER `other`;
 
 -- Table structure for `Memo Card`
 --

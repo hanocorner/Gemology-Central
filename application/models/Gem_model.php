@@ -63,13 +63,13 @@ class Gem_model extends CI_Model
    * @param none
    * @return Results
    */
-  public function get_gem_list()
+  public function get_gem_list($name)
   {
+    $this->db->distinct();
     $this->db->select("gemid, gem_name");
-    $this->db->from('tbl_gem');
-
-    $query = $this->db->get();
-    return $query->result();
+    $this->db->like('gem_name', $name);
+    $query = $this->db->get('tbl_gem');
+    return $query->result_array();
   }
 
   /**

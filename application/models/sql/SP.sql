@@ -19,23 +19,24 @@ CREATE PROCEDURE insertReport(
   IN imgname text,
   IN qrcode text,
   IN amount decimal(8,2),
-  OUT result int
+  IN pstatus tinyint(1),
+  IN reportStatus tinyint(1)
   )
 
   BEGIN
     DECLARE last_insert_id int;
 
-    INSERT INTO tbl_lab_report(customerid, gemid, created_date, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other) VALUES(
-      customerid, gemid, cdate, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other);
+    INSERT INTO tbl_lab_report(customerid, gemid, createdDate, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other, reportStatus) VALUES(
+      customerid, gemid, cdate, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other, reportStatus);
       SET last_insert_id = LAST_INSERT_ID();
     IF
       type = "memo"
     THEN
-    	INSERT INTO tbl_gem_memocard(id, reportid, amount) VALUES(id, last_insert_id, amount);
+    	INSERT INTO tbl_gem_memocard(id, reportid, payment_status, amount) VALUES(id, last_insert_id, pstatus, amount);
     ELSEIF
       type = "repo"
     THEN
-    	INSERT INTO tbl_gemstone_report(id, reportid, amount) VALUES(id, last_insert_id, amount);
+    	INSERT INTO tbl_gemstone_report(id, reportid, payment_status, amount) VALUES(id, last_insert_id, pstatus, amount);
     ELSEIF
       type = "verb"
     THEN
@@ -43,6 +44,5 @@ CREATE PROCEDURE insertReport(
     END IF;
     INSERT INTO tbl_gem_image(reportid, gemstone, qrcode) VALUES(last_insert_id, imgname, qrcode);
 
-    SELECT ROW_COUNT() INTO result;
 	END //
 DELIMITER ;
