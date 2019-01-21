@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Blog extends CI_Controller
+class Blog extends Public_Controller
 {
   /**
    * Constructor (loading the important class)
@@ -11,9 +11,6 @@ class Blog extends CI_Controller
     parent::__construct();
 
     $this->load->model('Article_model');
-
-    $config = array('layoutManager'=>'public');
-    $this->load->library('layout', $config);
   }
 
   /**
@@ -36,8 +33,8 @@ class Blog extends CI_Controller
 
     $data['recent'] = (array)$recent;
 
-    $this->layout->set_title('Blog GCL');
-    $this->layout->view('public/blog', $data, 'public/layouts/public');// ?? not finished
+    $this->layout->title = 'Blog GCL';
+    $this->layout->view('public/blog', $data);// ?? not finished
   }
 
   /**
@@ -75,8 +72,8 @@ class Blog extends CI_Controller
     $relArticles = $this->Article_model->get_related_articles($result->post_tag);
     $data['related'] = $relArticles;
 
-    $this->layout->set_title(ucwords($result->post_title));
-    $this->layout->view('public/article', $data, 'public/layouts/public');
+    $this->layout->title = ucwords($result->post_title) ;
+    $this->layout->view('public/article', $data);
   }
 
   public function search()

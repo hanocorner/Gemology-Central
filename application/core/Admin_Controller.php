@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Admin_Controller extends LB_Controller
+class Admin_Controller extends AP_Controller
 {
   /**
    * Default Controller
@@ -11,58 +11,31 @@ class Admin_Controller extends LB_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->library(array('session'));
 
-    $this->form_validation->set_error_delimiters('<li>', '</li>');
+    $this->set_layout('admin');
+
+    $this->layout->assets('assets/admin/css/app.css');
+    $custom_script = 'var baseurl = "'.base_url().'";';
+    $this->layout->script($custom_script, 'header');
+
+    $this->layout->assets('https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', 'footer');
+    $this->layout->assets('https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 'footer');
+    $this->layout->assets(base_url('assets/admin/js/app.js'), 'footer');
+
   }
 
   /**
-   * User logged in status and set layout as admin
+   * Function to check admin logged in status
    *
    * @param null
-   * @return bool
+   * @return void
    */
   protected function check_login_status()
   {
     if (!$this->session->has_userdata('logged_in') && $this->session->logged_in != true)
     {
-      if($this->input->is_ajax_request())
-      {
-        return true;
-      }
-      else {
-        redirect('admin/home');
-      }
+      redirect('admin');
     }
-    else {
-      $this->set_layout('admin');
-    }
-  }
-
-  /**
-   * User logged in status check via ajax
-   *
-   * @param null
-   * @return bool
-   */
-  protected function ajax_login_status()
-  {
-    if (!$this->session->has_userdata('logged_in') && $this->session->logged_in != true)
-    {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Regenerate CSRF token
-   *
-   * @param null
-   * @return string
-   */
-  protected function regenerate_csrf()
-  {
-    return $this->security->get_csrf_hash();
   }
 
   /**
@@ -72,7 +45,7 @@ class Admin_Controller extends LB_Controller
    * @param string $message actual message string
    * @param mixed $url url to be redirected
    *
-   * @return array json data
+   * @return null
    */
   protected function json_output($auth = null, $message = '', $url = null)
   {
@@ -83,17 +56,19 @@ class Admin_Controller extends LB_Controller
     if($auth === false)
     {
       $json_response['auth'] = false;
-      $json_response['csrf'] = $this->regenerate_csrf();
-      $json_response['message'] = $message;
     }
 
     if($auth === true)
     {
       $json_response['auth'] = true;
-      $json_response['message'] = $message;
-      $json_response['url'] = base_url().$url;
+      $json_response['url'] = base_url($url);
     }
-    echo json_encode($json_response);
+
+    $json_response['message'] = $message;
+    $json_response['csrf'] = $this->security->get_csrf_hash();
+
+    $this->output->set_content_type('application/json', 'utf-8');
+    $this->output->set_output(json_encode($json_response));
   }
 }
 ?>

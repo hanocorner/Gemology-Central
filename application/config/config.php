@@ -31,7 +31,7 @@ date_default_timezone_set('Asia/Colombo');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/gem';
+$config['base_url'] = 'http://gem/';
 
 /*
 |--------------------------------------------------------------------------
@@ -387,7 +387,7 @@ $config['encryption_key'] = 'key';
 */
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = '_gcl';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 0;
 $config['sess_save_path'] = 'tbl_sessions';
 $config['sess_match_ip'] = TRUE;
 $config['sess_time_to_update'] = 300;
@@ -462,7 +462,7 @@ $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/comment/all',
-                             'base/report-data', 'admin/gemstone/add', 'admin/customer/customer/append-customer', 'public/report/form-authentication');
+                             'base/report-data', 'admin/customer/customer/append-customer', 'public/report/form-authentication', 'admin/report/gemstone/add');
 
 /*
 |--------------------------------------------------------------------------

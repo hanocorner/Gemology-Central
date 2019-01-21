@@ -78,27 +78,14 @@ class Report_model extends CI_Model
    *
    * @param $id report id | string
    *
-   * @return result
+   * @return object
    */
-  public function get_labreport_by_id($id)
+  public function get_labreport($token)
   {
-    $this->db->select('*');
-    $this->db->from($this->tbl_lab.' AS t1 ');
-    $this->db->join($this->tbl_memocard.' AS t2 ', 't1.reportid = t2.reportid', 'left');
-    $this->db->join('tbl_gem_image AS t3 ', 't1.reportid = t3.reportid', 'left');
-    $this->db->where('memoid', $id);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return $query->row();
-
-    $this->db->select('*');
-    $this->db->from($this->tbl_lab.' AS t1 ');
-    $this->db->join($this->tbl_report.' AS t2 ', 't1.reportid = t2.reportid', 'left');
-    $this->db->join('tbl_gem_image AS t3 ', 't1.reportid = t3.reportid', 'left');
-    $this->db->where('gsrid', $id);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return $query->row();
+    $token = (string) $token;
+    $sql = "SELECT qrtoken, createdDate, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, IFNULL(memoid, repoid) id FROM public_fetch_report WHERE qrtoken = '".$token."' ";
+    $query = $this->db->query($sql);
+    return $query->row();
   }
 
   /**

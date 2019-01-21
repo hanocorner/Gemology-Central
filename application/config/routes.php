@@ -51,29 +51,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 // Reserved Routes
 $route['default_controller'] = 'base';
-$route['404_override'] = '';
+$route['404_override'] = 'myerror';
 $route['translate_uri_dashes'] = TRUE;
 
-// Admin routes
-$route['developer'] = 'developer/base';
-$route['admin'] = 'admin/home';
-$route['admin/dashboard'] = 'admin/system/dashboard';
-$route['admin/dashboard/profile'] = 'admin/system/dashboard/profile';
-$route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
+/**
+ * Admin routes
+ * 
+ */
+
+// 
+$route['admin'] = 'admin/dashboard/login/index';
+$route['admin/dashboard'] = 'admin/dashboard/account';
+$route['admin/logout'] = 'admin/dashboard/account/logout';
 
 // Customer Routes
-$route['admin/customer'] = 'admin/customer/customer';
-$route['admin/customer/add'] = 'admin/customer/customer/add';
+$route['admin/customer'] = 'admin/customers/customer';
+$route['admin/customer/add'] = 'admin/customers/customer/add';
 
 // Report Routes
-$route['admin/report/edit/(:num)'] = 'admin/report/edit/index/$1';
-$route['admin/report/edit/update-todb'] = 'admin/report/edit/update-todb';
-$route['admin/report/download/(:num)'] = 'admin/report/download/index/$1';
+$route['admin/report/edit/(:any)/(:num)'] = 'admin/report/handler/edit';
+$route['admin/report/download/(:any)'] = 'admin/report/handler/download';
 $route['admin/report/add'] = 'admin/report/handler/add';
-$route['admin/report'] = 'admin/report/handler/index';
+$route['admin/report/all'] = 'admin/report/handler/index';
 
 // Blog Routes
 $route['admin/blog'] = 'admin/blog/blog/index';
+$route['admin/blog/add'] = 'admin/blog/blog/add-article';
+
+// Settings
+$route['admin/settings/change-password'] = 'admin/dashboard/setting/change-password';
+
+/*** */
 
 // Public routes
 $route['blog/(:any)']  = 'blog/article/$1';

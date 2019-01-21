@@ -25,12 +25,12 @@ class Blog extends Admin_Controller
    */
   public function index()
   {
-    $this->layout->set_title('Blog');
-    $this->layout->add_include('assets/admin/css/jquery.dataTables.min.css');
-    $this->layout->add_include('assets/admin/js/jquery.dataTables.min.js');
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
+    $this->layout->title = 'Blog';
+    $this->layout->assets('assets/admin/css/jquery.dataTables.min.css');
+    $this->layout->assets('assets/admin/js/jquery.dataTables.min.js');
+    $this->layout->assets('assets/admin/js/sweetalert.min.js');
 
-    $this->layout->view('admin/blog/general', '', 'admin/layouts/admin');
+    $this->layout->view('admin/blog/general');
   }
 
   /**
@@ -70,22 +70,22 @@ class Blog extends Admin_Controller
    */
   public function add_article()
   {
-    $this->layout->set_title('New Article');
+    $this->layout->title = 'New Article';
 
-    $this->layout->add_include('assets/admin/css/froala/froala_editor.pkgd.min.css');
-    $this->layout->add_include('assets/admin/css/froala/froala_style.min.css');
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css', FALSE);
-    $this->layout->add_include('assets/admin/js/froala/froala_editor.pkgd.min.js');
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js', FALSE);
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js', FALSE);
+    $this->layout->assets('assets/admin/css/froala/froala_editor.pkgd.min.css');
+    $this->layout->assets('assets/admin/css/froala/froala_style.min.css');
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css', FALSE);
+    $this->layout->assets('assets/admin/js/froala/froala_editor.pkgd.min.js');
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js', FALSE);
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js', FALSE);
 
-    $this->layout->add_include('assets/vendor/date/css/datetimepicker.min.css');
-    $this->layout->add_include('assets/vendor/date/js/datetimepicker.min.js');
+    $this->layout->assets('assets/vendor/date/css/datetimepicker.min.css');
+    $this->layout->assets('assets/vendor/date/js/datetimepicker.min.js');
 
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/file-upload.js');
+    $this->layout->assets('assets/admin/js/sweetalert.min.js');
+    $this->layout->assets('assets/admin/js/file-upload.js');
 
-    $this->layout->view('admin/blog/new', '', 'admin/layouts/admin');
+    $this->layout->view('admin/blog/new');
   }
 
   /**
@@ -239,22 +239,22 @@ class Blog extends Admin_Controller
       "description"=>$result->meta_description
     );
 
-    $this->layout->set_title('Edit Article');
+    $this->layout->title ='Edit Article';
 
-    $this->layout->add_include('assets/admin/css/froala/froala_editor.pkgd.min.css');
-    $this->layout->add_include('assets/admin/css/froala/froala_style.min.css');
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css', FALSE);
-    $this->layout->add_include('assets/admin/js/froala/froala_editor.pkgd.min.js');
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js', FALSE);
-    $this->layout->add_include('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js', FALSE);
+    $this->layout->assets('assets/admin/css/froala/froala_editor.pkgd.min.css');
+    $this->layout->assets('assets/admin/css/froala/froala_style.min.css');
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css', FALSE);
+    $this->layout->assets('assets/admin/js/froala/froala_editor.pkgd.min.js');
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js', FALSE);
+    $this->layout->assets('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js', FALSE);
 
-    $this->layout->add_include('assets/vendor/date/css/datetimepicker.min.css');
-    $this->layout->add_include('assets/vendor/date/js/datetimepicker.min.js');
+    $this->layout->assets('assets/vendor/date/css/datetimepicker.min.css');
+    $this->layout->assets('assets/vendor/date/js/datetimepicker.min.js');
 
-    $this->layout->add_include('assets/admin/js/sweetalert.min.js');
-    $this->layout->add_include('assets/admin/js/file-upload.js');
+    $this->layout->assets('assets/admin/js/sweetalert.min.js');
+    $this->layout->assets('assets/admin/js/file-upload.js');
 
-    $this->layout->view('admin/blog/edit', $data, 'admin/layouts/admin');
+    $this->layout->view('admin/blog/edit', $data);
   }
 
   /**

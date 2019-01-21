@@ -1,0 +1,38 @@
+html, 
+body {
+    display: flex;
+	flex-direction: column;
+    background-color: $body-gray;
+    height: 100%;
+}
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	overflow-x: hidden;
+}
+body.sticky-footer {
+	margin-bottom: 56px;
+	.content-wrapper {
+		min-height: calc(100vh - 56px - 56px);
+	}
+}
+body.fixed-nav {
+	padding-top: 56px;
+}
+.flex-length {
+    flex: 1;
+}
+
+.btn-primary-alt {
+    background-color: $primary-shade-2;
+    border-color: $primary-blue;
+    color: $white-color;
+
+    &:hover {
+        background-color: $primary-shade-3;
+        border-color: $primary-blue;
+        color: $white-color;
+    }
+}

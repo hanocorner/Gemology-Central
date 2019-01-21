@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Public Base Class
  */
-class Base extends CI_Controller
+class Base extends Public_Controller
 {
   /**
    * Constructor (loading the important classes)
@@ -12,7 +12,7 @@ class Base extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->model(array('Article_model','Base_model'));
+    $this->load->model(array('admin/blog/Article_model','Base_model'));
 
     $config = array('layoutManager'=>'public');
     $this->load->library('layout', $config);
@@ -38,8 +38,8 @@ class Base extends CI_Controller
     $data['url'] = $result->post_url;
     $data['image'] = $result->post_image;
 
-    $this->layout->set_title('Gemology Central Laboratory');
-    $this->layout->view('public/index', $data, 'public/layouts/public');
+    $this->layout->title = 'Gemology Central Laboratory';
+    $this->layout->view('public/index', $data);
   }
 
   /*****/
@@ -49,8 +49,8 @@ class Base extends CI_Controller
     $recent = $this->Article_model->about_page_articles();
     $data['recent'] = (array)$recent;
 
-    $this->layout->set_title('About Gemology Central Laboratory');
-    $this->layout->view('public/about', $data, 'public/layouts/public');
+    $this->layout->title = 'About Gemology Central Laboratory';
+    $this->layout->view('public/about', $data);
   }
 
 

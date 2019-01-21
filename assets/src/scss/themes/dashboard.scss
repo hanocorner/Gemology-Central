@@ -1,0 +1,15 @@
+.dashboard-card{
+    background-color: #e9ecef;
+    border: none;
+    border-radius: 0;
+
+    .card-body {
+        p {
+            margin-bottom: 0;
+        }
+
+        h6 {
+            margin-bottom: 2px;
+        }
+    }
+}

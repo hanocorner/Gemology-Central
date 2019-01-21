@@ -4,13 +4,13 @@ $config = array(
                 // Gemstone
                 array(
                         'field' => 'gemid',
-                        'label' => 'Gemstone',
+                        'label' => 'Variety',
                         'rules' => 'trim|required',
-                        'errors' => array('required' => 'Variety Field is empty'),
+                        'errors' => array('required' => '%s field is empty'),
                 ),
                 // Report Type
                 array(
-                        'field' => 'radio-1',
+                        'field' => 'repotype',
                         'label' => 'Report Type',
                         'rules' => 'required'
                 ),
@@ -18,7 +18,7 @@ $config = array(
                 array(
                         'field' => 'rmid',
                         'label' => 'ID',
-                        'rules' => 'trim|alpha_dash'
+                        'rules' => 'trim'
                 ),
                 // Object
                 array(
@@ -37,11 +37,8 @@ $config = array(
                 array(
                         'field' => 'spgroup',
                         'label' => 'Species/Group',
-                        'rules' => 'trim|required|callback_special_chars',
-                        'errors' => array(
-                          'required' => '%s field is empty',
-                          'special_chars'=>'Invalid characters in %s field'
-                        ),
+                        'rules' => 'trim|required',
+                        'errors' => array('required' => '%s field is empty'),
                 ),
                 // Gem Width
                 array(
@@ -65,29 +62,25 @@ $config = array(
                 array(
                         'field' => 'color',
                         'label' => 'Color',
-                        'rules' => 'trim|callback_special_chars',
-                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
+                        'rules' => 'trim'
                 ),
                 // Shape & Cut
                 array(
                         'field' => 'shapecut',
                         'label' => 'Shape & Cut',
-                        'rules' => 'trim|callback_special_chars',
-                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
+                        'rules' => 'trim'
                 ),
                 // Comment
                 array(
                         'field' => 'comment',
                         'label' => 'Comment',
-                        'rules' => 'trim|callback_special_chars',
-                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
+                        'rules' => 'trim'
                 ),
                 // Other
                 array(
                         'field' => 'other',
                         'label' => 'Other',
-                        'rules' => 'trim|callback_special_chars',
-                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
+                        'rules' => 'trim'
                 ),
                 // Amount
                 array(
@@ -100,13 +93,24 @@ $config = array(
                 array(
                         'field'=> 'gemName',
                         'label' => 'Gemstone Name',
-                        'rules' => 'trim|required|alpha_numeric_spaces'
+                        'rules' => 'trim|required'
                 ),
                 array(
                         'field'=> 'gemDesc',
                         'label' => 'Gemstone Description',
-                        'rules' => 'trim|required|callback_special_chars',
-                        'errors' => array('special_chars' => 'Invalid characters in %s field'),
+                        'rules' => 'trim'
+                ),
+        ),
+        'admin_auth' => array(
+                array(
+                        'field'=> 'username',
+                        'label' => 'Username',
+                        'rules' => 'trim|required|alpha_numeric_spaces'
+                ),
+                array(
+                        'field'=> 'password',
+                        'label' => 'Password',
+                        'rules' => 'trim|required|alpha'
                 ),
         )
 );

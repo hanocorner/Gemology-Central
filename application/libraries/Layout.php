@@ -7,15 +7,21 @@ class Layout
    */
   private $CI;
 
-  /**
-   * Layout Title
-   */
-  private $title_for_layout = null;
+  public $name = 'layouts/index';
+    public $title = 'My page title';
+    public $description = 'My page desctription';
+    public $keywords = 'my, keywords';
+    public $robots = 'all';
+    public $author = 'Smart Software';
+    public $canonical = '';
+    public $css = array();
+    public $js_header = array();
+    public $js_footer = array();
+    public $scr_header = array();
+    public $scr_footer = array();
+    public $scr_ready = array();
 
-  /**
-   * Array that holds all the css & js files
-   */
-  private $file_includes = array();
+    public $seo_tags = null;
 
   /**
    * Setting layout manager to admin or public
@@ -32,18 +38,11 @@ class Layout
   {
     $this->CI =& get_instance();
 
-    $this->layout_manager = $config['layoutManager'];
-  }
+    $this->CI->load->helper('url');
 
-  /**
-   * Function to set layout title
-   *
-   * @param $title name of the page
-   * @return none
-   */
-  public function set_title($title)
-  {
-    $this->title_for_layout = $title;
+    $this->layout_manager = $config['layoutManager'];
+
+    $this->canonical = base_url();
   }
 
   /**
@@ -52,84 +51,129 @@ class Layout
    * @param $view_name name of the view in views folder | string
    * @param $params parameters to be passed as values | array
    * @param $params layout name of the layout | string
-   * @return none
+   * @return void
    */
-  public function view($view_name, $params = array(), $layout = 'default')
-  {
-    if ($this->title_for_layout !== null)
-    {
-      $layout_title = $this->title_for_layout;
-    }
-
-    $content = $this->CI->load->view($view_name, $params, TRUE);
+  public function view($view_name, $data = array(), $layout = "default")
+  { 
+    $content = $this->CI->load->view($view_name, $data, TRUE);
 
     if ($this->layout_manager == 'admin')
     {
-      $header = $this->CI->load->view('admin/layouts/header', '', TRUE);
-      $footer = $this->CI->load->view('admin/layouts/footer', '', TRUE);
+      if($layout == 'without')
+      {
+        $header = '';
+        $footer = '';
+        $this->seo_tags = FALSE;
+      }
+      else {
+        $header = $this->CI->load->view('admin/layouts/header', '', TRUE);
+        $footer = $this->CI->load->view('admin/layouts/footer', '', TRUE);
+        $this->seo_tags = FALSE;
+      }
     }
     elseif ($this->layout_manager == 'public')
     {
       $header = $this->CI->load->view('public/layouts/header', '', TRUE);
       $footer = $this->CI->load->view('public/layouts/footer', '', TRUE);
+      $this->seo_tags = TRUE;
     }
 
-    $this->CI->load->view($layout, array(
-      'title'=>$layout_title,
-      'header'=>$header,
-      'content'=>$content,
-      'footer'=>$footer
-    ));
-
+    $this->CI->load->view($this->name, array('header'=>$header, 'content'=>$content, 'footer'=>$footer));
+  }
+  
+  /**** */
+  public function script($custom_script, $position = 'footer')
+  {
+    if($position == 'header') $this->scr_header[] = $custom_script;
+    
+    if($position == 'footer') $this->scr_footer[] = $custom_script;
   }
 
   /**
-   * Function to add css and js files
-   *
-   * @param $path file path | string
-   * @param $prepend_base_url to set codeigniter base_url function | bool
-   * @return $this all files
-   */
-  public function add_include($path, $prepend_base_url = TRUE)
+    * Add new assets
+    *
+    * @param string $file
+    * @param string $position
+    *
+    * @return void
+    */
+  public function assets($file, $position = 'header')
   {
-    if ($prepend_base_url)
-    {
-      $this->CI->load->helper('url');
-      $this->file_includes[] = base_url().$path;
-    }
-    else
-    {
-      $this->file_includes[] = $path;
-    }
-
-    return $this;
+    if (preg_match("/\.css/i", $file))
+        {
+          // css
+          $this->css[] = $file;
+        }
+        elseif (preg_match("/\.js/i", $file))
+        {
+          // js
+          if ($position == 'header')
+            $this->js_header[] = $file;
+          else
+            $this->js_footer[] = $file;
+        }
   }
 
-  /**
-   * Rendering css and js files to layout
-   *
-   * @param none
-   * @return $final_includes css & js files
-   */
-  public function print_includes()
+  /** */
+  public function css()
   {
-    $final_includes = '';
-
-    foreach ($this->file_includes as $include)
+    if(!empty($this->css))
     {
-      // Check if it's a JS or a CSS file
-      if (preg_match("/^.*\.(js)$/i", $include))
+      foreach($this->css as $file)
       {
-        $final_includes .= '<script type="text/javascript" src="'.$include.'"></script>';
-      }
-      elseif (preg_match('/css$/', $include))
-      {
-        $final_includes .= '<link href="'.$include.'" rel="stylesheet" type="text/css" />';
+        echo '<link rel="stylesheet" type="text/css" href="' . base_url($file) . '" />' . "\n";
       }
     }
-    return $final_includes;
+  }
+  
+  /** */
+  public function js($position = 'footer')
+  {
+    if($position == 'header')
+    {
+      if(!empty($this->js_header))
+      {
+        foreach ($this->js_header as $file)
+        {
+          echo '<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+        }
+      }
+    }
+    else {
+      if(!empty($this->js_footer))
+      {
+        foreach ($this->js_footer as $file)
+        {
+          echo '<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+        }
+      }
+    }
   }
 
+  /*** */
+  public function custom_script($position = 'footer')
+  {
+    if($position == 'header')
+    {
+      if(!empty($this->scr_header)) 
+      {
+        foreach ($this->scr_header as $script) 
+        {
+          echo '<script type="text/javascript">' . $script . '</script>' . "\n";
+        }
+      }
+    }
+    elseif ($position == 'footer') 
+    {
+      if(!empty($this->scr_footer)) 
+      {
+        foreach ($this->scr_footer as $script) 
+        {
+          echo '<script type="text/javascript">' . $script . '</script>' . "\n";
+        }
+      }
+    }
+  }
 }
 
 ?>

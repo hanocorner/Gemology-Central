@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link		https://codeigniter.com/user_guide/general/controllers.html
  *
  */
-class Report extends CI_Controller
+class Report extends Public_Controller
 {
 
   /**
@@ -35,13 +35,8 @@ class Report extends CI_Controller
   {
     parent::__construct();
 
-    $this->load->model(array('Article_model','public/Report_model'));
+    $this->load->model('public/Report_model', 'report');
 
-    $config = array('layoutManager'=>'public');
-    $this->load->library('layout', $config);
-    $this->load->library(array('session', 'encrypt'));
-
-    $this->load->helper(array('captcha', 'url', 'form'));
   }
 
   /**
@@ -55,11 +50,11 @@ class Report extends CI_Controller
    */
   public function index()
   {
-    $data['captcha'] = $this->captcha();
+    $this->_data['captcha'] = $this->captcha();
 
-    $this->layout->set_title('GCL Report Verfication');
-    $this->layout->add_include('assets/public/js/base.js');
-    return $this->layout->view('public/report/form_verification', $data, 'public/layouts/report');
+    $this->layout->title ='GCL Report Verfication';
+    $this->layout->assets('assets/public/js/base.js');
+    return $this->layout->view('public/report/form_verification', $this->_data);
   }
 
   /**
@@ -86,13 +81,13 @@ class Report extends CI_Controller
       echo json_encode($json);
     }
 
-    if($this->Report_model->get_captcha($this->input->post('captcha'), $time, $this->input->ip_address()) == 0)
+    if($this->report->get_captcha($this->input->post('captcha'), $time, $this->input->ip_address()) == 0)
     {
       $json = array('valid'=>false, 'message'=>'<p>Incorrect captcha combination</p>');
       echo json_encode($json);
     }
 
-    if($this->Report_model->auth_report_data($repono, $weight))
+    if($this->report->auth_report_data($repono, $weight))
     {
       $url = 'report/'.$repono;
       $json = array('valid'=>true, 'url'=>$url);
@@ -115,6 +110,8 @@ class Report extends CI_Controller
    */
   private function captcha()
   {
+    $this->load->helper('captcha');
+    
     $vals = array(
         'word'          => rand(10, 10000),
         'img_path'      => './assets/public/images/captcha/',
@@ -153,13 +150,12 @@ class Report extends CI_Controller
    */
   public function display()
   {
-    $data['reportno'] = $this->uri->segment(2);
-    $data['csrfname'] = $this->security->get_csrf_token_name();
-    $data['csrfhash'] = $this->security->get_csrf_hash();
+    $token = $this->uri->segment(2);
+    if(!$token || $token == '') redirect('report');
 
-    $this->layout->set_title('GCL Report Verfication');
-    $this->layout->add_include('assets/public/js/base.js');
-    return $this->layout->view('public/report/index', $data, 'public/layouts/report');
+    $this->_data['result'] = $this->report->get_labreport($token);
+    $this->layout->title = 'GCL Report Verfication';
+    return $this->layout->view('public/report/index', $this->_data);
   }
 
   /**
@@ -170,8 +166,7 @@ class Report extends CI_Controller
    */
   public function data()
   {
-    $id = $this->input->post('reportno');
-    $data = $this->Report_model->get_labreport_by_id($id);
+    $token = $this->uri->segement(2);
     echo json_encode($data);
   }
 

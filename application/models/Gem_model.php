@@ -65,11 +65,10 @@ class Gem_model extends CI_Model
    */
   public function get_gem_list($name)
   {
-    $this->db->distinct();
-    $this->db->select("gemid, gem_name");
-    $this->db->like('gem_name', $name);
-    $query = $this->db->get('tbl_gem');
-    return $query->result_array();
+    $sql = "SELECT distinct gemid, gem_name FROM tbl_gem WHERE gem_name LIKE '$name%' Order by gem_name ASC LIMIT 5";
+    
+    $query = $this->db->query($sql);
+    return $query->result('array');
   }
 
   /**

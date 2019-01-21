@@ -9,11 +9,8 @@ class Image
    */
   private $CI;
 
-  /****/
-  private $_image = '';
-
-  /****/
-  private $_image_path = '';
+  /**** */
+  private $_path_string = '';
 
   /*****/
   public $errors = '';
@@ -27,40 +24,49 @@ class Image
   public function __construct()
   {
     $this->CI =& get_instance();
-    $this->CI->config->load('report');
   }
 
   /*****/
-  public function img_path($filepath)
+  private function directory_path($parent)
   {
-    $this->_img_path = $filepath;
+    $grandparent_dir = './assets/images';
+    $parent_dir = $parent.'/'.date('Y');
+    $child_dir = date('m');
+
+    $this->_path_string = $grandparent_dir.'/'.$parent_dir.'/'.$child_dir;
+
+    if(!file_exists($this->_path_string)) mkdir($this->_path_string, 0777, true);
+
+    return $this->_path_string;
   }
 
   /****/
-  public function img_name($image, $id)
+  public function img_name($image, $id, $parent_dir)
   {
     $ext = pathinfo($image, PATHINFO_EXTENSION);
-    $img = $id.".".$ext;
-    if(file_exists($this->_img_path.'/'.$img))
+    $image_renamed = $id.".".$ext;
+    if(file_exists($this->directory_path($parent_dir).'/'.$image_renamed))
     {
-      $file_parts = pathinfo($image);
+      $file_parts = pathinfo($image_renamed);
       $extension = $file_parts['extension'];
       $filename = $file_parts['filename'];
-      $this->_image = $filename.'-'.rand(1, 10).'.'.$extension;
+      $image_name = $filename.'-'.rand(1, 10).'.'.$extension;
     }
     else {
-      $this->_image = $img;
+      $image_name = $image_renamed;
     }
-    return $this->_image;
+    return $image_name;
   }
 
   /*****/
-  public function img_upload($field)
+  public function img_upload($file, $field, $id, $parent_dir)
   {
+    $this->CI->config->load('report');
+
     $config = array();
 
-    $config['file_name'] = $this->_image;
-    $config['upload_path'] = $this->_img_path;
+    $config['file_name'] = $this->img_name($file[$field]['name'], $id, $parent_dir);
+    $config['upload_path'] = $this->_path_string;
     $config['allowed_types'] = $this->CI->config->item('allowed_types');
     $config['max_size'] = $this->CI->config->item('max_size');
     $config['max_width'] = $this->CI->config->item('max_width');

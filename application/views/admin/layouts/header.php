@@ -1,4 +1,4 @@
-<!-- Admin Headere -->
+<!-- Admin Header -->
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -22,7 +22,7 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapsereport">
               <li>
-                <a href="<?php echo base_url();?>admin/report">All Reports</a>
+                <a href="<?php echo base_url();?>admin/report/all">All Reports</a>
               </li>
               <li>
                 <a href="<?php echo base_url();?>admin/report/add">Add Report</a>
@@ -45,19 +45,6 @@
             </ul>
           </li>
 
-          <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gemstone">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsegemstone" data-parent="#exampleAccordion">
-              <i class="fa fa-star-half-o" aria-hidden="true"></i>&nbsp;&nbsp;
-              <span class="nav-link-text">Gemstone</span>
-            </a>
-            <ul class="sidenav-second-level collapse" id="collapsegemstone">
-              <li>
-                <a href="<?php echo base_url();?>admin/report/gemstone/search">Search Report</a>
-              </li>
-
-            </ul>
-          </li> -->
-
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Blog">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseblog" data-parent="#exampleAccordion">
               <i class="fa fa-rss fa-fw" aria-hidden="true"></i>
@@ -68,7 +55,7 @@
                 <a href="<?php echo base_url();?>admin/blog">All Articles</a>
               </li>
               <li>
-                <a href="<?php echo base_url();?>admin/blog/add-article">Add Article</a>
+                <a href="<?php echo base_url();?>admin/blog/add">Add Article</a>
               </li>
               <li>
                 <a href="<?php echo base_url();?>admin/comment">Comments</a>
@@ -83,25 +70,7 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapsesettings">
               <li>
-                <a href="<?php echo base_url();?>admin/setting/change-information">Change Information</a>
-              </li>
-              <li>
-                <a href="<?php echo base_url();?>admin/setting/change-password">Change Password</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Frontend">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsefrontend" data-parent="#exampleAccordion">
-              <i class="fa fa-picture-o fa-fw" aria-hidden="true"></i>
-              <span class="nav-link-text">Front end</span>
-            </a>
-            <ul class="sidenav-second-level collapse" id="collapsefrontend">
-              <li>
-                <a href="#">Banner</a>
-              </li>
-              <li>
-                <a href="#">Feedback</a>
+                <a href="<?php echo base_url();?>admin/settings/change-password">Change Password</a>
               </li>
             </ul>
           </li>
@@ -114,13 +83,13 @@
             </a>
           </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto mr-4">
          <li class="nav-item">
           <a class="nav-link" href="<?php echo base_url();?>admin/dashboard/profile">
-            <i class="fa fa-user-circle-o fa-fw fa-lg" aria-hidden="true"></i><?php echo ucwords($this->session->username); ?></a>
+            Welcome&nbsp;<?php echo ucwords($this->session->username); ?>Admin</a>
          </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url();?>admin/home/logout">
+            <a class="nav-link" href="<?php echo base_url();?>admin/logout">
               <i class="fa fa-fw fa-power-off fa-lg"></i></a>
           </li>
         </ul>
