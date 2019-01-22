@@ -389,8 +389,8 @@ $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = '_gcl';
 $config['sess_expiration'] = 0;
 $config['sess_save_path'] = 'tbl_sessions';
-$config['sess_match_ip'] = TRUE;
-$config['sess_time_to_update'] = 300;
+$config['sess_match_ip'] = FALSE;
+$config['sess_time_to_update'] = 1800;
 $config['sess_regenerate_destroy'] = FALSE;
 
 /*
@@ -460,7 +460,7 @@ $config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/comment/all',
                              'base/report-data', 'admin/customer/customer/append-customer', 'public/report/form-authentication', 'admin/report/gemstone/add');
 
