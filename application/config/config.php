@@ -389,8 +389,8 @@ $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = '_gcl';
 $config['sess_expiration'] = 0;
 $config['sess_save_path'] = 'tbl_sessions';
-$config['sess_match_ip'] = TRUE;
-$config['sess_time_to_update'] = 300;
+$config['sess_match_ip'] = FALSE;
+$config['sess_time_to_update'] = 1800;
 $config['sess_regenerate_destroy'] = FALSE;
 
 /*
