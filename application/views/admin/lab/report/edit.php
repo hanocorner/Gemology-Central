@@ -191,7 +191,7 @@
           <!-- Length  -->
           <label for="dimensions">Length:</label>
           <div class="input-group input-group-sm mb-3">
-            <input type="text" class="form-control form-control-sm" name="gemLength" autocomplete="off" value="<?php echo $results[0]->gemHeight; ?>">
+            <input type="text" class="form-control form-control-sm" name="gemLength" autocomplete="off" value="<?php echo $results[0]->gemLength; ?>">
             <div class="input-group-append">
               <div class="input-group-text">mm</div>
             </div>

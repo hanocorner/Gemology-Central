@@ -65,8 +65,7 @@ $route['admin/dashboard'] = 'admin/dashboard/account';
 $route['admin/logout'] = 'admin/dashboard/account/logout';
 
 // Customer Routes
-$route['admin/customer'] = 'admin/customers/customer';
-$route['admin/customer/add'] = 'admin/customers/customer/add';
+$route['admin/customer'] = 'admin/customers/customer/index';
 
 // Report Routes
 $route['admin/report/edit/(:any)/(:num)'] = 'admin/report/handler/edit';

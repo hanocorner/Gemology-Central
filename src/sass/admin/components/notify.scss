@@ -1,0 +1,42 @@
+%notify {
+    padding: 9px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+
+    img {
+        margin-right: 12px;
+    }
+
+    p {
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+}
+
+.error {
+    @extend %notify;
+    color: #C73636;
+    background-color: #FFC2C2;
+    border-color: #C73636;
+}
+
+.success {
+    @extend %notify;
+    color: #247c3f;
+    background-color: #c1ecdf;
+    border-color: #00D56B;
+}
+
+.warning {
+    @extend %notify;
+    color: #E6B100;
+    background-color: #FFF1C2;
+    border-color:#D9A700;
+}
+
+.info {
+    @extend %notify;
+    color: #0956AC;
+    background-color: #B7E6FF;
+    border-color:#0956AC;
+}

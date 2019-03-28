@@ -51,6 +51,7 @@ class Handler extends Admin_Controller
   public function index()
   {
     $this->layout->title = 'All Reports';
+    $this->layout->assets(base_url('assets/vendors/hullabaloo/hullabaloo.js'), 'footer');
     $this->layout->view('admin/lab/report/index');
   }
 
@@ -114,6 +115,18 @@ class Handler extends Admin_Controller
     $this->pagination->initialize($config);
 
     return $this->pagination->create_links();
+  }
+
+  /** */
+  public function update_payment()
+  {
+    $this->_data = $this->input->get();
+
+    if($this->Data_model->update_payment_status($data)) 
+    {
+      return $this->json_output(true, 'Payment status was successfully updated');
+    }
+    return $this->json_output(false, 'Problem when updating payment status');
   }
 
 

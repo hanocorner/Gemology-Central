@@ -8,9 +8,11 @@
 @import "node_modules/bootstrap/scss/_type.scss";
 @import "node_modules/bootstrap/scss/_images.scss";
 @import "node_modules/bootstrap/scss/_grid.scss";
+@import "node_modules/bootstrap/scss/_alert.scss";
 @import "node_modules/bootstrap/scss/_nav.scss";
 @import "node_modules/bootstrap/scss/_navbar.scss";
 @import "node_modules/bootstrap/scss/_buttons.scss"; 
+@import "node_modules/bootstrap/scss/_close.scss"; 
 @import "node_modules/bootstrap/scss/_breadcrumb.scss";
 @import "node_modules/bootstrap/scss/_transitions.scss";
 @import "node_modules/bootstrap/scss/_card.scss";
@@ -18,9 +20,9 @@
 @import "node_modules/bootstrap/scss/_input-group.scss";
 @import "node_modules/bootstrap/scss/_custom-forms.scss";
 @import "node_modules/bootstrap/scss/_badge.scss";
-@import "node_modules/bootstrap/scss/_jumbotron.scss";
 @import "node_modules/bootstrap/scss/_modal.scss";
 @import "node_modules/bootstrap/scss/_tables.scss";
+@import "node_modules/bootstrap/scss/_tooltip.scss";
 @import "node_modules/bootstrap/scss/_pagination.scss";
 @import "node_modules/bootstrap/scss/_dropdown.scss";
 @import "node_modules/bootstrap/scss/_utilities.scss";
@@ -36,6 +38,7 @@
 @import "themes/login.scss";
 @import "themes/sb-admin.scss";
 @import "themes/dashboard.scss";
+@import "themes/data_table.scss";
 
 // Header scss
 // @import "public/components/header.scss";

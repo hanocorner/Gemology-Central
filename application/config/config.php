@@ -460,9 +460,9 @@ $config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'gcl_csrf';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array('admin/blog/insert-article', 'admin/blog/all-articles', 'admin/blog/update-article', 'admin/comment/all',
-                             'base/report-data', 'admin/customer/customer/append-customer', 'public/report/form-authentication', 'admin/report/gemstone/add');
+                             'base/report-data', 'public/report/form-authentication', 'admin/report/gemstone/add');
 
 /*
 |--------------------------------------------------------------------------

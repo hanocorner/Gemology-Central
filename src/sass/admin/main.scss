@@ -1,0 +1,54 @@
+@import "node_modules/bootstrap/scss/_functions.scss";
+@import "node_modules/bootstrap/scss/_variables.scss";
+@import "node_modules/bootstrap/scss/_mixins.scss";
+
+// Bootstrap Components
+@import "node_modules/bootstrap/scss/_root.scss";
+@import "node_modules/bootstrap/scss/_reboot.scss";
+@import "node_modules/bootstrap/scss/_type.scss";
+@import "node_modules/bootstrap/scss/_images.scss";
+@import "node_modules/bootstrap/scss/_grid.scss";
+@import "node_modules/bootstrap/scss/_alert.scss";
+@import "node_modules/bootstrap/scss/_nav.scss";
+@import "node_modules/bootstrap/scss/_navbar.scss";
+@import "node_modules/bootstrap/scss/_buttons.scss"; 
+@import "node_modules/bootstrap/scss/_close.scss"; 
+@import "node_modules/bootstrap/scss/_breadcrumb.scss";
+@import "node_modules/bootstrap/scss/_transitions.scss";
+@import "node_modules/bootstrap/scss/_card.scss";
+@import "node_modules/bootstrap/scss/_forms.scss";
+@import "node_modules/bootstrap/scss/_input-group.scss";
+@import "node_modules/bootstrap/scss/_custom-forms.scss";
+@import "node_modules/bootstrap/scss/_badge.scss";
+@import "node_modules/bootstrap/scss/_modal.scss";
+@import "node_modules/bootstrap/scss/_tables.scss";
+@import "node_modules/bootstrap/scss/_tooltip.scss";
+@import "node_modules/bootstrap/scss/_pagination.scss";
+@import "node_modules/bootstrap/scss/_dropdown.scss";
+@import "node_modules/bootstrap/scss/_utilities.scss";
+
+// Font awesome
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+// Default scss
+@import "base/_variables.scss";
+@import "base/_elements.scss";
+@import "utils/_mixins.scss";
+
+@import "views/login.scss";
+@import "layout/sb-admin.scss";
+// @import "themes/dashboard.scss";
+// @import "themes/data_table.scss";
+
+// Header scss
+// @import "public/components/header.scss";
+// @import "public/components/footer.scss";
+@import "components/notify.scss";
+
+// Custom scss
+// @import "public/themes/login.scss";
+// @import "public/themes/profile.scss";
+// @import "public/themes/category.scss";
+// @import "public/themes/location.scss";
+// @import "public/themes/home.scss";
+// @import "public/themes/post_ad.scss";

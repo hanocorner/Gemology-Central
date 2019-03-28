@@ -27,14 +27,14 @@
                     <?php echo $result['reportid']; ?>
                 </td>
                 <?php if($result['type'] == 'verb'): ?>
-                <td style="width:10%;"><span class="text-success"><i class="fa fa-circle fa-fw" aria-hidden="true"></i></span>
-                    Verbal</td>
+                <td style="width:10%;"><span class="badge badge-pill badge-secondary">Verbal</span>
+                    </td>
                 <?php elseif ($result['type'] == 'repo'):  ?>
-                <td style="width:10%;"><span class="text-danger"><i class="fa fa-circle fa-fw" aria-hidden="true"></i></span>
-                    Certificate</td>
+                <td style="width:10%;"><span class="badge badge-pill badge-info">Full Report</span>
+                    </td>
                 <?php elseif($result['type'] == 'memo'):  ?>
-                <td style="width:10%;"><span class="text-primary"><i class="fa fa-circle fa-fw" aria-hidden="true"></i></span>
-                    Memocard</td>
+                <td style="width:10%;"><span class="badge badge-pill badge-primary">Memocard</span></td>
+                    
                 <?php endif;?>
 
                 <td style="width:20%;">
@@ -54,19 +54,25 @@
                 </td>
                 <?php  $status = (int) $result['reportStatus']; ?>
                 <?php if($status == 0): ?>
-                <td style="width:10%;"><span class="badge badge-warning">Pending</span></td>
+                <td style="width:10%;"><span class="badge badge-danger">Unpaid</span></td>
                 <?php elseif($status == 1): ?>
-                <td style="width:10%;"><span class="badge badge-primary">Checked</span></td>
+                <td style="width:10%;"><span class="badge badge-warning">Paid</span></td>
                 <?php elseif($status == 2): ?>
-                <td style="width:10%;"><span class="badge badge-success">Deilvered</span></td>
+                <td style="width:10%;"><span class="badge badge-success">Paid</span></td>
                 <?php endif;?>
                 <td style="width:10%;">
                     <div class="d-flex align-items-center justify-content-center">
-                        <?php $report = $result['type'].'/'.$result['reportid'];  ?>
+                        <?php $report = $result['type'].'/'.$result['reportid'];?>
+                        <!-- Payment status -->
+                        <a href="#" id="plus" data-toggle="modal" data-target="#paymentModal" class="text-muted mx-2 buttonz add"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a>
+                        <!-- /. of Payment status -->
                         <a href="<?php echo base_url('admin/report/edit/'.$report); ?>" class="text-muted mx-2 buttonz edit"><i
                                 class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
                         <a href="#" class="text-muted mx-2 buttonz delete"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
-                        <a href="#" id="plus" class="text-muted mx-2 buttonz add"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a>
+                        <a href="#" class="text-muted mx-2 buttonz"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></a>
+                        <a href="#" class="text-muted mx-2 buttonz"><i class="fa fa-external-link fa-lg" aria-hidden="true"></i></a>
+                        
+                        
                     </div>
                 </td>
             </tr>

@@ -172,5 +172,13 @@ class Data_model extends CI_Model
 
      return $query;
   }
+
+  /** */
+  public function update_payment_status($data)
+  {
+    $query = $this->db->query();
+
+    return $query;
+  }
 }
 ?>

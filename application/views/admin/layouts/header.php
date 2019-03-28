@@ -15,7 +15,14 @@
             </a>
           </li>
 
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Report">
+          <li class="nav-item <?php if($this->uri->segment(2) == 'customer') echo 'active'; ?>"  data-toggle="tooltip" data-placement="right" title="Customers">
+            <a class="nav-link" href="<?php echo base_url();?>admin/customer">
+              <i class="fa fa-address-book fa-fw" aria-hidden="true"></i>
+              <span class="nav-link-text">Customers</span>
+            </a>
+          </li>
+
+          <li class="nav-item <?php if($this->uri->segment(2) == 'report') echo 'active'; ?>" data-toggle="tooltip" data-placement="right" title="Report">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsereport" data-parent="#exampleAccordion">
               <i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>
               <span class="nav-link-text">Report</span>
@@ -26,21 +33,6 @@
               </li>
               <li>
                 <a href="<?php echo base_url();?>admin/report/add">Add Report</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Customer">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsecustomer" data-parent="#exampleAccordion">
-              <i class="fa fa-address-book fa-fw" aria-hidden="true"></i>
-              <span class="nav-link-text">Customer</span>
-            </a>
-            <ul class="sidenav-second-level collapse" id="collapsecustomer">
-              <li>
-                <a href="<?php echo base_url();?>admin/customer">All Customers</a>
-              </li>
-              <li>
-                <a href="<?php echo base_url();?>admin/customer/add">Add Customer</a>
               </li>
             </ul>
           </li>
