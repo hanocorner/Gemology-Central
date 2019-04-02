@@ -83,7 +83,7 @@ class Report_model extends CI_Model
   public function get_labreport($token)
   {
     $token = (string) $token;
-    $sql = "SELECT qrtoken, createdDate, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, IFNULL(memoid, repoid) id FROM public_fetch_report WHERE qrtoken = '".$token."' ";
+    $sql = "SELECT qrtoken, date, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, imgpath, IFNULL(memoid, repoid) id FROM public_fetch_report WHERE qrtoken = '".$token."' ";
     $query = $this->db->query($sql);
     return $query->row();
   }

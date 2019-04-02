@@ -22,16 +22,14 @@ class Gem_model extends CI_Model
     return $this->db->affected_rows();
   }
 
-  /**
-   * Gemstone List
-   *
-   * @param string $name
-   * @return Results
-   */
-  public function list($name)
+ /** */
+  public function get_list($name)
   { 
-    $query = $this->db->query("SELECT distinct gemid, name FROM tbl_gem WHERE name LIKE '$name%' Order by name ASC LIMIT 5");
+    $name = (string) $name;
+    $sql = "SELECT distinct gemid, name FROM tbl_gem WHERE name LIKE '".$name."%' ORDER BY name ASC LIMIT 5";
+    $query = $this->db->query($sql);
     return $query->result('array');
   }
+
 }
 ?>

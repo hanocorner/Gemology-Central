@@ -34,7 +34,7 @@ class Gemstone extends Admin_Controller
   /** */
   public function populate()
   {
-    $this->_data = $this->gem->list($this->input->get('q'));
+    $this->_data = $this->gem->get_list($this->input->get('q'));
 
     $this->output->set_content_type('application/json', 'utf-8');
     $this->output->set_output(json_encode($this->_data));

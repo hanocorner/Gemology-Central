@@ -116,22 +116,4 @@ $(function () {
 		latestActivities();
 	}
 
-	if (uri[2] == 'report' && uri[3] == 'all') {
-		
-		//
-		var btnActions = {
-			
-		};
-
-		$(document).on("click", 'a[data-action]', function (event) {
-			var link = $(this);
-			var action = link.data("action");
-
-			if (typeof btnActions[action] === "function") {
-				btnActions[action].call(this, event);
-			}
-		});
-
-	}
-
 }); // End of document ready

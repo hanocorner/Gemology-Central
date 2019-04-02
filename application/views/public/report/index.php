@@ -24,7 +24,7 @@
         <div class="alert alert-success" role="alert"><strong><i class="fa fa-check-circle-o" aria-hidden="true"></i>&nbsp;&nbsp; Your report is verfied</strong></div>
 
         <div class="my-3 img-gem">
-          <img src="<?php echo base_url('assets/images/gem/'.$result->gemstone);?>" alt="" class="img-fluid" id="imgGem" width="80px" height="80px">
+          <img src="<?php echo base_url('images/gem/'.$result->imgpath.$result->gemstone);?>" alt="" class="img-fluid" id="imgGem" width="80px" height="80px">
         </div>
         <table class="table borderless" id="table">
           <tbody>
@@ -36,7 +36,7 @@
             </tr>
             <tr>
               <td width="120"><strong>Date:</strong></td>
-              <td id="date"><?php echo $result->createdDate; ?></td>
+              <td id="date"><?php echo $result->date; ?></td>
             </tr>
             <tr>
               <td width="120"><strong>Object:</strong></td>
