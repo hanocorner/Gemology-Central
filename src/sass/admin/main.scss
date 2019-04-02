@@ -12,6 +12,7 @@
 @import "node_modules/bootstrap/scss/_nav.scss";
 @import "node_modules/bootstrap/scss/_navbar.scss";
 @import "node_modules/bootstrap/scss/_buttons.scss"; 
+@import "node_modules/bootstrap/scss/_button-group"; 
 @import "node_modules/bootstrap/scss/_close.scss"; 
 @import "node_modules/bootstrap/scss/_breadcrumb.scss";
 @import "node_modules/bootstrap/scss/_transitions.scss";
@@ -38,12 +39,13 @@
 @import "views/login.scss";
 @import "layout/sb-admin.scss";
 // @import "themes/dashboard.scss";
-// @import "themes/data_table.scss";
+
 
 // Header scss
 // @import "public/components/header.scss";
 // @import "public/components/footer.scss";
 @import "components/notify.scss";
+@import "components/data_table.scss";
 
 // Custom scss
 // @import "public/themes/login.scss";

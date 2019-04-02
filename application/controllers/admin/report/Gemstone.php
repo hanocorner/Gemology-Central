@@ -13,31 +13,31 @@ class Gemstone extends Admin_Controller
     parent::__construct();
     $this->check_login_status();
 
-    $this->load->helper(array('url'));
-    $this->load->model(array('Gem_model'));
+    $this->load->model('admin/gem/Gem_model', 'gem');
 
   }
 
-  /****/
+  /** */
   public function add()
   {
-    $data = array(
-      "gem_name"=>$this->input->post('gemName'),
-      "gem_description"=>$this->input->post('gemDesc')
-    );
-    if($this->form_validation->run('gemstone') == FALSE) return $this->json_output(false, validation_errors());
-    $rows = $this->Gem_model->insert_gem($data);
-    if($rows < 1) return $this->json_output(false, 'Error was encountered while inserting data');
+    $this->_data['name'] = $this->input->post('name');
+    $this->_data['description'] = $this->input->post('description');
 
-    return $this->json_output(true, 'Gemstone added successfully');
+    if($this->form_validation->run('gemstone') == FALSE) return $this->json_output(false, validation_errors());
+
+    $rows = $this->gem->insert_gem($this->_data);
+    if($rows < 1) return $this->json_output(false, 'Error was encountered while inserting...');
+
+    return $this->json_output(true, 'Variety added successfully');
   }
 
-  /*****/
-  public function gem_list()
+  /** */
+  public function populate()
   {
-    $string = $this->input->get('q');
-    $data = $this->Gem_model->get_gem_list($string);
-    echo json_encode($data);
+    $this->_data = $this->gem->list($this->input->get('q'));
+
+    $this->output->set_content_type('application/json', 'utf-8');
+    $this->output->set_output(json_encode($this->_data));
   }
 
   /**

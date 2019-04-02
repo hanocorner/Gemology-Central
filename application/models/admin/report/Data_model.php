@@ -13,13 +13,11 @@ class Data_model extends CI_Model
   public function insert_report($data)
   {
     $query = $this->db->query('CALL insert_report(
-      "'.$data['rmid'].'",
-      "'.$data['customer'].'",
+      "'.$data['reportid'].'",
+      "'.$data['customerid'].'",
       "'.$data['gemid'].'",
-      "'.$data['created_date'].'",
       "'.$data['repotype'].'",
       "'.$data['object'].'",
-      "'.$data['variety'].'",
       "'.$data['weight'].'",
       "'.$data['gemWidth'].'",
       "'.$data['gemHeight'].'",
@@ -27,13 +25,14 @@ class Data_model extends CI_Model
       "'.$data['spgroup'].'",
       "'.$data['shapecut'].'",
       "'.$data['color'].'",
-      "'.$data['editor1'].'",
+      "'.$data['comment'].'",
       "'.$data['other'].'",
-      "'.$data['img_gem'].'",
+      "'.$data['imgname'].'",
+      "'.$data['imgpath'].'",
       "'.$data['qrtoken'].'",
       "'.$data['amount'].'",
-      "'.$data['paymentstatus'].'",
-      "'.$data['report_status'].'"
+      "'.$data['payment_status'].'",
+      "'.$data['status'].'"
        )');
 
     return $query;
@@ -133,29 +132,19 @@ class Data_model extends CI_Model
   /*** */
   public function get_report_edit($data)
   {
-    $query = $this->db->query('CALL fetch_edit(
-      "'.$data['id'].'",
-      "'.$data['type'].'"
-       )');
+    $query = $this->db->query("SELECT * FROM admin_populate_edit WHERE type = '".$data['type']."' AND reportno = '".$data['id']."' ");
 
-    $result = $query->result();
-
-    $query->next_result(); 
-    $query->free_result();  
-
-    return $result; 
+    return $query->row();
   }
 
   /*** */
   public function update_report($data)
   {
-    //var_dump($data['reportid']);
      $query = $this->db->query('CALL update_report(
-       "'.$data['reportid'].'",
+       "'.$data['reportno'].'",
        "'.$data['gemid'].'",
        "'.$data['repotype'].'",
        "'.$data['object'].'",
-       "'.$data['variety'].'",
        "'.$data['weight'].'",
        "'.$data['gemWidth'].'",
        "'.$data['gemHeight'].'",
@@ -163,22 +152,15 @@ class Data_model extends CI_Model
        "'.$data['spgroup'].'",
        "'.$data['shapecut'].'",
        "'.$data['color'].'",
-       "'.$data['editor1'].'",
+       "'.$data['comment'].'",
        "'.$data['other'].'",
-       "'.$data['img_gem'].'",
+       "'.$data['imgname'].'",
+       "'.$data['imgpath'].'",
        "'.$data['amount'].'",
-       "'.$data['paymentstatus'].'"
+       "'.$data['payment_status'].'"
         )');
 
      return $query;
-  }
-
-  /** */
-  public function update_payment_status($data)
-  {
-    $query = $this->db->query();
-
-    return $query;
   }
 }
 ?>

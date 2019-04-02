@@ -29,7 +29,10 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapsereport">
               <li>
-                <a href="<?php echo base_url();?>admin/report/all">All Reports</a>
+                <a href="<?php echo base_url();?>admin/report/drafts">Drafts</a>
+              </li>
+              <li>
+                <a href="<?php echo base_url();?>admin/report/published">Published</a>
               </li>
               <li>
                 <a href="<?php echo base_url();?>admin/report/add">Add Report</a>

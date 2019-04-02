@@ -98,91 +98,7 @@ $(function () {
 			}
 		});
 	};
-
-	// Fetch all reports
-	var renderAllReportData = function (page, rows) {
-
-		$.ajax({
-			url: baseurl + 'admin/report/handler/fetch-all/' + page + '/',
-			type: 'GET',
-			dataType: 'html',
-			data: {
-				page: page,
-				rows: rows
-			},
-			beforeSend: function () {
-				$('#allReportData').html(spinner);
-			},
-			success: function (data) {
-				$('#allReportData').html('');
-				$('#allReportData').html(data);
-			},
-			fail: function (jqXHR, textStatus, errorThrown) {
-				console.log(errorThrown);
-			}
-		});
-	};
-
-	// Search Report
-	var searchReportData = function () {
-
-		$.ajax({
-			url: baseurl + 'admin/report/handler/fetch-all',
-			type: 'GET',
-			dataType: 'html',
-			data: {
-				search: true,
-				customer: $('#qCustomer').val(),
-				color: $('#qColor').val(),
-				shape: $('#qShape').val(),
-				width: $('#qWidth').val(),
-				weight: $('#qWeight').val()
-			},
-			beforeSend: function () {
-				$('#allReportData').html(spinner);
-			},
-			success: function (data) {
-				$('#allReportData').html('');
-				$('#allReportData').html(data);
-			},
-			fail: function (jqXHR, textStatus, errorThrown) {
-				console.log(errorThrown);
-			}
-		});
-	};
-
-	//
-	var updatePayment = function (status, receipt, id, inputAmount) {
-		formData = new FormData();
-
-		if(inputAmount == '' || inputAmount == null)
-		{
-			formData.append('amount', 0.00);
-		}
-		else {
-			formData.append('amount', inputAmount);
-		}
-		
-		formData.append('status', status);
-		formData.append('id', id);
-		formData.append('isreceipt', receipt);
-
-		$.ajax({
-			url: baseurl + 'admin/report/handler/update-payment',
-			type: 'GET',
-			dataType: 'JSON',
-			data: formData,
-			beforeSend: function () {
-				
-			},
-			success: function (response) {
-				
-			},
-			fail: function (jqXHR, textStatus, errorThrown) {
-				console.log(errorThrown);
-			}
-		});
-	};
+	
 	
 
 	/* Binding */
@@ -201,52 +117,10 @@ $(function () {
 	}
 
 	if (uri[2] == 'report' && uri[3] == 'all') {
-		renderAllReportData(1, rows);
-
-		$('#rowCount').on('change', function () {
-			renderAllReportData(1, this.value);
-		});
-
+		
 		//
 		var btnActions = {
-			pagination: function (e) {
-				e.preventDefault();
-				var page = $(this).data("ci-pagination-page");
-				renderAllReportData(page, rows);
-			},
-			reloadAllReports: function (e) {
-				e.preventDefault();
-				renderAllReportData(1, rows);
-			},
-			searchReport: function (e) {
-				e.preventDefault();
-				searchReportData();
-			},
-			psUnpaid: function (e) {
-				e.preventDefault();
-				var reportID = $('#reportId').val();
-				var status = $(this).data('value');
-
-				updatePayment(status, 0, reportID, 0.00);
-				
-			},
-			psPaidA: function (e) {
-				e.preventDefault();
-				var inputAmount = $('input[name=amountUpdate').val();
-				var reportID = $('#reportId').val();
-				var status = $(this).data('value');
-
-				updatePayment(status, 1, reportID, inputAmount);
-				
-			},
-			psPaidF: function (e) {
-				e.preventDefault();
-				var inputAmount = $('input[name=amountUpdate').val();
-				var reportID = $('#reportId').val();
-				var status = $(this).data('value');
-
-				updatePayment(status, 1, reportID, inputAmount);
-			}
+			
 		};
 
 		$(document).on("click", 'a[data-action]', function (event) {

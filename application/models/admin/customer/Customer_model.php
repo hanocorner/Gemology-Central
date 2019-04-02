@@ -109,7 +109,7 @@ class Customer_model extends CI_Model
 
   public function get_customer_by_name($name)
   {
-    $sql = "SELECT distinct custid, cus_firstname, cus_lastname FROM tbl_customer WHERE cus_firstname LIKE '$name%' OR cus_lastname LIKE '$name%' ORDER BY cus_firstname ASC LIMIT 5";
+    $sql = "SELECT distinct custid, firstname, lastname FROM tbl_customer WHERE firstname LIKE '$name%' OR lastname LIKE '$name%' ORDER BY firstname ASC LIMIT 5";
     $query = $this->db->query($sql);
     return $query->result('array');
   }

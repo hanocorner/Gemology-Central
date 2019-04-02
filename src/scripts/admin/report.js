@@ -1,10 +1,10 @@
 $(function() {
 
   /* Varibales */
-  var reptype = $('#radio-1, #radio-2, #radio-3');
-  var amount = $("#amount");
-  var form, formData = null;
+  var reptype = $('#option1, #option2, #option3');
+  var spinner = '<i class="fa fa-spinner fa-pulse fa-lg fa-fw d-block mx-auto text-white"></i><span class="sr-only">Loading...</span>';
   var messageBox = null;
+  var hulla = new hullabaloo();
 
   /* Functions */
 
@@ -51,7 +51,7 @@ $(function() {
         repotype: reportType
       },
       success: function(data) {
-        $('#id').val(data);
+        $('#repid').val(data);
       },
       fail: function() {
         console.log('Error');
@@ -72,8 +72,8 @@ $(function() {
         }).success(function(data) {
           var results = $.map(data, function(value, key) {
             return {
-              label: value.cus_firstname + ' ' + value.cus_lastname,
-              value: value.cus_firstname + ' ' + value.cus_lastname,
+              label: value.firstname + ' ' + value.lastname,
+              value: value.firstname + ' ' + value.lastname,
               id: value.custid
             };
           });
@@ -82,7 +82,7 @@ $(function() {
       },
       minLength: 1,
       select: function(event, ui) {
-        $('#customerID').val(ui.item.id);
+        $('#customerid').val(ui.item.id);
       }
     });
   };
@@ -92,7 +92,7 @@ $(function() {
     $("#newGem").autocomplete({
       source: function(request, response) {
         $.ajax({
-          url: baseurl + 'admin/report/gemstone/gem-list',
+          url: baseurl + 'admin/report/gemstone/populate',
           dataType: "json",
           data: {
             q: request.term
@@ -100,8 +100,8 @@ $(function() {
         }).success(function(data) {
           var results = $.map(data, function(value, key) {
             return {
-              label: value.gem_name,
-              value: value.gem_name,
+              label: value.name,
+              value: value.name,
               id: value.gemid
             };
           });
@@ -114,17 +114,6 @@ $(function() {
         $('input[name=variety]').val(ui.item.value);
       }
     });
-  };
-
-  // Function to add decimal value(.00) to the amount field
-  // (if there is no decimal value from user input)
-  var addZero = function(num) {
-    var value = Number(num);
-    var res = num.split(".");
-    if (res.length == 1 || (res[1].length < 3)) {
-      value = value.toFixed(2);
-    }
-    return value
   };
 
   // Function to populate species/group field on user input
@@ -199,254 +188,174 @@ $(function() {
     });
   };
 
-  var imageReader = function(input) {
-    var file = input.files[0];
-    // Message array
-    var message = new Array();
-    message['allowedTypes'] = "Not a valid image format, Please upload following file type jpg|jpeg|png|gif ";
-    message['height'] = "Height is too large, Please upload an image less than 1024px";
-    message['width'] = "Width is too large, Please upload an image less than 1024px";
-    message['fileSize'] = "File size is too large, Please upload an image less than 2MB";
+  // Function to Add a Report
+  var addReport = function() {
 
-    // Regular Expression to validate image allowed types
-    var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.png|.gif)$");
-    if (!regex.test(input.value.toLowerCase())) {
-      alert(message['allowedTypes']);
-      return false;
-    }
-    // File size MAX 2MB
-    if (file.size > 2000000) {
-      alert(message['fileSize']);
-      return false;
-    }
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
+    var formAdd = $('#formAddReport');
+    var formData = new FormData(formAdd);
 
-      reader.onload = function(e) {
-        //Initiate the JavaScript Image object.
-        var image = new Image();
-
-        //Set the Base64 string return from FileReader as source.
-        image.src = e.target.result;
-
-        //Validate the File Height and Width.
-        image.onload = function() {
-          var height = this.height;
-          var width = this.width;
-          if (width > 1024) {
-            alert(message['width']);
-            return false;
-          }
-          else if (height > 1024) {
-            alert(message['height']);
-            return false;
-          }
-          $('#imagegem').attr('src', e.target.result);
-          return true;
-        };
-      }
-      reader.readAsDataURL(input.files[0]);
-    }
-    $('#removeImg').on('click', function() {
-      $('#imagegem').attr('src', baseurl+'assets/images/default-img.png');
-      $("#imginput").val('');
+    var x = formAdd.serializeArray();
+    $.each(x, function (i, field) {
+      formData.append(field.name, field.value);
     });
-  };
 
-  // Function to Add a Report to DB
-  var addReport = function(fm) {
-
-    var form = $('#formReport');
-    var formData = new FormData(fm);
-    var cstid = $('#customerID').val();
-    var gemid = $('#gemid').val();
     var commentData = CKEDITOR.instances.editor1.getData();
 
-    formData.append("customer", cstid);
-    formData.append("gemid", gemid);
-    formData.append("editor1", commentData);
+    formData.append("comment", commentData);
 
     $.ajax({
-      url: form.attr("action"),
-      type: form.attr("method"),
+      url: formAdd.attr("action"),
+      type: formAdd.attr("method"),
       dataType: 'JSON',
       data: formData,
       processData: false,
       contentType: false,
       beforeSend: function() {
-        $('#messageModal').modal({backdrop: 'static', keyboard: false });
-        $('#messageModal .modal-body').html(message('Processing', 'info'));
+        $('.add-report').html(spinner);
       },
       success: function(response) {
-        $('input[name=csrf_test_name]', '#formReport').val(response.csrf);
+        $('.add-report').html('Add Report');
 
         if (response.auth) {
-          
-          $('#messageModal').modal({backdrop: 'static', keyboard: false });
-          $('#messageModal .modal-body').html(
-            message(response.message, 'success')+
-            '<div class="d-flex align-items-center mt-3">'+
-            '<img src="'+baseurl+'assets/images/qr/temp.png" alt="QR-Code" width="200" height="200"> '+
-            '<a href="'+response.url+'" class="btn btn-danger ml-4"><i class="fa fa-download fa-fw" aria-hidden="true"></i> Download QR</a>'+
-            '</div>'
-          );
-
-          $('#messageModal .modal-footer').html(
-            '<a href="'+baseurl+'admin/report/all" class="mr-3">Go to all reports</a>'+
-            '<a href="#" id="anotherReport" class="btn btn-primary">Create Another</a>'
-          );
-
-          $('#messageModal .close').css('display', 'none');
+          $('#successModal').modal({backdrop: 'static', keyboard: false });
+          $('#qrCodeBtn').attr('href', response.url);
           formData = null;
-          $('#imagegem').attr('src', baseurl+'assets/images/default-img.png');
-          form.trigger('reset');
+          formAdd.trigger('reset');
           return true;
 
         } else {
-          $('#messageModal').modal({backdrop: 'static', keyboard: false });
-          $('#messageModal .modal-body').html(message(response.message, 'error'));
-          $('#message').html(message(response.message, 'error'));
+          hulla.send(response.message, 'danger');
         }
 
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        $('#messageModal').modal('show');
-        $('#messageModal .modal-body').html(message(errorThrown, 'error'));
+        hulla.send(errorThrown, 'danger');
       }
     });
 
   };
 
+  // Function to update specific report
   var updateReport = function () {
 
-    var form = $('#updateReportForm');
-    var formData = new FormData($('#updateReportForm'));
+    var formUpdate = $('#updateReportForm');
+    var formData = new FormData(formUpdate);
 
-    var gemid = $('#gemid').val();
+    var x = formUpdate.serializeArray();
+    $.each(x, function (i, field) {
+      formData.append(field.name, field.value);
+    });
+
     var commentData = CKEDITOR.instances.editor1.getData();
 
-    formData.append("gemid", gemid);
-    formData.append("editor1", commentData);
-    formData.append("csrf_test_name", $('input[name=csrf_test_name]').val());
+    formData.append("comment", commentData);
 
     $.ajax({
-      url: form.attr("action"),
-      type: form.attr("method"),
+      url: formUpdate.attr("action"),
+      type: formUpdate.attr("method"),
       dataType: 'JSON',
       data: formData,
       processData: false,
       contentType: false,
       beforeSend: function() {
-        $('#messageModal').modal({backdrop: 'static', keyboard: false });
-        $('#messageModal .modal-body').html(message('Processing...', 'info'));
+        $('#updateReport').html(spinner);
       },
       success: function(response) {
-        console.log('hello');
-        
-        $('input[name=csrf_test_name]', '#updateReportForm').val(response.csrf);
-
+        $('#updateReport').html("Update Report");
         if (response.auth) {
-          $('#messageModal').modal({backdrop: 'static', keyboard: false });
-          $('#messageModal .close').css('display', 'none');
-          $('#messageModal .modal-body').html(message(response.message, 'success'));
-          //location.href = response.url;
-
+          hulla.send(response.message, 'success');
           formData = null;
-          form.trigger('reset');
+          location.href = response.url;
           return true;
 
         } else {
-          $('#messageModal').modal({backdrop: 'static', keyboard: false });
-          $('#messageModal .modal-body').html(message(response.message, 'error'));
-          $('#message').html(message(response.message, 'error'));
+          hulla.send(response.message, 'danger');
         }
 
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        $('#messageModal').modal('show');
-        $('#messageModal .modal-body').html(message(errorThrown, 'error'));
+        hulla.send(errorThrown, 'danger');
       }
     });
   };
 
   // Function to add new gemstone
-  var addGemstone = function (fm) {
-    messageBox = $('#gemModal #message');
+  var addGemstone = function () {
+    
+    var formVariety = $('#formVariety');
+    var formData = new FormData(formVariety);
+
+    var x = formVariety.serializeArray();
+    $.each(x, function (i, field) {
+      formData.append(field.name, field.value);
+    });
+
     $.ajax({
-      url: fm.attr('action'),
-      type: fm.attr('method'),
+      url: formVariety.attr('action'),
+      type: formVariety.attr('method'),
       dataType: 'JSON',
-      data: {
-        gemName:$('#gemName').val(),
-        gemDesc:$('#gemDesc').val(),
-        csrf_test_name:$('#formGemstone  input[name=csrf_test_name]').val()
-      },
+      data: formData,
+      processData: false,
+      contentType: false,
       beforeSend: function() {
-        messageBox.html(message('Processing...', 'info'));
+        $('#saveGem').html(spinner);
       },
       success: function(response) {
-        $('#formGemstone  input[name=csrf_test_name]').val(response.csrf);
+        $('#saveGem').html('Save Vareity');
 
         if (response.auth) {
-          messageBox.html(message(response.message, 'success'));
+          hulla.send(response.message, 'success');
           formData = null;
-          fm.trigger('reset');
-          setTimeout(function () {
-            messageBox.html('');
-          }, 5000);
-
+          formVariety.trigger('reset');
+          $('#gemModal').modal('hide');
           return true;
         }
         else {
-          messageBox.html(message(response.message, 'error'));
+          hulla.send(response.message, 'danger');
         }
       },
       fail: function(errorResponse) {
-        messageBox.html(message(errorResponse, 'error'));
+        hulla.send(errorResponse, 'success');
       }
     });
   };
 
 
-
   /* Binding */
-
-  // Create
-
-  // Report Form submit event
-   $('form').on("submit", function(event) {
-      event.preventDefault();
-      addReport(this);
-  });
   
-  // $('form').on("submit", function(event) {
-  //   event.preventDefault();
-  //   updateReport();
-  // });
+  // Image upload
+  var token = JSON.parse('{"csrf_test_name": "'+$('input[name=csrf_test_name]').val()+'" } ') ;
+  $(".target").upload({
+    action: baseurl + "admin/report/image/index",
+    dataType: 'JSON',
+    maxConcurrent: 0,
+    maxSize: 2097152,
+    multiple: false,
+    postData: token
+  }).on("filecomplete.upload", onFileComplete)
+    .on("fileerror.upload", onFileError)
+    .on("start.upload", onFileStart);
 
-  // Update Form
-  // $('#updateReportForm').on('click', '#updateReport', function() {
-    
-  // });
-  
-  
-
-  reptype.click(function() {
-    if (this.id == 'radio-1') {
-      $('#repotype').val($(this).data('value'));
-      getId($(this).data('value'));
-    } else if (this.id == 'radio-2') {
-      $('#repotype').val($(this).data('value'));
-      getId($(this).data('value'));
-    } else if (this.id == 'radio-3') {
-      $('#repotype').val($(this).data('value'));
-      getId($(this).data('value'));
+  function onFileComplete(e, file, response) {
+    if(response.status) {
+      var image = baseurl + 'images/gem/' +response.image_path + response.image_name;
+      $('#imagegem').attr('src', image);
+      $('#imgPath').val(response.image_path);
+      $('#imgName').val(response.image_name);
     }
-  });
+    else {
+      hulla.send(response.message, 'danger');
+    }
+    
+  }
 
-  $('input[name=amount]').focusout(function() {
-    $('input[name=amount]').val(addZero($('input[name=amount]').val()));
-  });
+  function onFileError(e, file, error) {
+    hulla.send(error, 'danger');
+  }
+
+  function onFileStart(e, file) {
+    console.log("File Start");
+  }
 
   populateGemstone();
 
@@ -458,21 +367,46 @@ $(function() {
 
   populateColor();
 
+  // Report type selection
+  reptype.click(function () {
+    if (this.id == 'option1') {
+      $('#repotype').val($(this).data('value'));
+      getId($(this).data('value'));
+    } else if (this.id == 'option2') {
+      $('#repotype').val($(this).data('value'));
+      getId($(this).data('value'));
+    } else if (this.id == 'option3') {
+      $('#repotype').val($(this).data('value'));
+      getId($(this).data('value'));
+    }
+  });
+
   $("input[name=radio-1]").checkboxradio({
     icon: false
   });
 
-  $("#imginput").change(function(){
-    imageReader(this);
-  });
+  var btnActions = {
+    update: function (e) {
+      e.preventDefault();
+      updateReport();
+    },
+    addReport: function (e) {
+      e.preventDefault();
+      addReport(this);
+    },
+    saveGemstone: function (e) {
+      addGemstone();
+    }
 
-  $('#messageModal').on('click', '#anotherReport', function(event) {
-    event.preventDefault();
-    location.reload();
-  });
+  };
 
-  $('#gemModal').on('click', '#saveGem', function() {
-    addGemstone($('#formGemstone'));
+  $(document).on("click", 'a[data-action]', function (event) {
+    var link = $(this);
+    var action = link.data("action");
+
+    if (typeof btnActions[action] === "function") {
+      btnActions[action].call(this, event);
+    }
   });
 
 }); // End of document ready

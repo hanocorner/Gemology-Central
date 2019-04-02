@@ -16,7 +16,7 @@ $config = array(
                 ),
                 // Report #ID
                 array(
-                        'field' => 'rmid',
+                        'field' => 'reportid',
                         'label' => 'ID',
                         'rules' => 'trim'
                 ),
@@ -44,7 +44,7 @@ $config = array(
                 array(
                         'field' => 'gemWidth',
                         'label' => 'Width',
-                        'rules' => 'trim'
+                        'rules' => 'trim|decimal'
                 ),
                 // Gem Height
                 array(
@@ -86,19 +86,19 @@ $config = array(
                 array(
                         'field' => 'amount',
                         'label' => 'Amount',
-                        'rules' => 'trim|required|decimal'
+                        'rules' => 'trim|required'
                 ),
         ),
         'gemstone' => array(
                 array(
-                        'field'=> 'gemName',
-                        'label' => 'Gemstone Name',
-                        'rules' => 'trim|required'
+                        'field'=> 'name',
+                        'label' => 'Name',
+                        'rules' => 'trim|required|min_length[3]|max_length[30]'
                 ),
                 array(
-                        'field'=> 'gemDesc',
-                        'label' => 'Gemstone Description',
-                        'rules' => 'trim'
+                        'field'=> 'description',
+                        'label' => 'Description',
+                        'rules' => 'trim|min_length[3]|max_length[50]'
                 ),
         ),
         'admin_auth' => array(
@@ -112,6 +112,38 @@ $config = array(
                         'label' => 'Password',
                         'rules' => 'trim|required|alpha'
                 ),
+        ),
+        'draft' => array(
+                // Color
+                array(
+                        'field' => 'color',
+                        'label' => 'Color',
+                        'rules' => 'trim|min_length[3]|max_length[30]'
+                ),
+                // Shape & Cut
+                array(
+                        'field' => 'shapecut',
+                        'label' => 'Shape & Cut',
+                        'rules' => 'trim|min_length[3]|max_length[30]'
+                ),
+                // Weight
+                array(
+                        'field' => 'weight',
+                        'label' => 'Weight',
+                        'rules' => 'trim|decimal'
+                ),
+                // Report Type
+                array(
+                        'field' => 'repotype',
+                        'label' => 'Report Type',
+                        'rules' => 'required'
+                ),
+                // Report Type
+                array(
+                        'field' => 'cstid',
+                        'label' => 'Customer',
+                        'rules' => 'required'
+                )
         )
 );
 ?>

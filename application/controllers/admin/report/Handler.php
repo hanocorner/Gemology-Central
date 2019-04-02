@@ -42,42 +42,36 @@ class Handler extends Admin_Controller
     $this->check_login_status();
 
     $this->load->model('admin/report/Data_model');
-  }
-
-  /**
-   *
-   *
-   */
-  public function index()
-  {
-    $this->layout->title = 'All Reports';
-    $this->layout->assets(base_url('assets/vendors/hullabaloo/hullabaloo.js'), 'footer');
-    $this->layout->view('admin/lab/report/index');
+    $this->load->model('admin/report/Report_model');
   }
 
   /** */
-  public function fetch_all()
+  public function index()
+  {
+    $this->layout->title = 'All Reports';
+    $this->layout->assets(base_url('assets/admin/js/report.published.js'), 'footer');
+    $this->layout->view('admin/report/index');
+  }
+
+  /** */
+  public function populate_published()
   {
     $page = $this->input->get('page');
     $rows_per_page = $this->input->get('rows');
 
-    $total_rows = $this->Data_model->get_total_rows();
-    
-    $this->_data['links'] = $this->html_pagination($page, $rows_per_page, $total_rows);
-  
     if ($page == 0) $page = 1;
     $start = ($page - 1) * $rows_per_page;
 
     if($this->input->get('search') == true)
     {
-      $this->_data['results'] = $this->Data_model->search_data($this->input->get());
-      $this->load->view('admin/lab/report/all_report_data', $this->_data);
+      $this->_data['results'] = $this->Report_model->search_published($this->input->get('id'));
     }
-    else 
-    {
-      $this->_data['results'] = $this->Data_model->fetch_all_report_data($rows_per_page, $start);
-      $this->load->view('admin/lab/report/all_report_data', $this->_data);
+    else {
+      $this->_data['results'] = $this->Report_model->get_published_data($rows_per_page, $start);
+      
     }
+    $this->_data['links'] = $this->html_pagination($page, $rows_per_page, $this->Report_model->_result_count);
+    $this->load->view('admin/report/table_published', $this->_data);
 
   }
 
@@ -117,53 +111,35 @@ class Handler extends Admin_Controller
     return $this->pagination->create_links();
   }
 
-  /** */
-  public function update_payment()
-  {
-    $this->_data = $this->input->get();
-
-    if($this->Data_model->update_payment_status($data)) 
-    {
-      return $this->json_output(true, 'Payment status was successfully updated');
-    }
-    return $this->json_output(false, 'Problem when updating payment status');
-  }
-
-
   /****/
   public function add()
   {
     $this->layout->title = 'Add Report';
+
+    $this->_data['variety_modal'] = $this->load->view('admin/report/components/variety_modal', '', TRUE);
+
     $this->layout->assets('assets/vendors/jqueryui/jquery-ui.min.css');
+    $this->layout->assets('assets/vendors/formstone/css/upload.css');
+    $this->layout->assets('assets/vendors/formstone/css/theme/upload.css');
     $this->layout->assets(base_url('assets/vendors/editor/ckeditor.js'), 'header');
-    
     $this->layout->assets(base_url('assets/vendors/jqueryui/jquery-ui.min.js'), 'footer');
+    $this->layout->assets(base_url('assets/vendors/formstone/js/core.js'), 'footer');
+    $this->layout->assets(base_url('assets/vendors/formstone/js/upload.js'), 'footer');
     $this->layout->assets(base_url('assets/admin/js/report.js'), 'footer');
 
-    $this->layout->view('admin/lab/report/add');
+    $this->layout->view('admin/report/add', $this->_data);
   }
 
   /****/
   public function insert()
   {
-    $this->next_id = $this->input->post('rmid');
-    $this->report_type = $this->input->post('repotype');
+    $id = $this->input->post('reportid');
     
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
-    if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
-    {
-      $this->load->library('image');
-      $upload = $this->image->img_upload($_FILES, 'imagegem', $this->next_id, 'gem');
-      if(!$upload) return $this->json_output(false, $this->image->errors);
-      $this->_img_name = $upload;
-    }
-
     $this->_data = $this->input->post();
-    $this->_data['img_gem'] = date('Y').'/'.date('m').'/'.$this->_img_name;
-    $this->_data['created_date'] = $this->_date;
-    $this->_data['qrtoken'] = $this->qrcode($this->next_id);
-    $this->_data['report_status'] = 0;
+    $this->_data['qrtoken'] = $this->qrcode($id);
+    $this->_data['status'] = TRUE;
 
     $result = $this->Data_model->insert_report($this->_data);
 
@@ -173,8 +149,7 @@ class Handler extends Admin_Controller
       return $this->json_output(false, 'Insertion unsuccessful');
     }
 
-    return $this->json_output(true, 'Report Created successfully', 'admin/report/handler/download/'.$this->_qrcode);
-    
+    return $this->json_output(true, 'Report Created successfully', 'admin/report/handler/download/'.$this->_qrcode); 
   }
 
   /**
@@ -215,62 +190,47 @@ class Handler extends Admin_Controller
   /*****/
   public function edit()
   {
+    $this->layout->title = 'Edit Report';
+
     $this->report_type = $this->uri->segment(4);
     $this->next_id = $this->uri->segment(5);
     $params['id'] = $this->next_id;
     $params['type'] = $this->report_type;
 
     $this->_data['results'] = $this->Data_model->get_report_edit($params);
+    $this->_data['variety_modal'] = $this->load->view('admin/report/components/variety_modal', '', TRUE);
 
     if(empty($this->_data['results'])) redirect('admin/report/all');
     
-    $this->layout->title = 'Add Report';
     $this->layout->assets('assets/vendors/jqueryui/jquery-ui.min.css');
+    $this->layout->assets('assets/vendors/formstone/css/upload.css');
+    $this->layout->assets('assets/vendors/formstone/css/theme/upload.css');
     $this->layout->assets(base_url('assets/vendors/editor/ckeditor.js'), 'header');
     $this->layout->assets(base_url('assets/vendors/jqueryui/jquery-ui.min.js'), 'footer');
+    $this->layout->assets(base_url('assets/vendors/formstone/js/core.js'), 'footer');
+    $this->layout->assets(base_url('assets/vendors/formstone/js/upload.js'), 'footer');
     $this->layout->assets(base_url('assets/admin/js/report.js'), 'footer');
 
-    $this->layout->view('admin/lab/report/edit', $this->_data);
+    $this->layout->view('admin/report/edit', $this->_data);
   }
 
   /****/
   public function update()
   {
-    $this->next_id = $this->input->post('rmid');
-    // radio-1 = Report Type (Form Validation)
-    $this->report_type = $this->input->post('repotype');
-
     if($this->form_validation->run('report') == FALSE) return $this->json_output(false, validation_errors());
 
-    if(is_uploaded_file($_FILES['imagegem']['tmp_name']))
-    {
-      $this->load->library('image');
-      $upload = $this->image->img_upload($_FILES, 'imagegem', $this->next_id, 'gem');
-      if(!$upload) return $this->json_output(false, $this->image->errors);
-      $this->_img_name = $upload;
-    }
-
     $this->_data = $this->input->post();
-
-    // Lab Report ID
-    $this->_data['reportid'] = $this->input->post('reportid');
-    
-
-    $this->_data['img_gem'] = date('Y').'/'.date('m').'/'.$this->_img_name;
-
-    // CALL SP
+  
     $result = $this->Data_model->update_report($this->_data);
 
-    // if($result == FALSE)
-    // {
-    //   log_message('error', 'Error Encountered when Updating the report');
-    //   return $this->json_output(false, 'Update unsuccessful');
-    // }
+    if($result == FALSE)
+    {
+      log_message('error', 'Error Encountered when Updating the report');
+      return $this->json_output(false, 'Update unsuccessful');
+    }
     
-    return $this->json_output(true, 'Report was successfully updated, Redirecting...', 'admin/report/all');
+    return $this->json_output(true, 'Report was successfully updated, Redirecting...', 'admin/report/published');
   }
-
-
 
   /**
    * This check the dropdown list default value
