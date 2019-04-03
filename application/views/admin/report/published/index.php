@@ -69,7 +69,7 @@
       <a href="#" class="text-primary ml-2" data-action="reload"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i>
         Refresh</a>
 
-      <a href="#" class="btn btn-dark btn-sm mx-3" data-toggle="modal" data-target="#exampleModal" data-backdrop="static" data-keyboard="false"> 
+      <a href="#" class="btn btn-dark btn-sm mx-3" data-toggle="modal" data-target="#searchModal" data-backdrop="static" data-keyboard="false"> 
         <i class="fa fa-search fa-fw"></i>
         Search
       </a>
@@ -95,7 +95,7 @@
 <!-- Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-lg">
       <div class="modal-header">
         <h5 class="modal-title" id="searchModalLabel"><i class="fa fa-plus fa-fw"></i>&nbsp; Advanced Search</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -104,25 +104,22 @@
       </div>
       <div class="modal-body">
         <!-- Advance Search -->
-        <?php echo form_open('admin/report/handler/advance-search', array('id'=>'formAdvanceSearch')); ?>
+        <?php echo form_open('admin/report/handler/populate-published', array('id'=>'formAdvanceSearch')); ?>
       <div class="form-row mt-3">
-        <div class="form-group col-2">
+        <div class="form-group col-4">
           <input type="text" class="form-control form-control-sm" name="customer" placeholder="Customer">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-4">
           <input type="text" class="form-control form-control-sm" name="color" placeholder="Color">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-4">
           <input type="text" class="form-control form-control-sm" name="shape" placeholder="Shape">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-4">
           <input type="text" class="form-control form-control-sm" name="width" placeholder="Width">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-4">
           <input type="text" class="form-control form-control-sm" name="weight" placeholder="Weight">
-        </div>
-        <div class="form-group col-1">
-          <a href="#" class="btn btn-sm btn-dark px-2" data-action="searchReport"> Search</a>
         </div>
       </div>
       <?php echo form_close(); ?>
