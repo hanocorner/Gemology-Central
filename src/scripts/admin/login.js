@@ -12,17 +12,24 @@
             return {
                 init: function () {
                     //Call your functions
-                    formLogin.on("submit", function (event) {
-                        event.preventDefault();
-                        login();
-                    });
-
+                    bindEvents();
                 }
             }
+        }   
+
+        // Event Binding 
+        var bindEvents = function () {
+            formLogin.on("sumbit", login);
+        };
+
+        // Message function
+        var responseMessage = function (message, status) {
+            return '<div class="alert alert-'+status+'"><i class="fa fa-times-circle fa-fw fa-lg"></i>'+message+'</div>';
         }
 
         // Function login
-        function login() {
+        var login = function(event) {
+            event.preventDefault();
             formData = new FormData(document.getElementById('formLogin'));
             ajaxCall(formData, formLogin.attr("action")).done(function (response) {
                 if (response.auth) {
@@ -36,20 +43,20 @@
             .fail(function (xhr, statusText, error){
                 console.log(error);
             });
-        }
+        };
 
         //Ajaxcall function
-        var ajaxCall = function(fm, dataUrl) {
+        var ajaxCall = function(data, dataUrl) {
             
             return $.ajax({
                 url: dataUrl,
                 type: 'POST',
                 dataType: 'JSON',
-                data: fm,
+                data: data,
                 processData: false,
 			    contentType: false
             });
-        }
+        };
 
 
         return gemApp;

@@ -34,18 +34,27 @@ $(function () {
   };
 
   // Search Report
-	var searchPublished = function (key) {
+	var doAdvanceSearch = function () {
+
+    var formAdvanceSearch = $('#formAdvanceSearch');
+    var formData = new FormData(formAdvanceSearch);
+
+    var x = formAdvanceSearch.serializeArray();
+    x.map(function (i, field) {
+      formData.append(field.name, field.value);
+    });
+
+    formData.append("search", true);
 
 		$.ajax({
-			url: baseurl + 'admin/report/handler/populate-published',
-			type: 'GET',
-			dataType: 'html',
-			data: {
-				search: true,
-				id: key
-			},
+      url: formAdvanceSearch.attr("action"),
+      type: 'GET',
+      dataType: 'html',
+      data: formData,
+      processData: false,
+      contentType: false,
 			beforeSend: function () {
-				$('#draftTable').html(spinner);
+				$('#publishedData').html(spinner);
 			},
 			success: function (data) {
 				$('#draftTable').html('');
@@ -74,6 +83,10 @@ $(function () {
           $("#searchId").val('');
           populatePublishedTable(1, rows);
         },
+        advanceSearch: function (e) {
+          e.preventDefault();
+          doAdvanceSearch();
+        }
     
       };
     
