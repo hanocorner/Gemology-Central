@@ -5,6 +5,7 @@ $(function () {
     var spinner = '<i class="fa fa-spinner fa-pulse fa-lg fa-fw d-block mx-auto text-white"></i><span class="sr-only">Loading...</span>';
     var reptype = $('#option1, #option2, #option3');
     var hulla = new hullabaloo();
+    var formAdvanceSearch = $('#formAdvanceSearch');
 
 
     /** Functions **/
@@ -36,11 +37,10 @@ $(function () {
   // Search Report
 	var doAdvanceSearch = function () {
 
-    var formAdvanceSearch = $('#formAdvanceSearch');
     var formData = new FormData(formAdvanceSearch);
 
     var x = formAdvanceSearch.serializeArray();
-    x.map(function (i, field) {
+    $.each(x, function (i, field) {
       formData.append(field.name, field.value);
     });
 
@@ -48,7 +48,7 @@ $(function () {
 
 		$.ajax({
       url: formAdvanceSearch.attr("action"),
-      type: 'GET',
+      type: 'POST',
       dataType: 'html',
       data: formData,
       processData: false,
@@ -57,8 +57,8 @@ $(function () {
 				$('#publishedData').html(spinner);
 			},
 			success: function (data) {
-				$('#draftTable').html('');
-        $('#draftTable').html(data);
+				$('#publishedData').html('');
+        $('#publishedData').html(data);
 			},
 			fail: function (jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown);
@@ -86,6 +86,11 @@ $(function () {
         advanceSearch: function (e) {
           e.preventDefault();
           doAdvanceSearch();
+        },
+        resetAdSearch:function (e) {
+          e.preventDefault();
+          formAdvanceSearch.trigger('reset');
+          populatePublishedTable(1, rows);
         }
     
       };

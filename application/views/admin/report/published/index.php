@@ -94,10 +94,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content modal-lg">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="searchModalLabel"><i class="fa fa-plus fa-fw"></i>&nbsp; Advanced Search</h5>
+        <h5 class="modal-title" id="searchModalLabel"><i class="fa fa-search fa-fw"></i>&nbsp; Advanced Search</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -106,28 +106,28 @@
         <!-- Advance Search -->
         <?php echo form_open('admin/report/handler/populate-published', array('id'=>'formAdvanceSearch')); ?>
       <div class="form-row mt-3">
-        <div class="form-group col-4">
-          <input type="text" class="form-control form-control-sm" name="customer" placeholder="Customer">
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="customer" placeholder="Customer">
         </div>
-        <div class="form-group col-4">
-          <input type="text" class="form-control form-control-sm" name="color" placeholder="Color">
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="color" placeholder="Color">
         </div>
-        <div class="form-group col-4">
-          <input type="text" class="form-control form-control-sm" name="shape" placeholder="Shape">
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="shape" placeholder="Shape">
         </div>
-        <div class="form-group col-4">
-          <input type="text" class="form-control form-control-sm" name="width" placeholder="Width">
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="width" placeholder="Width">
         </div>
-        <div class="form-group col-4">
-          <input type="text" class="form-control form-control-sm" name="weight" placeholder="Weight">
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="weight" placeholder="Weight">
         </div>
       </div>
       <?php echo form_close(); ?>
       <!-- Advance Search -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-action="advanceSearch">Search</button>
+        <a href="javascript:void(0)" class="btn btn-light" data-action="resetAdSearch">Reset</a>
+        <a href="javascript:void(0)" class="btn btn-primary" data-action="advanceSearch">Search</a>
       </div>
     </div>
   </div>

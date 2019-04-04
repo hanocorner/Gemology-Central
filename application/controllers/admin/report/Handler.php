@@ -50,7 +50,7 @@ class Handler extends Admin_Controller
   {
     $this->layout->title = 'All Reports';
     $this->layout->assets(base_url('assets/admin/js/report.published.js'), 'footer');
-    $this->layout->view('admin/report/index');
+    $this->layout->view('admin/report/published/index');
   }
 
   /** */
@@ -62,16 +62,16 @@ class Handler extends Admin_Controller
     if ($page == 0) $page = 1;
     $start = ($page - 1) * $rows_per_page;
 
-    if($this->input->get('search') == true)
+    if($this->input->post('search') == true)
     {
-      $this->_data['results'] = $this->Report_model->search_published($this->input->get('id'));
+      $this->_data['results'] = $this->Report_model->search_published($this->input->post());
     }
     else {
       $this->_data['results'] = $this->Report_model->get_published_data($rows_per_page, $start);
       
     }
     $this->_data['links'] = $this->html_pagination($page, $rows_per_page, $this->Report_model->_result_count);
-    $this->load->view('admin/report/table_published', $this->_data);
+    $this->load->view('admin/report/published/table_published', $this->_data);
 
   }
 
