@@ -69,36 +69,19 @@
 </footer>
 <a href="javascript:" class="scroll-top" id="return-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
 
-
-  <script src="<?php echo base_url(); ?>node_modules/slick-carousel/slick/slick.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      var scrolltop = $("#return-to-top");
-      $(window).scroll(function() {
-        if ($(this).scrollTop() >= 600) {
-          scrolltop.fadeIn(200); // Fade in the arrow
-        } else {
-          scrolltop.fadeOut(200); // Else fade out the arrow
-        }
-      });
-      scrolltop.click(function() {
-        // When arrow is clicked
-        $("body,html").animate(
-          {
-            scrollTop: 0 // Scroll to top of body
-          },
-          500
-        );
-      });
+    // $(document).ready(function() {
+      
+      
 
-      $(".slider-for").slick({
-        slidesToScroll: 1,
-        arrows: false,
-        fade: true,
-        autoplay:true
-      });
+    //   $(".slider-for").slick({
+    //     slidesToScroll: 1,
+    //     arrows: false,
+    //     fade: true,
+    //     autoplay:true
+    //   });
 
-    });
+    // });
   </script>
 
 

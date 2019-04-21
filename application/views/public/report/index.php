@@ -31,7 +31,7 @@
             <tr>
               <td width="120"><strong>Number:</strong></td>
               <td id="repno">
-                <?php echo $result->id; ?>
+                <?php echo $result->repoid; ?>
               </td>
             </tr>
             <tr>

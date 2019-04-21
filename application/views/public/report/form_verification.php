@@ -13,24 +13,23 @@
     <div class="row mt-4">
       <div class="col-md-4">
         <div id="alertMsg"></div>
-        <form action="#" method="post" accept-charset="utf-8">
-          <input type="hidden" name="" value=""  id="csrfToken">
+        <?php echo form_open('public/report/form-authentication', array('id'=>'verifyReport')); ?>
+        <form action="#" method="post" id="verify" accept-charset="utf-8">
           <div class="form-group">
             <label for="report">GCL Report Number</label>
-            <input type="text" class="form-control" name="repono" id="repoNo" autocomplete="off" value="<?php set_value('repono'); ?>">
+            <input type="text" class="form-control" name="repono" autocomplete="off" value="<?php set_value('repono'); ?>">
           </div>
           <div class="form-group">
             <label for="report">GCL Report Weight</label>
-            <input type="text" class="form-control" name="weight" id="rWeight" autocomplete="off" value="<?php set_value('weight'); ?>">
+            <input type="text" class="form-control" name="weight"  autocomplete="off" value="<?php set_value('weight'); ?>">
           </div>
           <div class="form-group">
             <label for="report">Security Check</label>
             <?php echo $captcha; ?>
-
-            <input type="text" class="form-control mt-2" id="captcha" autocomplete="off">
+            <input type="text" class="form-control mt-2" id="captcha" name="captcha" autocomplete="off">
           </div>
 
-          <input type="submit" value="Verify Report" class="btn btn-primary mt-2" id="submitRepo">
+          <button type="submit" class="btn btn-primary mt-2" id="verifyReportBtn">Verify Report</button>
         <?php echo form_close(); ?>
       </div>
 
@@ -40,8 +39,3 @@
 <!-- /. Report -->
 <div class="py-5"></div>
 
-<script type="text/javascript">
-  var baseurl = '<?php echo base_url(); ?>';
-  reportAuthentication();
-  create_csrf();
-</script>

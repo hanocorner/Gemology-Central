@@ -53,7 +53,6 @@ class Report extends Public_Controller
     $this->_data['captcha'] = $this->captcha();
 
     $this->layout->title ='GCL Report Verfication';
-    $this->layout->assets('assets/public/js/base.js');
     return $this->layout->view('public/report/form_verification', $this->_data);
   }
 
@@ -68,36 +67,35 @@ class Report extends Public_Controller
   public function form_authentication()
   {
     $time = time() - 7200;
-    $repono = $this->input->post('reportno');
-    $weight = $this->input->post('repweight');
+    $this->output->set_content_type('application/json', 'utf-8');
 
-    $this->form_validation->set_rules('reportno','Report No.','trim|required|alpha_dash');
-    $this->form_validation->set_rules('repweight','Weight','trim|required|numeric');
+    $this->form_validation->set_rules('repono','Report No.','trim|required|alpha_dash');
+    $this->form_validation->set_rules('weight','Weight','trim|required|numeric');
     $this->form_validation->set_rules('captcha','Captcha','trim|required|numeric');
 
     if ($this->form_validation->run() == FALSE)
     {
-      $json = array('valid'=>false, 'message'=>validation_errors());
-      echo json_encode($json);
+      $json_response = array('status'=>false, 'message'=>validation_errors());
+      
+      return $this->output->set_output(json_encode($json_response));
     }
 
     if($this->report->get_captcha($this->input->post('captcha'), $time, $this->input->ip_address()) == 0)
     {
-      $json = array('valid'=>false, 'message'=>'<p>Incorrect captcha combination</p>');
-      echo json_encode($json);
+      $json_response = array('status'=>false, 'message'=>'<p>Incorrect captcha combination</p>');
+      return $this->output->set_output(json_encode($json_response));
     }
 
-    if($this->report->auth_report_data($repono, $weight))
+    $db_response = $this->report->auth_report_data($this->input->post('repono'), $this->input->post('weight'));
+    if(!$db_response)
     {
-      $url = 'report/'.$repono;
-      $json = array('valid'=>true, 'url'=>$url);
-      echo json_encode($json);
+      $json_response = array('status'=>false, 'message'=>'<p>Report you submit does not exist, Please try again...</p>');
+      return $this->output->set_output(json_encode($json_response));
     }
-    else
-    {
-      $json = array('valid'=>false, 'message'=>'<p>Report you submit does not exist, Please try again...</p>');
-      echo json_encode($json);
-    }
+    
+    $url = 'report/'.$db_response;
+    $json_response = array('status'=>true, 'url'=>$url);
+    return $this->output->set_output(json_encode($json_response));
   }
 
   /**
@@ -138,7 +136,7 @@ class Report extends Public_Controller
       'word'          => $cap['word']
     );
 
-    $this->Report_model->insert_captcha($data);
+    $this->report->insert_captcha($data);
     return $cap['image'];
   }
 

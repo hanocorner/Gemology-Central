@@ -83,7 +83,7 @@ class Report_model extends CI_Model
   public function get_labreport($token)
   {
     $token = (string) $token;
-    $sql = "SELECT qrtoken, date, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, imgpath, IFNULL(memoid, repoid) id FROM public_fetch_report WHERE qrtoken = '".$token."' ";
+    $sql = "SELECT qrtoken, date, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, imgpath, repoid FROM public_fetch_report WHERE qrtoken = '".$token."' ";
     $query = $this->db->query($sql);
     return $query->row();
   }
@@ -98,35 +98,21 @@ class Report_model extends CI_Model
    */
   public function auth_report_data($repid, $weight)
   {
-    $this->db->select('t1.reportid, t2.reportid, memoid, rep_weight');
-    $this->db->from($this->tbl_lab.' AS t1 ');
-    $this->db->join($this->tbl_memocard.' As t2 ', 't1.reportid = t2.reportid', 'left');
-    $this->db->where('memoid', $repid);
-    $this->db->where('rep_weight', $weight);
+    $this->db->select('*');
+    $this->db->from('public_fetch_report');
+    $this->db->where('repoid', $repid);
+    $this->db->where('weight', $weight);
     $query = $this->db->get();
 
-    if($query->num_rows() > 0) return true;
-
-    $this->db->select('t1.reportid, t2.reportid, gsrid, rep_weight');
-    $this->db->from($this->tbl_lab.' AS t1 ');
-    $this->db->join($this->tbl_report.' AS t2 ', 't1.reportid = t2.reportid', 'left');
-    $this->db->where('gsrid', $repid);
-    $this->db->where('rep_weight', $weight);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return true;
-
-    return false;
-  }
-
-  public function get_image($labrepid)
-  {
-    $this->db->select('reportid, img_gemstone');
-    $this->db->from('tbl_gem_image');
-    $this->db->where('reportid', $labrepid);
-    $query = $this->db->get();
-
-    if($query->num_rows() > 0) return $query->row();
+    if($query->num_rows() > 0) 
+    {
+      return $query->row()->qrtoken;
+    }
+    else {
+      return false;
+    }
+    //$query->num_rows()
+    
   }
 }
 ?>
