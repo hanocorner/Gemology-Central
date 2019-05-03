@@ -9,14 +9,17 @@ class Handler extends Admin_Controller
         $this->check_login_status();
 
         $this->load->model('admin/print/Receipt_model');
+        $this->load->helper('string');
     }
 
     /** */
     public function receipt()
     {
-        $receipt_no = 'GCL-'.rand(10000, 10000);
-
-        $this->_data['results'] = $this->Receipt_model->all();
+        $this->_data['receipt_num'] = random_string('numeric', 8);
+        $this->_data['receipt_date'] = date('Y-m-d');
+        $ids = $this->uri->segment(5);
+        $ids = explode('-', $ids);
+        $this->_data['results'] = $this->Receipt_model->all($ids);
         $this->load->view('admin/report/print/receipt', $this->_data);
     }
 }

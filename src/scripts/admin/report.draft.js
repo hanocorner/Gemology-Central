@@ -28,6 +28,7 @@ $(function () {
         console.log(errorThrown);
       }
     });
+    
   };
 
   // Search Report
@@ -39,7 +40,7 @@ $(function () {
 			dataType: 'html',
 			data: {
 				search: true,
-				id: key
+        id: key
 			},
 			beforeSend: function () {
 				$('#draftTable').html(spinner);
@@ -148,6 +149,8 @@ $(function () {
     });
   };
 
+  
+
   // Function to Add a Report to DB
   var addReport = function () {
 
@@ -239,6 +242,13 @@ $(function () {
 
   };
 
+  //
+  var printReady = function () {
+    return $('#tableDraft input:checked').map(function() {
+      return this.value;
+    }).get().join('-');
+  };
+
 
   /** Event Binding **/
 
@@ -311,6 +321,7 @@ $(function () {
     payment:function () {
       $('#pRepId').val($(this).data('id'));
       $('#pRepType').val($(this).data('type'));
+      //$(this).closest('tr').toggleClass("highlight", this.checked);
     },
     saveAmount: function (e) {
       e.preventDefault();
@@ -327,4 +338,19 @@ $(function () {
       btnActions[action].call(this, event);
     }
   });
+
+  $(document).on('click', 'td:first-child input', function(){
+    var link = baseurl + 'admin/report/print/receipt/'+ printReady();
+    $(this).closest('tr').toggleClass("highlight", this.checked);
+    $('#btnPrint').attr('href', link);
+  });
+
+  $(document).on('change', 'th:first-child input', function() {
+    var checkboxes = $(this).closest('table').find(':checkbox');
+    checkboxes.prop('checked', $(this).is(':checked'));
+    var link = baseurl + 'admin/report/print/receipt/'+ printReady();
+    $(this).closest('table').find('tr').toggleClass("highlight", this.checked);
+    $('#btnPrint').attr('href', link);
+  });
+
 });

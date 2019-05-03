@@ -44,7 +44,7 @@ class Handler extends Admin_Controller
 
     if($this->input->get('search') == true)
     {
-      $this->_data['results'] = $this->Report_model->search_draft($this->input->get('id'));
+      $this->_data['results'] = $this->Report_model->search_draft($this->input->get('id')); 
     }
     else {
       $this->_data['results'] = $this->Report_model->get_draft_data($rows_per_page, $start);

@@ -1,11 +1,11 @@
 <!-- Grid -->
-<table class="table">
+<table class="table" id="tableDraft">
     <col width="15">
     <col width="60">
     <col width="140">
     <thead class="thead-dark">
         <tr>
-            <th>#</th>
+            <th><input type="checkbox" id="select_all"></th>
             <th scope="col">Report</th>
             <th scope="col">ID</th>
             <th scope="col">Customer</th>
@@ -26,7 +26,7 @@
         <?php foreach($results as $result): ?>
             <tr class="grid-tr" data-id="121">
                 <td style="width:3%;">
-                    <?php echo $result['reportno']; ?>
+                <input type="checkbox" name="select[]" id="rowCheck"  value="<?php echo $result['reportno'];?>">
                 </td>
                 <?php if($result['type'] == 'verb'): ?>
                 <td style="width:5%;"><span class="badge badge-pill badge-secondary">Verbal</span>
@@ -41,6 +41,7 @@
 
                 <td style="width:15%;">
                 <?php echo $result['reportid']; ?>
+                
                 </td>
 
                 <td style="width:15%;">
@@ -83,8 +84,6 @@
                 </td>
             </tr>
         <?php endforeach; ?>
-    
-
 </table>
 <!-- /. of grid  -->
 

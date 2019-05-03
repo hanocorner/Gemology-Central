@@ -30,9 +30,10 @@ class Report_model extends CI_Model
     }
 
     /** */
-    public function search_draft($id)
+    public function search_draft($key)
     {
-        $query = $this->db->query("SELECT * FROM `admin_draft_reports` WHERE reportid LIKE '%".$id."' ESCAPE '!' ");
+        $key = trim($key);
+        $query = $this->db->query("SELECT * FROM `admin_draft_reports` WHERE reportid LIKE '%".$key."' OR customer LIKE '%".$key."%' ESCAPE '!' ");
         return $query->result_array();
     }
 

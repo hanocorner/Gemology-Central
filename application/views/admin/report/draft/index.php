@@ -1,3 +1,4 @@
+
 <div class="content-wrapper">
     <div class="container-fluid">
 
@@ -86,12 +87,14 @@
                 </select>
                 <span class="mx-2">entries</span>
             </div>
+            
             <a href="#" class="text-primary ml-2" data-action="reload"><i class="fa fa-refresh fa-fw"
                     aria-hidden="true"></i>
                 Refresh</a>
-            <input type="text" class="mx-3" id="searchId" autocomplete="off" placeholder="Search by id">
-            <a href="<?php echo base_url('admin/report/print/receipt');?>" id="btnPrint" class="btn btn-dark btn-sm mx-2"> <i class="fa fa-print fa-fw"
-                    aria-hidden="true"></i> Print Receipt &nbsp; <span class="badge badge-light" id="receiptCount"></span></a>
+            <input type="text" class="mx-3" id="searchId" autocomplete="off" placeholder="Search by id, customer">
+            
+            <a target="_blank" href="" id="btnPrint" class="btn btn-dark btn-sm mx-2"> <i class="fa fa-print fa-fw"
+                    aria-hidden="true"></i> Print Receipt</a>
 
 
             <a href="/admin/report/add/" class="btn btn-primary btn-sm ml-auto"><i class="fa fa-plus fa-fw"></i> Add
