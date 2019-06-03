@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Blog extends Public_Controller
 {
   /**
@@ -9,8 +8,9 @@ class Blog extends Public_Controller
   public function __construct()
   {
     parent::__construct();
+    
 
-    $this->load->model('Article_model');
+    $this->load->model('admin/blog/Article_model', 'article');
   }
 
   /**
@@ -18,69 +18,86 @@ class Blog extends Public_Controller
    */
   public function index()
   {
-    $result = $this->Article_model->get_topArticle();
-
-    $array = (array)$result;
-
-    if (empty($array)) redirect('blog');
-
-    $data['title'] = $result->post_title;
-    $data['body'] = $result->post_body;
-    $data['url'] = $result->post_url;
-    $data['image'] = $result->post_image;
-
-    $recent = $this->Article_model->get_recent_articles();
-
-    $data['recent'] = (array)$recent;
-
     $this->layout->title = 'Blog GCL';
-    $this->layout->view('public/blog', $data);// ?? not finished
+    $this->layout->description = 'Blog';
+    $this->layout->keywords = 'Lab, Blog';
+    
+    $this->layout->assets(base_url('assets/public/js/blog.js'), 'footer');
+    $this->layout->view('public/blog/index');
+  }
+
+  /** */
+  public function all()
+  {
+    $page = $this->input->get('page');
+    $rows_per_page = $this->input->get('rows');
+
+    if ($page == 0) $page = 1;
+    $start = ($page - 1) * $rows_per_page;
+
+    $this->_data['results'] = $this->article->get_recent_articles($rows_per_page, $start);
+
+    $this->_data['links'] = $this->html_pagination($page, $rows_per_page, $this->article->_result_count);
+
+    $this->load->view('public/blog/all_articles', $this->_data);
+  }
+
+  /**
+   * CI HTML Pagination library
+   *
+   * @param $start
+   * @param $length
+   */
+  public function html_pagination($page, $rows_per_page, $total_rows)
+  {
+    $this->load->library('pagination');
+
+    $config['base_url'] = '#';
+    $config["total_rows"] = $total_rows;
+    $config["per_page"] = $rows_per_page;
+    $config["uri_segment"] = 5;
+    $config["use_page_numbers"] = TRUE;
+    $config["full_tag_open"] = '<ul class="pagination justify-content-center">';
+    $config["full_tag_close"] = '</ul>';
+    $config["first_tag_open"] = '<li class="page-item">';
+    $config["first_tag_close"] = '</li>';
+    $config['next_link'] = 'Next';
+    $config["next_tag_open"] = '<li class="page-item">';
+    $config["next_tag_close"] = '</li>';
+    $config["prev_link"] = "Previous";
+    $config["prev_tag_open"] = "<li class='page-item'>";
+    $config["prev_tag_close"] = "</li>";
+    $config["cur_tag_open"] = "<li class='page-item active'><a href='#' class='page-link'>";
+    $config["cur_tag_close"] = "</a></li>";
+    $config["num_tag_open"] = "<li class='page-item'>";
+    $config["num_tag_close"] = "</li>";
+    $config["num_links"] = 2;
+    $config['attributes'] = array('class' => 'page-link', 'id'=>'blogPagination');
+    $this->pagination->initialize($config);
+
+    return $this->pagination->create_links();
   }
 
   /**
    * Article
    */
-  public function article($title = false)
+  public function article()
   {
-    if (is_null($title)) redirect('blog');
+    $results = $this->article->get_article_by_url($this->uri->segment(2));
+    $this->_data['result'] = $this->article->get_article_by_url($this->uri->segment(2));
 
-    if (!empty($this->uri->segment(2)))
-    {
-      $url = $this->uri->segment(2);
-    }
-    else {
-      redirect('blog');
-    }
-
-    $result = $this->Article_model->get_article($url);
-
-    $array = (array)$result;
-
-    if (!is_object($result) || empty($array)) redirect('blog');
-
-    $date = $result->post_date;
-    $date = date("F jS, Y", strtotime($date));
-
-    $data['title'] = $result->post_title;
-    $data['body'] = $result->post_body;
-    $data['date'] = $date;
-    $data['tag'] = $result->post_tag;
-    $data['author'] = $result->post_author;
-    $data['url'] = $result->post_url;
-    $data['image'] = $result->post_image;
-
-    $relArticles = $this->Article_model->get_related_articles($result->post_tag);
-    $data['related'] = $relArticles;
-
-    $this->layout->title = ucwords($result->post_title) ;
-    $this->layout->view('public/article', $data);
+    $this->layout->title = $results->title;
+    $this->layout->description = $results->title;
+    $this->layout->keywords = $results->tags;
+    
+    $this->layout->view('public/blog/article', $this->_data);
   }
 
   public function search()
   {
     $title = $this->input->get('search');
 
-    $result = $this->Article_model->search_article($title);
+    $result = $this->article->search_article($title);
 
     $data[] = (array)$result;
 

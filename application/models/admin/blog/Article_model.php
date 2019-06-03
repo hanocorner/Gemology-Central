@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Article_model extends CI_Model
 {
+  /*** */
+  public $_result_count = null;
+
   public function __construct() {
       parent::__construct();
       $this->load->database();
@@ -9,54 +12,68 @@ class Article_model extends CI_Model
       $this->table='tbl_posts';
   }
 
-  public function insert($table, $data){
-      $this->db->insert($table, $data);
-      return $this->db->insert_id();
+  public function insert($data){
+    $query = $this->db->query('CALL insert_post(
+      "'.$data['title'].'",
+      "'.$data['author'].'",
+      "'.$data['tags'].'",
+      "'.$data['body'].'",
+      "'.$data['url'].'",
+      "'.$data['status'].'",
+      "'.$data['image_name'].'",
+      "'.$data['image_path'].'"
+      )');
+
+      return $query;
   }
 
-  public function get_all_articles($params)
+  /** */
+  public function get_article($id)
   {
-    $sql = '';
-    $start = $params['start'];
-    $length = $params['length'];
-    $search = $params['search']['value'];
+    $this->db->select('*');
+    $this->db->from('tbl_posts');
+    $this->db->join('tbl_gem_image', 'tbl_posts.id = tbl_gem_image.reportid', 'right');
+    $this->db->where('id', $id);
+    $query = $this->db->get();
 
-    $sql .= 'SELECT postid, post_title, post_date, post_published, post_url FROM tbl_posts';
-
-    if ($search != '')
-    {
-      $sql .= " WHERE post_title LIKE '%$search%' ";
-    }
-    else
-    {
-      $sql .= " ORDER BY postid DESC LIMIT $start, $length ";
-    }
-    $query = $this->db->query($sql);
-    return $query->result();
-  }
-
-  public function get_article($url)
-  {
-    $sql = "SELECT * FROM tbl_posts AS t1 INNER JOIN tbl_postMetaData AS t2 ON t1.postid = t2.post_id WHERE t1.post_url = '$url' ";
-
-    $query = $this->db->query($sql);
     return $query->row();
   }
 
-  public function set_topArticle($id)
+  /** */
+  public function get_all_articles_for_admin($rows_per_page, $start)
   {
-    $sql = "UPDATE tbl_posts SET post_topArticle = CASE WHEN postid = '$id' THEN 1 ELSE 0 END ";
+    $this->db->trans_begin();
 
-    $query = $this->db->query($sql);
+    $query = $this->db->query('SELECT SQL_CALC_FOUND_ROWS * FROM admin_populate_blog LIMIT '.$start.', '.$rows_per_page.'');
+    $result_count = $this->db->query('SELECT FOUND_ROWS() AS total_rows');
+        
+    $this->db->trans_complete();
+    $result_count = $result_count->result('object');
+    $this->_result_count = (int) $result_count[0]->total_rows;
 
-    return $query;
+    return $query->result_array();
   }
 
-  public function get_recent_articles()
+  /** */
+  public function get_article_by_url($url)
   {
-    $sql = "SELECT * FROM tbl_posts ORDER BY postid DESC LIMIT 2";
+    $query = $this->db->query('SELECT * FROM public_populate_blog WHERE url = "'.$url.'" ');
 
-    $query = $this->db->query($sql);
+    return $query->row();
+  }
+
+  /** */
+  public function get_recent_articles($rows_per_page, $start)
+  {
+    $this->db->trans_begin();
+
+    $query = $this->db->query('SELECT SQL_CALC_FOUND_ROWS * FROM public_populate_blog LIMIT '.$start.', '.$rows_per_page.'');
+    $result_count = $this->db->query('SELECT FOUND_ROWS() AS total_rows');
+        
+    $this->db->trans_complete();
+    $result_count = $result_count->result('object');
+    $this->_result_count = (int) $result_count[0]->total_rows;
+
     return $query->result();
   }
 
@@ -76,34 +93,13 @@ class Article_model extends CI_Model
     return $query->result();
   }
 
-  /****/
-  public function get_report_data($report)
-  {
-    $sql = "SELECT * FROM tbl_certificate WHERE cerno = '$report' ";
-
-    $query = $this->db->query($sql);
-    return $query->row();
-  }
-
   /**
    * Search Query used in front end
    */
-  public function search_article($title)
+  public function search_admin($title)
   {
-    $sql = "SELECT post_title from tbl_posts WHERE post_title LIKE '%$title%' ";
-
-    $query = $this->db->query($sql);
-    return $query->row();
-  }
-
-  public function get_topArticle()
-  {
-    $this->db->select('*');
-    $this->db->from($this->table);
-    $this->db->where('post_topArticle', 1);
-    $query=$this->db->get();
-    return $query->row();
-
+    $query = $this->db->query("SELECT * from admin_populate_blog WHERE title LIKE '$title%' ");
+    return $query->result_array();
   }
 
   public function check_url($url)
@@ -131,38 +127,33 @@ class Article_model extends CI_Model
     return false;
   }
 
-  public function update($table,$col,$colVal,$data)
+  /** */
+  public function update($data)
   {
-    $this->db->where($col, $colVal);
-    $query=$this->db->update($table,$data);
+    $query = $this->db->query('CALL update_post(
+      "'.$data['id'].'",
+      "'.$data['title'].'",
+      "'.$data['author'].'",
+      "'.$data['tags'].'",
+      "'.$data['body'].'",
+      "'.$data['url'].'",
+      "'.$data['status'].'",
+      "'.$data['image_name'].'",
+      "'.$data['image_path'].'"
+      )');
 
-    if($query) return true;
-
-    return false;
+      return $query;
   }
 
-  public function get_id($value)
+  public function get_topArticle()
   {
-    $sql = "SELECT postid, post_url FROM tbl_posts WHERE post_url = '$value'";
+    $this->db->select('*');
+    $this->db->from('tbl_posts');
+    $this->db->join('tbl_gem_image', 'tbl_posts.id = tbl_gem_image.reportid', 'left');
+    $this->db->order_by('published_date', 'DESC');
+    $query = $this->db->get();
 
-    $query = $this->db->query($sql);
-    $result = $query->row();
-    return $result->postid;
-  }
-
-  public function update_batch($data, $key)
-  {
-    $this->db->where('post_url', $key);
-    return $this->db->update('tbl_posts', $data);
-  }
-
-  public function count_all()
-  {
-    $sql = "SELECT COUNT(*) AS total FROM tbl_posts ";
-
-    $query = $this->db->query($sql);
-    $result = $query->result();
-    foreach ($result as $key) return $key->total;
+    return $query->row();
   }
 
 }

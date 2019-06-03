@@ -198,6 +198,8 @@ class Handler extends Admin_Controller
     $params['type'] = $this->report_type;
 
     $this->_data['results'] = $this->Data_model->get_report_edit($params);
+    $this->_data['rep_type'] = $this->report_type;
+    $this->_data['rep_id'] = $this->next_id;
     $this->_data['variety_modal'] = $this->load->view('admin/report/components/variety_modal', '', TRUE);
 
     if(empty($this->_data['results'])) redirect('admin/report/all');
@@ -209,6 +211,7 @@ class Handler extends Admin_Controller
     $this->layout->assets(base_url('assets/vendors/jqueryui/jquery-ui.min.js'), 'footer');
     $this->layout->assets(base_url('assets/vendors/formstone/js/core.js'), 'footer');
     $this->layout->assets(base_url('assets/vendors/formstone/js/upload.js'), 'footer');
+    $this->layout->assets('https://unpkg.com/popper.js', 'header');
     $this->layout->assets(base_url('assets/admin/js/report.js'), 'footer');
 
     $this->layout->view('admin/report/edit', $this->_data);

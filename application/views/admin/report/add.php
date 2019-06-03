@@ -244,11 +244,12 @@
         <div class="d-flex align-items-center justify-content-center mt-2">
         <a href="#" class="btn btn-sm btn-danger mx-1" id="qrCodeBtn"><i class="fa fa-download fa-fw"></i> Download</a>
         <a href="javascript:void(0)" onClick="window.location.reload()" class="btn btn-sm btn-primary mx-1"><i class="fa fa-plus fa-fw"></i> Create Another</a>
-        <a href="/admin/report/published" class="btn btn-sm btn-dark mx-1"><i class="fa fa-arrow-left fa-fw"></i> Go back</a>
+        <a href="#" id="printRep" class="btn btn-sm btn-success mx-1"><i class="fa fa-print fa-fw"></i> Print Report</a>
+        
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+        <a href="/admin/report/published" class="btn btn-dark mx-1">Continue</a>
       </div>
     </div>
   </div>

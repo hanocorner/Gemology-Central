@@ -90,7 +90,8 @@
           </div>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-sm btn-primary d-block mx-auto px-3 mt-3" data-toggle="modal" data-backdrop="static" data-target="#gemModal">
+          <button type="button" class="btn btn-sm btn-primary d-block mx-auto px-3 mt-3" data-toggle="modal"
+            data-backdrop="static" data-target="#gemModal">
             <i class="fa fa-diamond fa-fw" aria-hidden="true"></i> Add Variety
           </button>
         </div>
@@ -243,10 +244,10 @@
             </div>
           </div>
           <!-- Private Note  -->
-        <div class="form-group">
-          <label for="other">Private note</label>
-          <textarea class="form-control" name="other" rows="3"><?php echo $results->other; ?></textarea>
-        </div>
+          <div class="form-group">
+            <label for="other">Private note</label>
+            <textarea class="form-control" name="other" rows="3"><?php echo $results->other; ?></textarea>
+          </div>
         </div>
       </div>
 
@@ -255,28 +256,43 @@
         <div class="col-8">
           <label for="image">Image:</label>
           <div class="target"></div>
-          
+
         </div>
         <div class="col-4">
           <?php if($results->gemstone == ''): ?>
           <img id="imagegem" src="<?php echo base_url('images/target.png'); ?>" alt="Image"
             class="img-fluid img-thumbnail d-block mx-auto" />
-            <input type="hidden" name="imgpath" id="imgPath" value="">
-            <input type="hidden" name="imgname" id="imgName" value="">
+          <input type="hidden" name="imgpath" id="imgPath" value="">
+          <input type="hidden" name="imgname" id="imgName" value="">
           <?php else: ?>
           <img id="imagegem" src="<?php echo base_url('images/gem/'.$results->path.$results->gemstone); ?>" alt="Image"
             class="img-fluid img-thumbnail d-block mx-auto" />
-            <input type="hidden" name="imgpath" id="imgPath" value="<?php echo $results->path; ?>">
-            <input type="hidden" name="imgname" id="imgName" value="<?php echo $results->gemstone; ?>">
+          <input type="hidden" name="imgpath" id="imgPath" value="<?php echo $results->path; ?>">
+          <input type="hidden" name="imgname" id="imgName" value="<?php echo $results->gemstone; ?>">
           <?php endif; ?>
         </div>
       </div>
 
-      <a href="#" data-action="update" class="btn btn-primary mt-3 mb-5" id="updateReport">
-        <!-- Submit Button  -->
+      <!-- <a href="#" data-action="update" class="btn btn-primary mt-3 mb-5" id="updateReport">
+        
         <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
         Update Report
-      </a>
+      </a> -->
+
+      <div class="dropdown show mt-3 mb-5">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="fa fa-pencil fa-fw"></i> Update
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" data-action="updateRep" href="#">Update Report</a>
+          <a class="dropdown-item" data-action="updatePrint" href="#" data-type="<?php echo $rep_type; ?>" data-id="<?php echo $rep_id; ?>">Update and Print</a>
+
+        </div>
+      </div>
+
+      <div class="py-5"></div>
 
       <?php echo form_close(); ?>
       <!-- End of form  -->

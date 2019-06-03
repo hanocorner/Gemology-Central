@@ -74,10 +74,12 @@ $route['admin/report/add'] = 'admin/report/handler/add';
 $route['admin/report/published'] = 'admin/report/handler/index';
 $route['admin/report/drafts'] = 'admin/report/draft/handler/index';
 $route['admin/report/print/receipt/(:any)'] = 'admin/print/handler/receipt';
+$route['admin/report/print/card/(:any)/(:num)'] = 'admin/print/handler/card';
 
 // Blog Routes
-$route['admin/blog'] = 'admin/blog/blog/index';
-$route['admin/blog/add'] = 'admin/blog/blog/add-article';
+$route['admin/blog'] = 'admin/blog/handler/index';
+$route['admin/blog/add'] = 'admin/blog/handler/add';
+$route['admin/blog/edit/(:num)'] = 'admin/blog/handler/edit';
 
 // Settings
 $route['admin/settings/change-password'] = 'admin/dashboard/setting/change-password';
@@ -85,7 +87,9 @@ $route['admin/settings/change-password'] = 'admin/dashboard/setting/change-passw
 /*** */
 
 // Public routes
+$route['blog']  = 'blog/index';
 $route['blog/(:any)']  = 'blog/article/$1';
+$route['blog/articles/all/page/(:num)']  = 'blog/all';
 $route['about'] = 'base/about';
 $route['report'] = 'public/report/index';
 $route['report/(:any)']  = 'public/report/display/$1';

@@ -33,10 +33,11 @@ class Base extends Public_Controller
 
     //if (empty($array)) redirect('blog');
 
-    $data['title'] = $result->post_title;
-    $data['body'] = $result->post_body;
-    $data['url'] = $result->post_url;
-    $data['image'] = $result->post_image;
+    $data['title'] = $result->title;
+    $data['body'] = $result->body;
+    $data['url'] = $result->url;
+    $data['image'] = $result->gemstone;
+    $data['path'] = $result->path;
 
     $this->layout->title = 'Gemology Central Laboratory';
     $this->layout->view('public/index', $data);

@@ -74,7 +74,8 @@
                     <div class="d-flex align-items-center justify-content-center">
                         <?php $report = $result['type'].'/'.$result['reportno'];?>
                         <a href="<?php echo base_url('admin/report/edit/'.$report); ?>" class="text-muted mx-2 buttonz edit"><i class="fa fa-pencil-square-o fa-lg"></i></a>
-                        <a href="#" class="text-muted mx-2 buttonz add"><i class="fa fa-eye fa-lg"></i></a>
+                        <a href="<?php echo base_url('admin/report/print/card/'.$result['type'].'/'.$result['reportno']); ?>" class="text-muted mx-2 buttonz add" title="Print"><i
+                                class="fa fa-print fa-lg" aria-hidden="true"></i></a>
                         <a href="<?php echo base_url('report/'.$result['qrtoken']); ?>" target="_blank" class="text-muted mx-2 buttonz delete"><i class="fa fa-external-link fa-lg"></i></a>
                         <a href="<?php echo base_url('admin/report/draft/handler/download/'.$result['reportid'].'.png'); ?>" class="text-muted mx-2 buttonz delete" title="Download qr"><i class="fa fa-download" aria-hidden="true"></i></i></a>
                     </div>

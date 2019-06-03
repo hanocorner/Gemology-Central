@@ -144,6 +144,39 @@ $config = array(
                         'label' => 'Customer',
                         'rules' => 'required'
                 )
+        ),
+        'posts' => array(
+                // Title
+                array(
+                        'field' => 'title',
+                        'label' => 'Title',
+                        'rules' => 'trim|required|min_length[1]|max_length[150]'
+                ),
+                // Body
+                array(
+                        'field' => 'body',
+                        'label' => 'Body',
+                        'rules' => 'trim|required|min_length[1]|max_length[20000]'
+                ),
+                // Author
+                array(
+                        'field' => 'author',
+                        'label' => 'Author',
+                        'rules' => 'trim|required|min_length[5]|max_length[40]'
+                ),
+                // Tags
+                array(
+                        'field' => 'tags',
+                        'label' => 'Tags',
+                        'rules' => 'trim|required|min_length[1]|max_length[20]'
+                ),
+                // Image
+                array(
+                        'field' => 'image_name',
+                        'label' => 'Image',
+                        'rules' => 'trim|required'
+                )
+
         )
 );
 ?>

@@ -132,5 +132,20 @@ class Report_model extends CI_Model
 
         return $query->result('array');
     }
+
+    /**
+     * Populate lab report byreport id
+     *
+     * @param $id report id | string
+     *
+     * @return object
+     */
+    public function get_lab_report($id)
+    {
+        $id = (int) $id;
+        $sql = "SELECT reportid, date, object, variety, spgroup, dimensions, weight, shapecut, color, comment, gemstone, imgpath, repoid FROM admin_print_populate_frep WHERE reportid = '".$id."' ";
+        $query = $this->db->query($sql);
+        return $query->row();
+    }
 }
 ?>

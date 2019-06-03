@@ -1,0 +1,2 @@
+!function(n,t,a){"use strict";var i,o,e,l=t("#blogAllPosts");t("#blogPagination"),t("#addComment");(new(i=jQuery,o=function(n,t){i.ajax({url:baseurl+"blog/articles/all/page/"+n+"/",type:"GET",dataType:"html",data:{page:n,rows:t},success:function(n){l.html(n)},fail:function(n,t,a){console.log(a)}})},e=function(n){n.preventDefault();var t=i(this).data("ci-pagination-page");o(t,4)},function(){return{init:function(){i(a).on("click","#blogPagination",e),o(1,4)}}})).init()}(window,jQuery,document);
+//# sourceMappingURL=maps/blog.js.map

@@ -99,7 +99,7 @@
 
       <div class="col-md-6">
         <div class="float-right">
-          <img width="500" height="300" class="img-fluid" src="<?php echo base_url();?>assets/images/blog/<?php echo $image; ?>" />
+          <img width="500" height="300" class="img-fluid" src="<?php echo base_url('images/blog/'.$path.$image);?>" />
         </div>
       </div>
       <div class="col-md-6">

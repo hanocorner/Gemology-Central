@@ -4,6 +4,7 @@ $(function() {
   var reptype = $('#option1, #option2, #option3');
   var spinner = '<i class="fa fa-spinner fa-pulse fa-lg fa-fw d-block mx-auto text-white"></i><span class="sr-only">Loading...</span>';
   var messageBox = null;
+  var url;
   var hulla = new hullabaloo();
 
   /* Functions */
@@ -219,6 +220,8 @@ $(function() {
         if (response.auth) {
           $('#successModal').modal({backdrop: 'static', keyboard: false });
           $('#qrCodeBtn').attr('href', response.url);
+          // url = baseurl + 'admin/report/print/card/'+$('#repotype').val()+'/'+$('#repid').val();
+          // $('#printRep').attr('href', url);
           formData = null;
           formAdd.trigger('reset');
           return true;
@@ -236,7 +239,7 @@ $(function() {
   };
 
   // Function to update specific report
-  var updateReport = function () {
+  var updateReport = function (uri) {
 
     var formUpdate = $('#updateReportForm');
     var formData = new FormData(formUpdate);
@@ -265,7 +268,7 @@ $(function() {
         if (response.auth) {
           hulla.send(response.message, 'success');
           formData = null;
-          location.href = response.url;
+          location.href = baseurl + uri;
           return true;
 
         } else {
@@ -386,9 +389,15 @@ $(function() {
   });
 
   var btnActions = {
-    update: function (e) {
+    updateRep: function (e) {
       e.preventDefault();
-      updateReport();
+      url = 'admin/report/published';
+      updateReport(url);
+    },
+    updatePrint: function (e) {
+      e.preventDefault();
+      url = 'admin/report/print/card/'+$(this).data('type')+'/'+$(this).data('id');
+      updateReport(url);
     },
     addReport: function (e) {
       e.preventDefault();

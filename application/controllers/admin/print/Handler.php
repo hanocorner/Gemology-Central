@@ -22,5 +22,29 @@ class Handler extends Admin_Controller
         $this->_data['results'] = $this->Receipt_model->all($ids);
         $this->load->view('admin/report/print/receipt', $this->_data);
     }
+
+    /** */
+    public function card()
+    {
+        $this->layout->title = 'Print Report';
+        $id = $this->uri->segment(6);
+        
+        $this->load->model('admin/report/Report_model', 'report');
+        $this->_data['result'] = $this->report->get_lab_report($id);
+        
+        if($this->uri->segment(5) == 'memo')
+        {
+            $this->load->view('admin/report/print/memocard', $this->_data);
+        } 
+        elseif ($this->uri->segment(5) == 'repo') 
+        {
+            $this->load->view('admin/report/print/full_report', $this->_data);
+        } 
+        elseif ($this->uri->segment(5) == 'verb') 
+        {
+            redirect('admin/report/published');
+        } 
+        
+    }
 }
 ?>

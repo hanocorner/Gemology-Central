@@ -12,7 +12,7 @@ class Layout
     public $description = 'My page desctription';
     public $keywords = 'my, keywords';
     public $robots = 'all';
-    public $author = 'Smart Software';
+    public $author = 'Bitbash Software';
     public $canonical = '';
     public $css = array();
     public $js_header = array();

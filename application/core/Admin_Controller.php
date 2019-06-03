@@ -20,7 +20,6 @@ class Admin_Controller extends AP_Controller
 
     $this->layout->assets(base_url('assets/admin/js/app.bundle.js'), 'footer');
     $this->layout->assets(base_url('assets/vendors/hullabaloo/hullabaloo.js'), 'footer');
-    $this->layout->assets(base_url('assets/admin/js/main.js'), 'footer');
 
   }
 
