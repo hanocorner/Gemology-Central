@@ -36,7 +36,9 @@
 
 // @import "header.scss";
 
-// @import "default.scss";
+@import "layout/default";
+@import "layout/header";
+@import "layout/footer";
 
 // @import "carousel.scss";
 

@@ -28,7 +28,8 @@ class Login extends Admin_Controller
      */
 	public function index()
 	{	
-        $this->layout->title = 'Administrator - Gemology Central Laboratory';  
+        $this->layout->title = 'Administrator - Gemology Central Laboratory';
+        $this->layout->assets(base_url('assets/admin/js/login.js'), 'footer');  
         $this->layout->view('admin/dashboard/login', '', 'without');
     }
 

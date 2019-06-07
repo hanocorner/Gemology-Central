@@ -128,7 +128,7 @@
 
 <!-- Customer feedback  -->
 <div class="py-3"></div>
-<section class="feedback">
+<!-- <section class="feedback">
   <div class="container">
     <div class="row">
         <div class="block-text mx-auto">
@@ -151,6 +151,6 @@
         </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- Customer feedback -->
 <div class="py-4"></div>

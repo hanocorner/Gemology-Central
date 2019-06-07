@@ -4,7 +4,8 @@
 
     var formData;
     var formLogin = $('#formLogin');
-    //var hulla = new hullabaloo();
+    var btnLogin = $('#logMeIN');
+    var alert = $('#alertBox');
 
     var gemApp = function ($) {
         function gemApp() {
@@ -19,12 +20,18 @@
 
         // Event Binding 
         var bindEvents = function () {
-            formLogin.on("sumbit", login);
+            btnLogin.on("click", login);
         };
 
         // Message function
         var responseMessage = function (message, status) {
-            return '<div class="alert alert-'+status+'"><i class="fa fa-times-circle fa-fw fa-lg"></i>'+message+'</div>';
+            if(status == false) {
+                return alert.html('<div class="alert alert-danger"><i class="fa fa-times-circle fa-fw fa-lg"></i> '+message+'</div>');
+            }
+            else {
+                return alert.html('<div class="alert alert-success"><i class="fa fa-times-circle fa-fw fa-lg"></i> '+message+'</div>');
+            }
+            
         }
 
         // Function login
@@ -33,11 +40,10 @@
             formData = new FormData(document.getElementById('formLogin'));
             ajaxCall(formData, formLogin.attr("action")).done(function (response) {
                 if (response.auth) {
-					alert(response.message);
+					responseMessage(response.message, response.auth);
 					location.href = response.url;
 				} else {
-                    alert(response.message);
-					//messageBox.html(message(response.message, 'error'));
+					responseMessage(response.message, response.auth);
 				}
             })
             .fail(function (xhr, statusText, error){

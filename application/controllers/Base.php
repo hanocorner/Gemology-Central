@@ -47,11 +47,8 @@ class Base extends Public_Controller
   function about()
   {
 
-    $recent = $this->Article_model->about_page_articles();
-    $data['recent'] = (array)$recent;
-
     $this->layout->title = 'About Gemology Central Laboratory';
-    $this->layout->view('public/about', $data);
+    $this->layout->view('public/about');
   }
 
 

@@ -3,11 +3,10 @@
         <div class="card-header text-center bg-dark text-white">Gemology Central Laboratory </div>
         <div class="card-body">
             <!-- Alert box -->
-            <div id="messageBox"></div>
+            <div id="alertBox"></div>
             <!-- /. Alert box -->
 
-            <?php $attr = array('id'=>'formLogin', 'method'=>'post'); ?>
-            <?php echo form_open('admin/dashboard/login/authenticate', $attr);?>
+            <?php echo form_open('admin/dashboard/login/authenticate', array('id'=>'formLogin'));?>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input class="form-control" id="username" type="text" name="username" autocomplete="off">
@@ -17,7 +16,7 @@
                 <label for="password">Password</label>
                 <input class="form-control" id="password" type="password" name="password" autocomplete="off">
             </div>
-            <button type="submit" class="btn btn-primary mt-3" id='login'>Login</button>
+            <button type="button" class="btn btn-primary mt-3" id='logMeIN'>Login</button>
             <?php echo form_close();?>
         </div>
     </div>

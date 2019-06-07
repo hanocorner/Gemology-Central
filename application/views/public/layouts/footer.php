@@ -1,27 +1,6 @@
-<!-- Modal -->
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Contact us</h5>
-
-      </div>
-      <div class="modal-body">
-        <p><i class="fa fa-phone" aria-hidden="true"></i>&nbsp; +94 112485560</p><br>
-        <p><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; info@gemologycentral.com</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /. Modal  -->
-
 <footer>
   <section class="footer-top bg-dark">
-    <div class="padding-3"></div>
-    <div class="wrapper">
+    <div class="container pt-3">
       <div class="row">
         <div class="col-md-6 about-brief">
           <img src="<?php echo base_url()?>assets/public/images/gcl-white-logo.png" class="img-fluid" id="logo_footer"/>
@@ -51,10 +30,10 @@
     </div>
   </section>
   <section class="footer-bottom">
-    <div class="wrapper">
+    <div class="container pt-3">
       <div class="padding-1"></div>
       <div class="row">
-        <div class="col-md-7 copyright"><p>&copy; Copyrights 2018 <span>&nbsp; Designed by <a href="https://smartsoftware.lk/" target="_blank">smartsoftware.lk</a></span></p></div>
+        <div class="col-md-7 copyright"><p>Copyrights &copy; <a href="http://bitbash.lk/" target="_blank">Bitbash Software</a></p></div>
         <div class="col-md-5">
           <ul class="urls">
             <li><a href="#">Home</a></li>
@@ -87,3 +66,23 @@
 
     </body>
 </html>
+
+<!-- Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Contact us</h5>
+
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-phone" aria-hidden="true"></i>&nbsp; +94 77 469 5151</p><br>
+        <p><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp; info@gemologycentral.com</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /. Modal  -->

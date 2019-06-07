@@ -9,12 +9,11 @@
     <title>Print Receipt - </title>
 
     <style>
-        @font-face {
-            font-family: 'Times New Roman';
-            src: url('<?php echo base_url(); ?>assets/admin/fonts/times/TimesNewRomanPSMT.woff2') format('woff2'),
-                url('<?php echo base_url(); ?>assets/admin/fonts/times/TimesNewRomanPSMT.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+        html,
+        body {
+            font-family: 'Open Sans', sans-serif;
         }
 
         .d-flex {
@@ -22,7 +21,7 @@
             align-items: center;
         }
         img {
-            margin-right:15px;
+            margin: 0 12px;
         }
         .d-block {
             display: block;
@@ -56,11 +55,11 @@
                 display: grid;
                 grid-template-columns: auto auto;
                 grid-gap: 20px;
-                padding: 20px;
+                padding: 27px 10px;
             }
 
-            .grid-container>div {
-                border: 1px solid black;
+            .grid-container > div {
+                border: 1px solid #e6e6e6;
             }
         }
 
@@ -73,22 +72,25 @@
         th,
         td {
             font-size: 14px;
-            border-top: 0.5px solid black;
+            border-top: 0.5px solid #e6e6e6;
         }
 
         th,
         td {
-            padding: 10px;
+            font-size:12px;
+            padding: 7px;
             text-align: left;
         }
         .no-border tbody  td {
             border:none;
         }
         h2 {
+            font-size:21px;
             text-align: center;
             margin: 4px 0;
         }
-        h3{
+        h3 {
+            font-size:17px;
             margin: 5px 0;
         }
 
@@ -96,14 +98,15 @@
             display: grid;
             grid-template-columns: auto auto;
             grid-gap: 20px;
-            padding: 10px;
+            padding: 27px 10px;
         }
 
-        .grid-container>div {
-            border: 1px solid black;
+        .grid-container > div {
+            border: 1px solid #e6e6e6;
         }
         p{
-            margin:2px 0;
+            font-size:13px;
+            margin:5px 0;
         }
     </style>
     <link rel="stylesheet" href="<?php echo base_url('assets/vendors/print/paper.css'); ?>">
@@ -115,8 +118,10 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        @page {
-            size: A4
+        @media print {
+            @page {
+                size: 5.83in 8.27in;
+            }
         }
     </style>
     <script>
@@ -126,8 +131,8 @@
     </script>
 </head>
 
-<body class="A4" onload="window.print();" >
-    <a href="<?php echo base_url('admin/report/drafts'); ?>" class="back-btn">Go Back</a>
+<body class="A5 landscape" onload="window.print();" >
+    
     <section class="sheet">
         <div class="grid-container">
             <div class="item1">
@@ -135,21 +140,20 @@
                         <img src="<?php echo base_url('images/symbol.png'); ?>" alt="Logo">
                         <div class="d-block">
                             <h2>Gemology Central Labortary</h2>
-                            <p>Phone: +94 771234567</p>
-                            <p>Email: info@gemologycentral.com</p>
-                            <p>Web: www.gemologycentral.com</p>
-                            
+                            <p><strong>Phone:</strong>&nbsp; +94 771234567</p>
+                            <p><strong>Email:</strong>&nbsp;&nbsp;&nbsp; info@gemologycentral.com</p>
+                            <p><strong>Web:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.gemologycentral.com</p>
                         </div>
                     </div>
                     <p class="text-center">GTC, No.4, 44/2R, Sheilk Fassy Mw, China Port, Beruwala</p>                    
-                <hr>
+                <hr style="margin-top:18px; border: 0.5px solid #e6e6e6;">
                 <h3 class="text-center">Invoice</h3>
-                <table class="no-border">
+                <table class="no-border" style="margin:15px 0;">
                             <tbody>
                                 <tr>
                                     <td style="width:1%;">Customer:</td>
-                                    <td id="invCustomer" style="width:30%;"></td>
-                                    <td style="width:22%;">Ref No:</td>
+                                    <td id="invCustomer" style="width:42%;"></td>
+                                    <td style="width:15%;">Inv No:</td>
                                     <td><?php echo $receipt_num; ?></td>
                                 </tr>
                                 <tr>
@@ -160,14 +164,14 @@
                                 </tr>
                             </tbody>
                         </table>
-                <table class="table">
+                <table class="table" style="margin-top:14px">
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>Report<br/> type</th>
-                            <th>Unit<br/> Price</th>
+                            <th>Type</th>
+                            <th>Unit Price</th>
                             <th>Qty</th>
-                            <th>Total<br/> Amount</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -177,9 +181,13 @@
                         <?php endif; ?>
                         <?php foreach($results as $result): ?>
                         <tr>
-                            <td style="width:60%;"><?php echo 'text des...'; ?></td>
+                            <?php if($result['quantity'] > 1): ?>
+                            <td style="width:45%;"><?php echo $result['quantity']; ?> Stones</td>
+                            <?php else: ?>
+                            <td style="width:45%;"><?php echo $result['color']; ?> Stone</td>
+                            <?php endif; ?>
                             <td style="width:3%;"><?php echo ucwords($result['repotype']); ?></td>
-                            <td style="width:10%;"><?php echo $result['unit_price']; ?></td>
+                            <td style="width:20%;"><?php echo $result['unit_price']; ?></td>
                             <td style="width:3%;"><?php echo $result['quantity']; ?></td>
                             <td style="width:20%;"><?php echo $result['total_amount']; ?></td>
                         </tr>
@@ -194,10 +202,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="d-flex" style="justify-content:space-between; padding:15px;">
-                <p>GCL</p>    
-                <p>Customer</p>
-        </div>
+                <div class="d-flex" style="justify-content:space-between; padding:15px; margin-top:30px; margin-right:15px; margin-left:15px; margin-bottom:10px;">
+                    <p style="border-top: 0.5px dashed #5555;">GCL</p>    
+                    <p style="border-top: 0.5px dashed #5555;">Customer</p>
+                </div>
             </div>
             
             <div class="item2">
@@ -205,9 +213,9 @@
                         <img src="<?php echo base_url('images/symbol.png'); ?>" alt="Logo">
                         <div class="d-block">
                             <h2>Gemology Central Labortary</h2>
-                            <p>Phone: +94 771234567</p>
-                            <p>Email: info@gemologycentral.com</p>
-                            <p>Web: www.gemologycentral.com</p>
+                            <p><strong>Phone:</strong>&nbsp; +94 771234567</p>
+                            <p><strong>Email:</strong>&nbsp;&nbsp;&nbsp; info@gemologycentral.com</p>
+                            <p><strong>Web:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.gemologycentral.com</p>
                             
                         </div>
                     </div>
@@ -216,14 +224,14 @@
                 <div class="d-print-block mx-auto">
                     <p class="text-center">GTC, No.4, 44/2R, Sheilk Fassy Mw, China Port, Beruwala</p>       
                 </div>
-                <hr>
+                <hr style="margin-top:18px; border: 0.5px solid #e6e6e6;">
                 <h3 class="text-center">Cash Receipt</h3>
-                <table class="no-border">
+                <table class="no-border" style="margin:15px 0;">
                             <tbody>
                                 <tr>
                                     <td style="width:1%;">Customer:</td>
-                                    <td id="recCustomer" style="width:30%;"></td>
-                                    <td style="width:22%;">Ref No:</td>
+                                    <td id="recCustomer" style="width:42%;"></td>
+                                    <td style="width:16%;">Rec No:</td>
                                     <td><?php echo $receipt_num; ?></td>
                                 </tr>
                                 <tr>
@@ -234,14 +242,14 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="table" id="tableinvoice">
+                        <table class="table" id="tableinvoice" style="margin-top:14px">
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>Report<br/> type</th>
-                            <th>Unit<br/> Price</th>
+                            <th>Type</th>
+                            <th>Unit Price</th>
                             <th>Qty</th>
-                            <th>Total<br/> Amount</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -251,9 +259,13 @@
                         <?php endif; ?>
                         <?php foreach($results as $result): ?>
                         <tr>
-                            <td style="width:60%;"><?php echo 'text des...'; ?></td>
+                            <?php if($result['quantity'] > 1): ?>
+                            <td style="width:45%;"><?php echo $result['quantity']; ?> Stones</td>
+                            <?php else: ?>
+                            <td style="width:45%;"><?php echo $result['color']; ?> Stone</td>
+                            <?php endif; ?>
                             <td style="width:3%;"><?php echo ucwords($result['repotype']); ?></td>
-                            <td style="width:10%;"><?php echo $result['unit_price']; ?></td>
+                            <td style="width:20%;"><?php echo $result['unit_price']; ?></td>
                             <td style="width:3%;"><?php echo $result['quantity']; ?></td>
                             <td style="width:20%;"><?php echo $result['total_amount']; ?></td>
                         </tr>
@@ -267,10 +279,10 @@
                         </tr>
                     </tbody>
                 </table>
-            <div class="d-flex" style="justify-content:space-between; padding:15px;">
-                <p>GCL</p>    
-                <p>Customer</p>
-        </div>
+                <div class="d-flex" style="justify-content:space-between; padding:15px; margin-top:30px; margin-right:15px; margin-left:15px; margin-bottom:10px;">
+                    <p style="border-top: 0.5px dashed #5555;">GCL</p>    
+                    <p style="border-top: 0.5px dashed #5555;">Customer</p>
+                </div>
         </div>
 
 

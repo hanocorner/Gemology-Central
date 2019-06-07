@@ -1,0 +1,143 @@
+footer {
+    .footer-bottom {
+      background-color: #1b1b1b;
+      color: $white-color;
+  
+      .copyright {
+        p {
+          font-size: 15px;
+
+          a {
+            color: $white-color;
+
+            &:hover {
+                text-decoration: none;
+            }
+          }
+        }
+      }
+      ul.urls {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+  
+      ul.urls li {
+        float: left;
+      }
+  
+      ul.urls li a {
+        display: block;
+        color: $white-color;
+        text-align: left;
+        padding-top: 0;
+        padding-bottom: 10px;
+        padding-left: 0;
+        padding-right: 18px;
+        text-decoration: none;
+      }
+  
+      ul.urls li a:hover {
+        color: #b4b4b4;
+      }
+    }
+  
+    .contact-info {
+      color: $white-color;
+  
+      p {
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 400;
+        font-size: 19px;
+      }
+  
+      h4 {
+        text-align: center;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        padding-left: 0;
+  
+        li {
+          line-height: 40px;
+        }
+  
+        li a {
+          color: $white-color;
+  
+          &:hover {
+            text-decoration: none;
+            color: #2a72de;
+          }
+        }
+  
+      }
+    }
+    .social-media {
+      color: $white-color;
+  
+      p {
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 400;
+        font-size: 19px;
+      }
+  
+      ul {
+        list-style: none;
+        padding-left: 0;
+        margin-left: 0;
+  
+        li {
+          line-height: 50px;
+  
+          a {
+            text-decoration: none;
+            color: $white-color;
+  
+            &:hover {
+              color: #cbcbcb;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width:768px) {
+    footer {
+      .footer-top {
+        .contact-info {
+          p {
+            text-align: center;
+          }
+        }
+        .social-media {
+          p {
+            text-align: center;
+          }
+          ul {
+            margin-left: 3rem;
+          }
+        }
+      }
+      .footer-bottom {
+  
+        ul.urls li a {
+          text-align: center;
+          text-decoration: none;
+          padding: 0 21px;
+        }
+  
+        ul.urls li a:hover {
+          color: #b4b4b4;
+        }
+      }
+    }
+  
+  }
+  

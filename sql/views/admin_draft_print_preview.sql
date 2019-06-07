@@ -1,6 +1,6 @@
 CREATE VIEW admin_draft_print_preview
 AS 
-SELECT t2.reportid AS reportno, CONCAT(t1.firstname, " ", t1.lastname) AS customer, t1.number, t2.type AS repotype,
+SELECT t2.reportid AS reportno, t2.color, CONCAT(t1.firstname, " ", t1.lastname) AS customer, t1.number, t2.type AS repotype,
 COALESCE(t4.amount, t5.amount, t6.amount) AS unit_price
 FROM tbl_customer AS t1 
 RIGHT JOIN tbl_lab_report AS t2 
