@@ -139,7 +139,7 @@
               <?php echo $results->object; ?>
             </option>
             <?php endif; ?>
-            <option>One looose stone</option>
+            <option>One Loose Stone</option>
             <option>Mounted</option>
             <option>Rough</option>
           </select>

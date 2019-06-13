@@ -140,7 +140,7 @@
                         <img src="<?php echo base_url('images/symbol.png'); ?>" alt="Logo">
                         <div class="d-block">
                             <h2>Gemology Central Labortary</h2>
-                            <p><strong>Phone:</strong>&nbsp; +94 771234567</p>
+                            <p><strong>Phone:</strong>&nbsp; +94 77 469 5151</p>
                             <p><strong>Email:</strong>&nbsp;&nbsp;&nbsp; info@gemologycentral.com</p>
                             <p><strong>Web:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; www.gemologycentral.com</p>
                         </div>

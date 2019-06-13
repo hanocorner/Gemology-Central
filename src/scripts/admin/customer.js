@@ -8,7 +8,8 @@ $(function () {
 	var hulla = new hullabaloo();
 	var spinner = '<i class="fa fa-spinner fa-spin fa-lg fa-fw d-block mx-auto text-primary mt-3"></i><span class="sr-only">Loading...</span>';
 	var rows = $('#rowCount').find(":selected").text();
-
+	var htmlData = $('#allCustomerData');
+	
 	/* Functions */
 
 	// Executing functions according to url
@@ -18,7 +19,7 @@ $(function () {
 
 	// Populating the customers grid 
 	var populate = function (pg, rw) {
-		var htmlData = $('#allCustomerData');
+		
 		$.ajax({
 			url: baseurl + 'admin/customers/customer/populate',
 			type: 'GET',
@@ -45,23 +46,23 @@ $(function () {
 		formData = new FormData();
 		var ajaxLoader = $('#ajaxLoader');
 		var x = formAdd.serializeArray();
-        $.each(x, function(i, field){
-            formData.append(field.name, field.value);
+		$.each(x, function (i, field) {
+			formData.append(field.name, field.value);
 		});
-		
+
 		$.ajax({
 			url: formAdd.attr("action"),
 			type: formAdd.attr("method"),
-            dataType: 'JSON',
-            data: formData,
+			dataType: 'JSON',
+			data: formData,
 			processData: false,
 			contentType: false,
 			beforeSend: function () {
 				formAdd.hide();
-				ajaxLoader.html(spinner);	
+				ajaxLoader.html(spinner);
 			},
 			success: function (response) {
-				ajaxLoader.html('');	
+				ajaxLoader.html('');
 				formAdd.show();
 
 				if (response.auth) {
@@ -74,7 +75,7 @@ $(function () {
 
 				} else {
 					hulla.send(response.message, 'danger');
-				}	
+				}
 			},
 			fail: function (jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown);
@@ -101,14 +102,12 @@ $(function () {
 			success: function (data) {
 				eLoader.html('');
 				formEdit.show();
-				if($.isEmptyObject(data) || data == null)
-				{
+				if ($.isEmptyObject(data) || data == null) {
 					$('#editModal').modal('hide');
 					hulla.send('Unable to fetch data', 'danger');
 					console.log('empty');
-					return false;	
-				}
-				else {
+					return false;
+				} else {
 					$('#eFname').val(data.firstname);
 					$('#eLname').val(data.lastname);
 					$('#eNumber').val(data.number);
@@ -128,15 +127,15 @@ $(function () {
 		var eLoader = $('#eLoader');
 
 		var x = formEdit.serializeArray();
-        $.each(x, function(i, field){
-            formData.append(field.name, field.value);
+		$.each(x, function (i, field) {
+			formData.append(field.name, field.value);
 		});
 
 		$.ajax({
 			url: formEdit.attr("action"),
 			type: formEdit.attr("method"),
-            dataType: 'JSON',
-            data: formData,
+			dataType: 'JSON',
+			data: formData,
 			processData: false,
 			contentType: false,
 			beforeSend: function () {
@@ -157,7 +156,7 @@ $(function () {
 
 				} else {
 					hulla.send(response.message, 'danger');
-				}	
+				}
 			},
 			fail: function (jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown);
@@ -183,9 +182,32 @@ $(function () {
 
 				} else {
 					hulla.send(response.message, 'danger');
-				}	
+				}
 
 				id = null;
+			},
+			fail: function (jqXHR, textStatus, errorThrown) {
+				console.log(errorThrown);
+			}
+		});
+	};
+
+	// Search customer
+	var searchCustomer = function (key) {
+		$.ajax({
+			url: baseurl + 'admin/customers/customer/populate',
+			type: 'GET',
+			dataType: 'html',
+			data: {
+				search: true,
+				query: key
+			},
+			beforeSend: function () {
+				htmlData.html(spinner);
+			},
+			success: function (data) {
+				htmlData.html('');
+				htmlData.html(data);
 			},
 			fail: function (jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown);
@@ -197,7 +219,7 @@ $(function () {
 
 	// Uri Action
 	var uri = urlBasedAction();
-	
+
 	// Trigerring the populate customer function
 	if (uri[2] == 'customer') {
 		populate(1, rows);
@@ -206,9 +228,15 @@ $(function () {
 			populate(1, this.value);
 		});
 
-		$('a[data-action=reload]').on('click', function (event) {
-			event.preventDefault();
-			populate(1, 10);
+		// Search
+		$("#searchCst").keyup(function () {
+			var key = $(this).val();
+			if (key.length >= 1) {
+				searchCustomer(key);
+			}
+			else if(key.length == 0 ) {
+				populate(1, 10);
+			}
 		});
 
 		// Anchor button actions binding
@@ -241,6 +269,7 @@ $(function () {
 			},
 			reloadCustomer: function (event) {
 				event.preventDefault();
+				$('#rowCount').prop('selectedIndex', 0);
 				populate(1, rows);
 			},
 			pagination: function (event) {

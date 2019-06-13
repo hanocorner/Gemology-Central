@@ -21,7 +21,7 @@
                 </td>
 
                 <td style="width:20%;">
-                    <?php echo $result['firstname'].' '.$result['lastname'] ?>
+                    <?php echo $result['name'];?>
                 </td>
                 <td style="width:10%;">
                     <?php echo $result['number']; ?>

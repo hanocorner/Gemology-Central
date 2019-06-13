@@ -22,9 +22,9 @@ class Customer_model extends CI_Model
   {
     $sql = '';
 
-    $sql .= 'SELECT SQL_CALC_FOUND_ROWS * FROM tbl_customer ';
+    $sql .= 'SELECT SQL_CALC_FOUND_ROWS * FROM admin_populate_customer ';
 
-    $sql .= 'ORDER BY custid DESC ';
+    //$sql .= 'ORDER BY custid DESC ';
 
     $sql .= 'LIMIT '.$start.', '.$rows_per_page.' ';
 
@@ -37,6 +37,16 @@ class Customer_model extends CI_Model
     return $query->result('array');
   }
 
+  public function search($string)
+  {
+    $this->db->select("*");
+    $this->db->from('admin_populate_customer');
+    $this->db->like("name", $string);
+    $this->db->or_like("number", $string);
+    
+    $query = $this->db->get();
+    return $query->result('array');
+  }
 
   /**
    * Inserting a new customer

@@ -50,9 +50,16 @@ class Customer extends Admin_Controller
 
     $this->load->model('admin/customer/Customer_model', 'custdb');
 
-    $this->_data['results'] = $this->custdb->all($rows_per_page, $start);
+    if($this->input->get('search') == true)
+    {
+      $this->_data['results'] = $this->custdb->search($this->input->get('query')); 
+    }
+    else {
+      $this->_data['results'] = $this->custdb->all($rows_per_page, $start);
+    }
+
     $total_rows = $this->custdb->total_results;
-    
+
     $this->_data['links'] = $this->html_pagination($rows_per_page, $total_rows);
     
     $this->load->view('admin/customers/customer_table', $this->_data);

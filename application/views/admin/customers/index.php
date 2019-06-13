@@ -12,7 +12,7 @@
         <!-- /. of Breadcrumbs-->
 
         <div class="grid-nav">
-            <div class="input-group">
+            <div class="form-group mb-0">
                 <span class="mr-2">Show</span>
                 <select id="rowCount" style="width:3rem;">
                     <option selected="selected">10</option>
@@ -25,6 +25,8 @@
 
             <a href="#" class="text-primary" data-action="reloadCustomer"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i>
                 Refresh</a>
+            <input type="text" class="mx-3" id="searchCst" autocomplete="off" placeholder="Search by name or number..." style="width:15rem;">
+
             <a href="#" class="btn btn-primary btn-sm ml-auto" data-action="add"><i class="fa fa-plus fa-fw"
                     aria-hidden="true"></i> Add Customer</a>
         </div>
