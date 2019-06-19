@@ -134,14 +134,10 @@
         <div class="form-group col-6">
           <label for="object">Object<sup>*</sup></label>
           <select class="form-control form-control-sm" name="object">
-            <?php if($results->object != null): ?>
-            <option selected>
-              <?php echo $results->object; ?>
-            </option>
-            <?php endif; ?>
-            <option>One Loose Stone</option>
-            <option>Mounted</option>
-            <option>Rough</option>
+            <option value="One Loose Stone" <?php if($results->object=="One Loose Stone") echo 'selected="selected"'; ?> >One Loose Stone</option>
+            <option value="Mounted" <?php if($results->object=="Mounted") echo 'selected="selected"'; ?> >Mounted</option>
+            <option value="Rough" <?php if($results->object=="Rough") echo 'selected="selected"'; ?> >Rough</option>
+            <option value="Pair" <?php if($results->object=="Pair") echo 'selected="selected"'; ?> >Pair</option>
           </select>
         </div>
         <!-- Species/Group  -->
