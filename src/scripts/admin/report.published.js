@@ -37,7 +37,7 @@ $(function () {
   // Search Report
 	var doAdvanceSearch = function () {
 
-    var formData = new FormData(formAdvanceSearch);
+    var formData = new FormData();
 
     var x = formAdvanceSearch.serializeArray();
     $.each(x, function (i, field) {

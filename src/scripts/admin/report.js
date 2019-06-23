@@ -193,7 +193,7 @@ $(function() {
   var addReport = function() {
 
     var formAdd = $('#formAddReport');
-    var formData = new FormData(formAdd);
+    var formData = new FormData();
 
     var x = formAdd.serializeArray();
     $.each(x, function (i, field) {
@@ -220,8 +220,6 @@ $(function() {
         if (response.auth) {
           $('#successModal').modal({backdrop: 'static', keyboard: false });
           $('#qrCodeBtn').attr('href', response.url);
-          // url = baseurl + 'admin/report/print/card/'+$('#repotype').val()+'/'+$('#repid').val();
-          // $('#printRep').attr('href', url);
           formData = null;
           formAdd.trigger('reset');
           return true;
@@ -242,7 +240,7 @@ $(function() {
   var updateReport = function (uri) {
 
     var formUpdate = $('#updateReportForm');
-    var formData = new FormData(formUpdate);
+    var formData = new FormData();
 
     var x = formUpdate.serializeArray();
     $.each(x, function (i, field) {
@@ -286,7 +284,7 @@ $(function() {
   var addGemstone = function () {
     
     var formVariety = $('#formVariety');
-    var formData = new FormData(formVariety);
+    var formData = new FormData();
 
     var x = formVariety.serializeArray();
     $.each(x, function (i, field) {
