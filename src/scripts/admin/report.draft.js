@@ -242,13 +242,39 @@ $(function () {
 
   };
 
-  //
+  // Print function
   var printReady = function () {
     return $('#tableDraft input:checked').map(function() {
       return this.value;
     }).get().join('-');
   };
 
+  // Delete Report
+  var deleteRecord = function () {
+    $.ajax({
+      url: baseurl + 'admin/report/draft/handler/delete/rep',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        id: $('#dRepId').val(),
+        type: $('#dRepType').val()
+      },
+      success: function (response) {
+        if (response.auth) {
+          hulla.send(response.message, 'success');
+          $('#deleteModal').modal('hide');
+
+          return true;
+        } else {
+          hulla.send(response.message, 'danger');
+        }
+        
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        hulla.send(errorThrown, 'danger');
+      }
+    });
+  };
 
   /** Event Binding **/
 
@@ -321,11 +347,21 @@ $(function () {
     payment:function () {
       $('#pRepId').val($(this).data('id'));
       $('#pRepType').val($(this).data('type'));
-      //$(this).closest('tr').toggleClass("highlight", this.checked);
     },
     saveAmount: function (e) {
       e.preventDefault();
       updatePayment();
+    },
+    delete: function () {
+      $('#dRepId').val($(this).data('id'));
+      $('#dRepType').val($(this).data('type'));
+      $('#spRepId').text($(this).data('repid'));
+      //$(this).closest('tr').toggleClass("highlight", this.checked);
+    },
+    deleteReport: function (e) {
+      e.preventDefault();
+      deleteRecord();
+      populateDraftTable(1, rows);
     }
 
   };

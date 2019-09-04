@@ -14,8 +14,9 @@
 </style>
 <section class="report mt-3">
   <div class="wrapper">
-    <div class="row">
-      <div class="col-md-4">
+    <div class="row my-5">
+    
+       <div class="col-md-4">
         <h3>Gemology Central Laboratory Report</h3>
         <?php $temp = (array) $result; ?>
         <?php if(empty($temp)): ?>
@@ -68,7 +69,11 @@
             </tr>
             <tr>
               <td width="120"><strong>Comments:</strong></td>
+              <?php if(empty($result->web_comment)): ?>
               <td id="comment"><?php echo $result->comment; ?></td>
+              <?php else: ?>
+              <td><?php echo $result->web_comment; ?></td>
+              <?php endif; ?>
             </tr>
           </tbody>
         </table>

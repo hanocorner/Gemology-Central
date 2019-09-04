@@ -168,6 +168,22 @@ class Handler extends Admin_Controller
     
   }
 
+  /*** */
+  public function delete()
+  {
+    $this->_data['repid'] = $this->input->get('id');
+    $this->_data['type'] = $this->input->get('type');
+
+    $result = $this->Report_model->delete_draft($this->_data);
+
+    if($result == FALSE) 
+    {
+      return $this->json_output(false, 'Deletion unsuccessful');
+    }
+    
+    return $this->json_output(true, 'Record was successfully deleted');
+  }
+
   
 
 }

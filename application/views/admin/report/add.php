@@ -170,11 +170,15 @@
       <div class="form-row align-items-center">
         <!-- Comment  -->
         <div class="form-group col-6">
-          <label for="comment">Comment:</label>
-          <textarea class="form-control" id="editor1" rows="4"></textarea>
+          <label for="comment" id="comment">Comment:</label>
+          <textarea  id="editor1" rows="2"></textarea>
           <script>
             CKEDITOR.replace('editor1');
           </script>
+         <div class="mt-2" style="display:none;" id="webComment">
+          <label for="other">Web Comment</label>
+          <textarea class="form-control" id="webcomment" rows="3"></textarea>
+         </div>
         </div>
 
         <div class="col-6">

@@ -126,9 +126,9 @@ class Image extends Admin_Controller
         $config['image_library'] = 'gd2';
         $config['source_image'] = $this->_dir_path.$this->_image_name;
         $config['create_thumb'] = FALSE;
-        $config['maintain_ratio'] = FALSE;
-        $config['width'] = 200;
-        $config['height'] = 150;
+        $config['maintain_ratio'] = TRUE;
+        //$config['width'] = 200;
+        //$config['height'] = 150;
         
         $this->image_lib->initialize($config);
         $this->image_lib->resize();

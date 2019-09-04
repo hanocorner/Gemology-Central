@@ -3,7 +3,11 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="<?php echo base_url(); ?>">
-            <img class="main_logo" src="<?php echo base_url('assets/public/images/gcl-logo.png')?>"/>
+          <picture>
+					  <source media="(min-width: 465px)" srcset="<?php echo base_url('assets/public/images/gcl-logo.png')?>">
+					  <img src="<?php echo base_url('images/gcl-mob-logo.png')?>" alt="Kirulads Logo" class="main_logo">
+				  </picture>
+            <!-- <img class="main_logo" src=""/> -->
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

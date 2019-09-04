@@ -134,10 +134,12 @@
         <div class="form-group col-6">
           <label for="object">Object<sup>*</sup></label>
           <select class="form-control form-control-sm" name="object">
-            <option value="One Loose Stone" <?php if($results->object=="One Loose Stone") echo 'selected="selected"'; ?> >One Loose Stone</option>
-            <option value="Mounted" <?php if($results->object=="Mounted") echo 'selected="selected"'; ?> >Mounted</option>
-            <option value="Rough" <?php if($results->object=="Rough") echo 'selected="selected"'; ?> >Rough</option>
-            <option value="Pair" <?php if($results->object=="Pair") echo 'selected="selected"'; ?> >Pair</option>
+            <option value="One Loose Stone"
+              <?php if($results->object=="One Loose Stone") echo 'selected="selected"'; ?>>One Loose Stone</option>
+            <option value="Mounted" <?php if($results->object=="Mounted") echo 'selected="selected"'; ?>>Mounted
+            </option>
+            <option value="Rough" <?php if($results->object=="Rough") echo 'selected="selected"'; ?>>Rough</option>
+            <option value="Pair" <?php if($results->object=="Pair") echo 'selected="selected"'; ?>>Pair</option>
           </select>
         </div>
         <!-- Species/Group  -->
@@ -225,6 +227,12 @@
           <script>
             CKEDITOR.replace('editor1');
           </script>
+          <?php if($results->type == 'memo'): ?>
+          <div class="mt-2" id="webComment">
+            <label for="other">Web Comment</label>
+            <textarea class="form-control" id="webcomment" rows="3"><?php echo $results->web_comment; ?></textarea>
+          </div>
+          <?php endif; ?>
         </div>
 
         <div class="col-6">
@@ -283,7 +291,8 @@
 
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" data-action="updateRep" href="#">Update Report</a>
-          <a class="dropdown-item" data-action="updatePrint" href="#" data-type="<?php echo $rep_type; ?>" data-id="<?php echo $rep_id; ?>">Update and Print</a>
+          <a class="dropdown-item" data-action="updatePrint" href="#" data-type="<?php echo $rep_type; ?>"
+            data-id="<?php echo $rep_id; ?>">Update and Print</a>
 
         </div>
       </div>

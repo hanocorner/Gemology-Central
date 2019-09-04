@@ -12,6 +12,7 @@ CREATE PROCEDURE update_report(
   IN shapecut varchar(30),
   IN color varchar(30),
   IN comment varchar(200),
+  IN webcomment varchar(400),
   IN other varchar(200),
   IN imgname varchar(20),
   IN imgpath varchar(10),
@@ -23,7 +24,7 @@ CREATE PROCEDURE update_report(
 
     UPDATE tbl_lab_report 
     SET gemid = gemid, object = object, variety = variety, weight = weight, gemWidth = width, gemHeight = height, gemLength = length,
-        spgroup = spgroup, shapecut = shapecut, color = color, status = TRUE, comment = comment, other = other 
+        spgroup = spgroup, shapecut = shapecut, color = color, status = TRUE, comment = comment, web_comment = webcomment, other = other 
     WHERE reportid = reportno;
 
     IF

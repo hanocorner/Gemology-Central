@@ -68,6 +68,21 @@ class Report_model extends CI_Model
             return $query;
     }
 
+    /**
+     * Delete Report 
+     * 
+     * @param int report id 
+     */
+    public function delete_draft($data)
+    {
+        $query = $this->db->query('CALL delete_draft_report(
+            "'.$data['repid'].'",
+            "'.$data['type'].'"
+            )');
+    
+            return $query;
+    }
+
     /** */
     public function get_receipt_count()
     {
@@ -114,6 +129,12 @@ class Report_model extends CI_Model
         {
         $shape = $string_array['shape'];
         $sql .= " AND shapecut LIKE '%$shape%' ";
+        }
+
+        if($string_array['reportid'] != '')
+        {
+        $reportid = $string_array['reportid'];
+        $sql .= " AND reportid LIKE '%$reportid%' ";
         }
 
         if($string_array['shape'] != '')

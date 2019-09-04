@@ -121,6 +121,9 @@
         <div class="form-group col-3">
           <input type="text" class="form-control" name="weight" placeholder="Weight">
         </div>
+        <div class="form-group col-3">
+          <input type="text" class="form-control" name="reportid" placeholder="Report id">
+        </div>
       </div>
       <?php echo form_close(); ?>
       <!-- Advance Search -->

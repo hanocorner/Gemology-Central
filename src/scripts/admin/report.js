@@ -6,6 +6,8 @@ $(function() {
   var messageBox = null;
   var url;
   var hulla = new hullabaloo();
+  var webComment = $('#webComment');
+  var comment = $('#comment');
 
   /* Functions */
 
@@ -201,8 +203,17 @@ $(function() {
     });
 
     var commentData = CKEDITOR.instances.editor1.getData();
-
     formData.append("comment", commentData);
+
+    var webCommentData = $('textarea#webcomment').val();
+
+    if(webCommentData === '') {
+      formData.append("webcomment", '');
+    }
+    else {
+      formData.append("webcomment", webCommentData);
+    }
+    
 
     $.ajax({
       url: formAdd.attr("action"),
@@ -248,8 +259,16 @@ $(function() {
     });
 
     var commentData = CKEDITOR.instances.editor1.getData();
-
     formData.append("comment", commentData);
+
+    var webCommentData = $('textarea#webcomment').val();
+
+    if(webCommentData === '') {
+      formData.append("webcomment", '');
+    }
+    else {
+      formData.append("webcomment", webCommentData);
+    }
 
     $.ajax({
       url: formUpdate.attr("action"),
@@ -372,13 +391,19 @@ $(function() {
   reptype.click(function () {
     if (this.id == 'option1') {
       $('#repotype').val($(this).data('value'));
+      webComment.show();
+      comment.text('Print Comment');
       getId($(this).data('value'));
     } else if (this.id == 'option2') {
       $('#repotype').val($(this).data('value'));
       getId($(this).data('value'));
+      webComment.hide();
+      comment.text('Comment');
     } else if (this.id == 'option3') {
       $('#repotype').val($(this).data('value'));
       getId($(this).data('value'));
+      webComment.hide();
+      comment.text('Comment');
     }
   });
 

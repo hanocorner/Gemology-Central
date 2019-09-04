@@ -79,7 +79,8 @@
                         <a href="#" data-id="<?php echo $result['reportno']; ?>" data-type="<?php echo $result['type']; ?>" data-action="payment" data-backdrop="static" data-toggle="modal" data-target="#paymentModal" class="text-muted mx-2 buttonz add" title="Payment"><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a>
                         <a href="<?php echo base_url('admin/report/edit/'.$result['type'].'/'.$result['reportno']); ?>" class="text-muted mx-2 buttonz edit" title="Edit"><i
                                 class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
-                        <a href="<?php echo base_url('admin/report/draft/handler/download/'.$result['reportid'].'.png'); ?>" class="text-muted mx-2 buttonz delete" title="Download qr"><i class="fa fa-download" aria-hidden="true"></i></i></a>
+                                <a href="#" data-type="<?php echo $result['type']; ?>" data-repid="<?php echo $result['reportid']; ?>" data-id="<?php echo $result['reportno']; ?>" data-action="delete" data-backdrop="static" data-toggle="modal" data-target="#deleteModal" class="text-muted mx-2 buttonz delete" title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>
+                        <a href="<?php echo base_url('admin/report/draft/handler/download/'.$result['reportid'].'.png'); ?>" class="text-muted mx-2 buttonz delete" title="Download qr"><i class="fa fa-download fa-lg"></i></a>
                     </div>
                 </td>
             </tr>

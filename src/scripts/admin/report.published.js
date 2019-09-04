@@ -71,6 +71,10 @@ $(function () {
     // Populating draft table function call
     populatePublishedTable(1, rows);
 
+    $('#rowCount').on('change', function () {
+      populatePublishedTable(1, this.value);
+    });
+
     var btnActions = {
         pagination: function (e) {
           e.preventDefault();

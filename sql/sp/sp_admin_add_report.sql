@@ -13,6 +13,7 @@ CREATE PROCEDURE insert_report(
   IN shapecut varchar(30),
   IN color varchar(30),
   IN comment varchar(200),
+  IN webcomment varchar(400),
   IN other varchar(200),
   IN imgname varchar(20),
   IN imgpath varchar(10),
@@ -25,8 +26,8 @@ CREATE PROCEDURE insert_report(
   BEGIN
     DECLARE last_insert_id int;
 
-    INSERT INTO tbl_lab_report(customerid, gemid, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, other, status, qrtoken) 
-    VALUES(customerid, gemid, object, variety, type, weight, width, height, length, spgroup, shapecut, color, comment, other, rstatus, qr_token);
+    INSERT INTO tbl_lab_report(customerid, gemid, object, variety, type, weight, gemWidth, gemHeight, gemLength, spgroup, shapecut, color, comment, web_comment, other, status, qrtoken) 
+    VALUES(customerid, gemid, object, variety, type, weight, width, height, length, spgroup, shapecut, color, comment, webcomment, other, rstatus, qr_token);
     SET last_insert_id = LAST_INSERT_ID();
 
     IF

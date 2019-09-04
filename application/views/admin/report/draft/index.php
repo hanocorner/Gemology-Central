@@ -151,3 +151,30 @@
         </div>
     </div>
 </div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="<?php echo base_url('images/trash.png');?>" class="img-fluid d-block mx-auto mb-2" alt="wallet">
+                <p class="text-center mb-1">Do you wish to delete this record? </p>
+                <p class="text-center font-weight-bold" id="spRepId"></p>
+                <input type="hidden" id="dRepId" value="">
+                <input type="hidden" id="dRepType" value="">
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-light" data-dismiss="modal"> Cancel</a>
+                <a href="#" data-action="deleteReport" class="btn btn-danger" id="">Yes</a>
+            </div>
+
+        </div>
+    </div>
+</div>

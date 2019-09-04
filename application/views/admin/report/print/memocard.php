@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Print Receipt - </title>
+    <title>Print Memocard - <?php echo $result->repoid; ?> </title>
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
@@ -16,11 +16,29 @@
             font-family: 'Open Sans', sans-serif;
         }
 
+        header,
+        footer,
+        aside,
+        nav,
+        form,
+        iframe,
+        .menu,
+        .hero,
+        .adslot {
+            display: none;
+        }
+
         .d-flex {
             display: flex;
             align-items: center;
             justify-content: space-around;
         }
+
+        .d-flex>h4 {
+            margin: 1px 0;
+            font-size: 10px;
+        }
+
         .back-btn {
             width: 150px;
             display: block;
@@ -38,33 +56,47 @@
             text-decoration: none;
         }
 
+        .border-top {
+            padding-bottom: 4px;
+            border-bottom: 2px solid;
+        }
+
+        .border-bottom {
+            padding-bottom: 2px;
+            border-bottom: 10px solid;
+        }
+
+        .border-blue {
+            border-color: #00adee;
+        }
+
+        
+
         @media print {
+            .d-flex > h4 {
+                margin: 6px 0;
+                font-size: 9.5px;
+                line-height:12px;
+            }
             .back-btn {
                 display: none;
+            } 
+            .border-top {
+                padding-bottom: 7px;
             }
-        }
+            .border-bottom {
+                padding-bottom: 2px;
+            }
+            .sheet {
+                border: 0.5px solid #e8e8e8;
+                border-radius: 5px;
+            }
 
-        .line {
-            width: 100%;
-        }
-
-        .blue {
-            background: #00adee
-        }
-
-        .line-2 {
-            height: 2px;
-        }
-
-        .line-4 {
-            height: 10px;
-            position: relative;
-            top: 12px;
         }
 
         table {
             margin-top: 4px;
-            margin-left: 2px;
+            margin-left: 6px;
             width: 100%;
             border-collapse: collapse;
             border: none;
@@ -73,18 +105,59 @@
         table td {
             font-size: 11px;
         }
+
         .image {
-            display:flex;
+            display: flex;
             flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .image> .gem-img-box {
+            width: 74px;
+            height: 68px;
+            padding: 1px;
+            background: #fff;
+            border: 1px solid #00adee;
+            border-radius: 1px;
+            margin: 6px 8px 2px 0;
+            display: flex;
             align-items: center;
         }
-        .image img {
-            margin:2px 12px 2px 0;
-            width:70px;
+
+        .image> .gem-img-box> .gem {
+            margin-top: 0;
+            width: 100%;
+            max-width: 68px;
+            padding: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
+
+        .image>.qr {
+            width: 54px;
+            margin-top: 5px;
+            padding: 1px;
+            margin: 2px 8px 2px 0;
+            border: 1px solid #00adee;
+            border-radius: 1px;
+        }
+
         p {
-            margin:0;
+            margin: 0;
         }
+        @media print{
+            .image>.gem {
+                width: 72px;
+            }
+            .image >.qr {
+                width: 48px;
+            }
+            table td {
+                font-size: 10.6px;
+            }
+        }
+        
     </style>
     <link rel="stylesheet" href="<?php echo base_url('assets/vendors/print/paper.css'); ?>">
 
@@ -105,12 +178,14 @@
 
 <body class="legal" onload="window.print();">
     <section class="sheet">
-        <div class="d-flex">
+        <div class="d-flex border-top border-blue">
             <img src="<?php echo base_url('images/print-memo-logo.png');?>">
-            <img src="<?php echo base_url('images/print-memo-al-logo.png');?>">
+            <!-- <img src="<?php echo base_url('images/print-memo-al-logo.png');?>"> -->
+            <h4 style="text-transform:uppercase;">GEM <br>Identification  <br> Report</h4>
         </div>
-        <div class="line blue line-2" style="margin-top: 5px;"></div>
-        <div class="d-flex">
+
+        <!-- <div class="line blue line-2" style="margin-top: 5px;"></div> -->
+        <div class="d-flex border-bottom border-blue">
             <table cellspacing="0" cellpadding="0">
                 <tbody>
 
@@ -125,7 +200,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="85" class="text-uppercase">Color</td>
+                        <td width="9" class="text-uppercase">Color</td>
                         <td><?php echo $result->color; ?></td>
                     </tr>
                     <tr>
@@ -156,11 +231,14 @@
                 </tbody>
             </table>
             <div class="image">
-                <img src="<?php echo base_url('images/gem/'.$result->imgpath.$result->gemstone);?>">
-                <img src="<?php echo base_url('assets/images/qr/'.$result->repoid.'.png');?>" >
+            <div class="gem-img-box">
+                <img class="gem" src="<?php echo base_url('images/gem/'.$result->imgpath.$result->gemstone);?>">
+            </div>
+                
+                <img class="qr" src="<?php echo base_url('assets/images/qr/'.$result->repoid.'.png');?>">
             </div>
         </div>
-        <div class="line blue line-4"></div>
+        <!-- <div class="line blue line-4"></div> -->
     </section>
     <a href="<?php echo base_url('admin/report/published'); ?>" class="back-btn">Go Back</a>
 </body>
