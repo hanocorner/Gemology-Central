@@ -293,6 +293,8 @@
           <a class="dropdown-item" data-action="updateRep" href="#">Update Report</a>
           <a class="dropdown-item" data-action="updatePrint" href="#" data-type="<?php echo $rep_type; ?>"
             data-id="<?php echo $rep_id; ?>">Update and Print</a>
+          <a class="dropdown-item" data-action="updateDownload" href="#" data-type="<?php echo $rep_type; ?>"
+            data-id="<?php echo $rep_id; ?>">Update and Download</a>
 
         </div>
       </div>

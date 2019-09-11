@@ -46,5 +46,23 @@ class Handler extends Admin_Controller
         } 
         
     }
+
+    public function data_image()
+    {
+        $this->layout->title = 'Download Data Image';
+        $id = $this->uri->segment(6);
+        
+        $this->load->model('admin/report/Report_model', 'report');
+        $this->_data['result'] = $this->report->get_lab_report($id);
+
+        $this->layout->assets(base_url('assets/vendors/print/html2canvas.min.js'), 'footer'); 
+        $this->layout->assets(base_url('assets/admin/js/data_image.js'), 'footer');
+
+        if($this->uri->segment(5) == 'memo')
+        {
+            $this->layout->view('admin/report/print/data_image', $this->_data, 'without');
+        } 
+
+    }
 }
 ?>

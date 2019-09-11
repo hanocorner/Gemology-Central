@@ -422,6 +422,12 @@ $(function() {
       url = 'admin/report/print/card/'+$(this).data('type')+'/'+$(this).data('id');
       updateReport(url);
     },
+    updateDownload: function (e) {
+      e.preventDefault();
+      url = 'admin/report/print/image/'+$(this).data('type')+'/'+$(this).data('id');
+      location.href = baseurl + url;
+      //updateReport(url);
+    },
     addReport: function (e) {
       e.preventDefault();
       addReport(this);

@@ -75,6 +75,7 @@ $route['admin/report/published'] = 'admin/report/handler/index';
 $route['admin/report/drafts'] = 'admin/report/draft/handler/index';
 $route['admin/report/print/receipt/(:any)'] = 'admin/print/handler/receipt';
 $route['admin/report/print/card/(:any)/(:num)'] = 'admin/print/handler/card';
+$route['admin/report/print/image/(:any)/(:num)'] = 'admin/print/handler/data_image';
 
 // Blog Routes
 $route['admin/blog'] = 'admin/blog/handler/index';
