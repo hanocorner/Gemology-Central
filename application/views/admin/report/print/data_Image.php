@@ -1,4 +1,6 @@
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Lato:400,900&display=swap');
+
     header,
     footer,
     aside,
@@ -24,6 +26,7 @@
     }
 
     table {
+        font-family: 'Lato', sans-serif;
         margin-top: 4px;
         margin-left: 6px;
         width: 100%;
@@ -43,8 +46,8 @@
         border: 1px solid #00adee;
         border-radius: 1px;
         position: absolute;
-        top: 120px;
-        right: 4px;
+        top: 138px;
+        right: 1px;
     }
 
     .download-btn {
@@ -87,17 +90,17 @@
                         <td><?php echo $result->dimensions; ?></td>
                     </tr>
                     <tr>
-                        <td width="32%" class="text-uppercase"><strong>Variety</strong></td>
-                        <td><strong><?php echo $result->variety; ?></strong></td>
+                        <td  style="font-weight:900;" width="32%" class="text-uppercase">Variety</td>
+                        <td style="font-weight:900;"><?php echo $result->variety; ?></td>
                     </tr>
                     <tr>
-                        <td width="32%" class="text-uppercase"><strong>Species/Group</strong></td>
-                        <td id="spgroup"><strong><?php echo $result->spgroup; ?></strong></td>
+                        <td style="font-weight:900;" width="32%" class="text-uppercase">Species/Group</td>
+                        <td style="font-weight:900;"><?php echo $result->spgroup; ?></td>
                     </tr>
 
                     <tr>
-                        <td width="32%" class="text-uppercase"><strong>Comments</strong></td>
-                        <td><strong><?php echo $result->comment; ?></strong></td>
+                        <td style="font-weight:900;" width="32%" class="text-uppercase">Comments</td>
+                        <td style="font-weight:900;"><?php echo $result->comment; ?></td>
                     </tr>
                 </tbody>
             </table>
