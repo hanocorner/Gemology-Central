@@ -53,11 +53,11 @@
             </tr>
             <tr>
               <td width="120"><strong>Weight:</strong></td>
-              <td id="weight"><?php echo $result->weight; ?></td>
+              <td id="weight"><?php echo $result->weight; ?>&nbsp;ct</td>
             </tr>
             <tr>
               <td width="120"><strong>Dimensions:</strong></td>
-              <td id="dimension"><?php echo $result->dimensions; ?></td>
+              <td id="dimension"><?php echo $result->dimensions; ?>&nbsp;mm</td>
             </tr>
             <tr>
               <td width="120"><strong>Shape & Cut:</strong></td>

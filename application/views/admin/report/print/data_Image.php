@@ -83,11 +83,11 @@
                     </tr>
                     <tr>
                         <td width="32%" class="text-uppercase">Weight</td>
-                        <td id="weight"><?php echo $result->weight; ?></td>
+                        <td id="weight"><?php echo $result->weight; ?>&nbsp;ct</td>
                     </tr>
                     <tr>
                         <td width="32%" class="text-uppercase">Measurements</td>
-                        <td><?php echo $result->dimensions; ?></td>
+                        <td><?php echo $result->dimensions; ?>&nbsp;mm</td>
                     </tr>
                     <tr>
                         <td  style="font-weight:900;" width="32%" class="text-uppercase">Variety</td>

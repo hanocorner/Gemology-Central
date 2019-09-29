@@ -20,7 +20,7 @@
             display: flex;
             align-items: center;
             justify-content:space-around;
-            margin-bottom: 30px;
+            margin-bottom: 12px;
         }
 
         .d-block {
@@ -87,6 +87,7 @@
         .grid-inside {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: 195mm;
             grid-gap: 10px;
             padding: 5px;
             border: 1px solid #d6d6d6;
@@ -127,11 +128,12 @@
             margin-left:68px;
             margin-right:68px;
             margin-top:38px;
-            margin-bottom:48px;
+            margin-bottom:5px;
         }
         .grid-inside .item-2 .image img {
             display:block;
             margin:0 auto;
+            max-width:300px;
         }
         .grid-inside .item-2 .image .signature {
             width: 100%;
@@ -145,25 +147,32 @@
         .grid-inside .item-2 .image .signature p{
             margin-top:2px;
         }
-        .grid-inside .item-2 .qr {
+        .grid-inside .item-1 .qr {
             position: relative;
         }
-        .grid-inside .item-2 .qr p:nth-child(1) {
+        .grid-inside .item-1 .qr p:nth-child(1) {
             position: relative;
             top: 18px;
-            left: 20px;
+            left: 43%;
             font-size: 14px;
         }
-        .grid-inside .item-2 .qr p:nth-child(2) {
+        .grid-inside .item-1 .qr p:nth-child(2) {
             position: absolute;
             transform: rotate(-90deg);
-            left: -43px;
-            top: 88px;
+            left: 31%;
+            top: 73px;
             font-size: 14px;
         }
-        .grid-inside .item-2 .qr img {
-            width: 120px;
+        .grid-inside .item-1 .qr img {
+            width: 112px;
             max-height:auto;
+        }
+        .grid-inside .item-2 .float-right{
+            float:right;
+        }
+
+        .grid-inside .item-2 .help-text{
+            margin-right:40px;
         }
         .grid-inside .item-2 .help-text p {
             margin:0;
@@ -251,13 +260,19 @@
                                 </tr>
                                 <tr>
                                     <td width="200" class="text-uppercase"><strong>Comments</strong></td>
-                                    <td><strong><?php echo $result->comment; ?></strong></td>
+                                    <td style="line-height:8px;"><strong><?php echo $result->comment; ?></strong></td>
                                 </tr>
                                 <tr>
                                     <td><br /></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="qr">
+                            <p>Verification</p>
+                            <p>Verification</p>
+                            <img src="<?php echo base_url('assets/images/qr/'.$result->repoid.'.png');?>" >
+                            
+                            </div>
                     </div>
                     <img src="<?php echo base_url('images/watermark.png');?>" class="watermark">
                     <img src="<?php echo base_url('images/seal.png');?>" class="seal-1">
@@ -270,17 +285,13 @@
                             <div class="signature">
                                 <p class="text-center">Arjuna K Jayweera GG</p>
                             </div>
+                            <img src="<?php echo base_url('images/gcl-fullr-alumini.png');?>">
                         </div>
-                        <div class="d-flex">
-                            <div class="qr">
-                            <p>Verification</p>
-                            <p>Verification</p>
-                            <img src="<?php echo base_url('assets/images/qr/'.$result->repoid.'.png');?>" >
-                            
-                            </div>
+                        <div class="float-right">
+                        
                             <div class="help-text">
-                            <p class="text-center">See Help</p>
-                            <p class="text-center">www.gemologycentral.com</p>
+                                <p class="text-center">See Help</p>
+                                <p class="text-center">www.gemologycentral.com</p>
                             </div>
                         </div>
                     </div>
