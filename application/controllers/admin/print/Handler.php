@@ -62,7 +62,9 @@ class Handler extends Admin_Controller
         {
             $this->layout->view('admin/report/print/data_image', $this->_data, 'without');
         } 
-
+        elseif ($this->uri->segment(5) == 'repo') {
+            $this->layout->view('admin/report/print/data_repo_image', $this->_data, 'without');
+        }
     }
 }
 ?>
