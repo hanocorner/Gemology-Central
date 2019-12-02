@@ -49,7 +49,7 @@
     }
 
     .image>.qr {
-        width: 95px;
+        width: 80px;
         padding: 1px;
         border: 1px solid #00adee;
         border-radius: 1px;

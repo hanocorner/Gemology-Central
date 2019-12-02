@@ -208,7 +208,7 @@ $(function() {
     var webCommentData = $('textarea#webcomment').val();
 
     if(webCommentData === '') {
-      formData.append("webcomment", '');
+      formData.append("webcomment", " ");
     }
     else {
       formData.append("webcomment", webCommentData);
