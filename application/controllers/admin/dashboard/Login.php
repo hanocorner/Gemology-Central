@@ -43,9 +43,9 @@ class Login extends Admin_Controller
     {
         $this->load->model('admin/dashboard/login_model');
 
-        $this->load->library('encryption');
+        //$this->load->library('encryption');
 
-        $this->encryption->initialize(array('driver' => 'mcrypt'));
+        //$this->encryption->initialize(array('driver' => 'mcrypt'));
 
         $this->_data = $this->input->post();
 
@@ -59,7 +59,7 @@ class Login extends Admin_Controller
             return $this->json_output(false, $this->lang->line('error_invalid_adminuser'));
         }
 
-        if ($this->_data['password'] == $this->encryption->decrypt($credentials[0]->u_pass)) 
+        if ($this->_data['password'] == $credentials[0]->u_pass) 
         {
             $session_data = array('adminid' => $credentials[0]->admin_id, 'logged_in' => TRUE);
 

@@ -138,7 +138,7 @@ class Handler extends Admin_Controller
 
     $this->_qrcode = $id.'.png';
 
-    $params['data'] = base_url('report/'.$string);
+    $params['data'] = 'https://gemologycentral.com/report/'.$string;
     $params['level'] = 'H';
     $params['size'] = 8;
     $params['savename'] = './assets/images/qr/'.$this->_qrcode;
